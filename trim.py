@@ -13,8 +13,7 @@ from gi.repository import Vips
 # amount-differnt-from-background image plus a threshold.
 
 
-def trim(inputIm, outputIm):
-    acceptableThreshold = 125
+def trim(inputIm, outputIm, acceptableThreshold):
     firstArgProvided = True
 
     try:    
