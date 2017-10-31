@@ -1,6 +1,7 @@
 
 import os as os
 import trim as trm
+from PIL import Image
 
 """
 ADJUSTABLE "CONSTANTS"
@@ -22,16 +23,18 @@ smallestImage: accepts string which refers to a particular directory
 def smallestImage(directory):
     lst = os.listdir(directory)
     try:
-        currentMin = lst[0]
-    except:
+        firstImName = lst[0]
+    except IndexError:
         print "Empty directory. Cannot find smallest image."
-        currentMin = 'null'
+        firstImName = 'null'
 
-    if (currentMin != 'null'):
-        for im in directory:
-            if (im.size() < currentMin):
-                currentMin = im.size()
-                
+    if (firstImName != 'null'):
+        currentMin = (100000,100000)        # Any image should be smaller than this... otherwise, I don't want to deal with it
+        for imName in lst:
+            im = Image.open(directory + imName)
+            if (im.size < currentMin):
+                currentMin = im.size
+            im.close()
     return currentMin
 
 
@@ -47,8 +50,10 @@ class programWrapper:
     execute: main function
     """
     def execute(self):
-        # First, crop all photos
+        # First, crop all photos.
         self.__cropPhotos()
+
+        # Now, resize all of the photos to the smallest image size.
         self.__resizePhotos()
 
     """
@@ -66,4 +71,4 @@ class programWrapper:
     """
     def __resizePhotos(self):
         resizeAllImagesTo = smallestImage(croppedImagesDir)
-        print "Smallest Cropped Image: ", resizeAllImagesTo
+        # now do the actual resizing
