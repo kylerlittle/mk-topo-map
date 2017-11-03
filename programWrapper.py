@@ -62,13 +62,22 @@ class programWrapper:
     def __cropPhotos(self):
         imageList = os.listdir(rawImagesDir)
         counter = 1;
-        for im in imageList:
-            trm.trim(rawImagesDir + im, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", cropThresholdLevel)
+        for imStr in imageList:
+            trm.trim(rawImagesDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", cropThresholdLevel)
             counter += 1
 
     """
     resizePhotos: resizes all cropped images to the size of the smallest photo in croppedImagesDir
+                  LANCZOS filtering was chosen so as to retain highest downscaling quality
+                  performance is least important in this case, so we sacrifice it
     """
     def __resizePhotos(self):
-        resizeAllImagesTo = smallestImage(croppedImagesDir)
-        # now do the actual resizing
+        resizeAllImagesTo = smallestImage(croppedImagesDir)        # get smallest image size in directory
+        imageList = os.listdir(croppedImagesDir)
+        for imStr in imageList:
+            im = Image.open(croppedImagesDir + imStr)
+            # For now, simply resize the image
+            # In the future, it would be nice to make a copy of the resized image & put in a different dir
+            im.resize(resizeAllImagesTo, resample=Image.LANCZOS)
+            
+        
