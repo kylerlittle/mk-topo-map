@@ -74,10 +74,13 @@ class programWrapper:
     def __resizePhotos(self):
         resizeAllImagesTo = smallestImage(croppedImagesDir)        # get smallest image size in directory
         imageList = os.listdir(croppedImagesDir)
+        counter = 1   # utilize counter for appropriate file naming
         for imStr in imageList:
             im = Image.open(croppedImagesDir + imStr)
-            # For now, simply resize the image
-            # In the future, it would be nice to make a copy of the resized image & put in a different dir
-            im.resize(resizeAllImagesTo, resample=Image.LANCZOS)
+            resizedIm = im.resize(resizeAllImagesTo, resample=Image.LANCZOS)    # resize using LANCZOS filtering
+            resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
+            im.close()
+            counter += 1
+            
             
         
