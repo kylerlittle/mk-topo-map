@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 
-import gi
+"""
+The following code was adapted from an implementation on:
+https://stackoverflow.com/questions/14211340/automatically-cropping-an-image-with-python-pil
+"""
 
+import gi
 gi.require_version('Vips', '8.0')       # Ensure the right version is imported
 from gi.repository import Vips
 
