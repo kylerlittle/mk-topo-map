@@ -15,6 +15,11 @@ resizedImagesDir = "resizedImages/"
 # Program Behavior
 cropThresholdLevel = 125   # Higher -> Cut off more of image | Lower -> Cut off less of image | Max ~155
 
+"""
+Once I get real data, I need to do tests to determine best output. Vary widthDivisor & heightDivisor accordingly
+"""
+widthDivisor = 10          # Higher -> Reduce size of laplacian matrix | Lower -> Retain more pixels | Min ???
+heightDivisor = 10          # Higher -> Reduce size of laplacian matrix | Lower -> Retain more pixels | Min ???
 
 """
 smallestImage: accepts string which refers to a particular directory
@@ -43,8 +48,8 @@ class programWrapper:
     ___init___: constructor
     """
     def __init__(self):
-        # do stuff
-        apple = "hello"
+        # Initialize size to be (numImages * widthDivisor * heightDivisor)
+        laplacian3Dmatrix = 'unimplemented'
 
     """
     execute: main function
