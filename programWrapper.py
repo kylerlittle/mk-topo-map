@@ -4,23 +4,10 @@ import trim as trm
 from PIL import Image
 from Laplacian_Variance import variance_of_laplacian
 
-"""
-ADJUSTABLE "CONSTANTS"
----> These are "constants," but may be changed for the purpose of the program.
-"""
 # Directories
 rawImagesDir = "rawImages/"
 croppedImagesDir = "croppedImages/"
 resizedImagesDir = "resizedImages/"
-
-# Program Behavior
-cropThresholdLevel = 125   # Higher -> Cut off more of image | Lower -> Cut off less of image | Max ~155
-
-"""
-Once I get real data, I need to do tests to determine best output. Vary widthDivisor & heightDivisor accordingly
-"""
-widthDivisor = 10          # Higher -> Reduce size of laplacian matrix | Lower -> Retain more pixels | Min ???
-heightDivisor = 10          # Higher -> Reduce size of laplacian matrix | Lower -> Retain more pixels | Min ???
 
 """
 smallestImage: accepts string which refers to a particular directory

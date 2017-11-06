@@ -1,0 +1,4 @@
+Have to go to practice currently.
+
+1. Update Program driver so that methods accepted important parameters (i.e. thresholdLevel of cropping, etc.)
+2. Update makefile to pass in the correct argument to driver.py
