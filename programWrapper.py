@@ -2,6 +2,7 @@
 import os as os
 import trim as trm
 from PIL import Image
+from Laplacian_Variance import variance_of_laplacian
 
 """
 ADJUSTABLE "CONSTANTS"
@@ -56,19 +57,20 @@ class programWrapper:
     """
     def execute(self):
         # First, crop all photos.
-        self.__cropPhotos()
+        self.cropPhotos()
 
         # Now, resize all of the photos to the smallest image size.
-        self.__resizePhotos()
+        self.resizePhotos()
 
     """
     cropPhotos: crops raw photos to be approximately inline with the outline of the object
     """
-    def __cropPhotos(self):
+    def cropPhotos(self):
+        print "[x] Initiating image cropping"
         imageList = os.listdir(rawImagesDir)
         counter = 1;
         for imStr in imageList:
-            trm.trim(rawImagesDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", cropThresholdLevel)
+            trm.trim(rawImagesDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", cropThresholdLevel, counter)
             counter += 1
 
     """
@@ -76,16 +78,28 @@ class programWrapper:
                   LANCZOS filtering was chosen so as to retain highest downscaling quality
                   performance is least important in this case, so we sacrifice it
     """
-    def __resizePhotos(self):
+    def resizePhotos(self):
         resizeAllImagesTo = smallestImage(croppedImagesDir)        # get smallest image size in directory
         imageList = os.listdir(croppedImagesDir)
         counter = 1   # utilize counter for appropriate file naming
+        print "[x] Resizing all images to: ", resizeAllImagesTo
         for imStr in imageList:
             im = Image.open(croppedImagesDir + imStr)
             resizedIm = im.resize(resizeAllImagesTo, resample=Image.LANCZOS)    # resize using LANCZOS filtering
             resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
             im.close()
             counter += 1
+
+    """
+    foo: 
+    """
+    def foo(self):
+        imageList = os.listdir(resizedImagesDir)
+        for imStr in imageList:
+            varianceMatrix = variance_of_laplacian(imStr, heightDivisor, widthDivisor)
+            laplacian3Dmatrix.append(varianceMatrix)
+            # For each matrix in laplacian3DMatrix, push each entry onto a list, 
+
             
             
         

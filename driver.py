@@ -9,4 +9,10 @@ PROGRAM EXECUTION:
 """
 
 driver = id.programWrapper()
-driver.execute()
+
+# Crop photos
+driver.cropPhotos()
+print "Acceptable cropping? [Y/n]"
+
+# If so, resize photos
+driver.resizePhotos()

@@ -17,7 +17,7 @@ from gi.repository import Vips
 # amount-differnt-from-background image plus a threshold.
 
 
-def trim(inputIm, outputIm, acceptableThreshold):
+def trim(inputIm, outputIm, acceptableThreshold, imNum):
     firstArgProvided = True
 
     try:    
@@ -27,6 +27,7 @@ def trim(inputIm, outputIm, acceptableThreshold):
         firstArgProvided = False
 
     if (firstArgProvided):       # Image provided & opened successfully.
+        print "\t[", imNum, "] ", im.width, ",", im.height,
         # find the value of the pixel at (0, 0) ... we will search for all pixels 
         # significantly different from this
         background = im.getpoint(0, 0)
@@ -48,7 +49,7 @@ def trim(inputIm, outputIm, acceptableThreshold):
         # and now crop the original image
         
         im = im.crop(left, top, right - left, bottom - top)
-            
+        print "cropped to", im.width, ",", im.height
         try:
             im.write_to_file(outputIm)
         except IndexError:
