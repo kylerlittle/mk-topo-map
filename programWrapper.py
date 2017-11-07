@@ -40,19 +40,16 @@ class programWrapper:
         laplacian3Dmatrix = 'unimplemented'
 
     """
-    execute: main function
+    execute: main function to execute all tasks in one (CAREFUL WITH THIS)
     """
-    def execute(self):
-        # First, crop all photos.
-        self.cropPhotos()
-
-        # Now, resize all of the photos to the smallest image size.
+    def execute(self, cropThresholdLevel):
+        self.cropPhotos(cropThresholdLevel)
         self.resizePhotos()
 
     """
     cropPhotos: crops raw photos to be approximately inline with the outline of the object
     """
-    def cropPhotos(self):
+    def cropPhotos(self, cropThresholdLevel):
         print "[x] Initiating image cropping"
         imageList = os.listdir(rawImagesDir)
         counter = 1;
