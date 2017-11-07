@@ -8,8 +8,9 @@ ADJUSTABLE PARAMETERS
 """
 cropThresholdLevel = 125   # Higher -> Cut off more of image | Lower -> Cut off less of image | Max ~155
 widthDivisor = 10          # Higher -> Reduce size of laplacian matrix | Lower -> Retain more pixels | Min ???
-heightDivisor = 10          # Higher -> Reduce size of laplacian matrix | Lower -> Retain more pixels | Min ???
-
+heightDivisor = 10         # Higher -> Reduce size of laplacian matrix | Lower -> Retain more pixels | Min ???
+startHeight = 0.0          # Height of first image taken in 'rawImages/'
+endHeight = 1.25           # Height of last image taken in 'rawImages/'
 
 
 
@@ -28,13 +29,17 @@ except IndexError:
 
 def executeCommand(command):
     if command == 'run':
-        driver.execute(cropThresholdLevel)
+        driver.execute(cropThresholdLevel, heightDivisor, widthDivisor)
     elif command == 'crop':
         driver.cropPhotos(cropThresholdLevel)
     elif command == 'resize':
         driver.resizePhotos()
     elif command == 'lpc':
-        print "Laplacian unimplemented."
+        driver.createLaplacianStack(heightDivisor, widthDivisor)
+    elif command == '3D':
+        driver.create3Dmodel(startHeight, endHeight)
+    elif command == 'o_3D':
+        driver.o_create3Dmodel(startHeight, endHeight)
     elif command == 'graph':
         print "Graph unimplemented."
     else:

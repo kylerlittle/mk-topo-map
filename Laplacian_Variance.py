@@ -64,7 +64,7 @@ def variance_of_laplacian(filename, heightDivisor, widthDivisor):
     # 1. Convert image to matrix.
     toBeConverted = pil.Image.open(filename)
     # resize (columns, width)
-    toBeConverted = toBeConverted.resize([(rWidth / widthDivisor) * widthDivisor,(rHeight / heightDivisor) * heightDivisor])
+    toBeConverted = toBeConverted.resize([(rWidth / widthDivisor) * widthDivisor,(rHeight / heightDivisor) * heightDivisor], resample=Image.LANCZOS)    # resize using LANCZOS filtering
     # truncating the width and height so that they're divisible by heightDivisor & widthDivisor
     imageMatrix = pl.asarray(toBeConverted.convert('L')) # convert image to greyscale; return matrix
     toBeConverted.close();  # close file

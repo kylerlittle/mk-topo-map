@@ -22,6 +22,15 @@ resize:
 lpc:
 	python2.7 driver.py lpc
 
+# Create 3D model from laplacian image stack.
+3D:
+	python2.7 driver.py 3D
+
+# Create 3D model from laplacian image stack in a slightly
+# faster way and possibly make a few mistakes.
+o_3D:
+	python2.7 driver.py o_3D
+
 # Allows the user to start the program from the top. Delete all
 # processed images (i.e. images in croppedImages/ & resizedImages/)
 reset:

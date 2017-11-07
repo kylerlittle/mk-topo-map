@@ -1,4 +1,9 @@
-For tomorrow:
+Current To-Dos:
+1. Finish implementing 3D model creator.
+2. Update makefile as necessary.
 
-1. Implement variance of laplacian function.
-2. Update makefile if necessary
+
+Once project actually functions:
+1. Create virtualenv so that others in the research group can easily use this software.
+2. Make as user-friendly as possible.
+3. Update README.txt with explicit instructions.
