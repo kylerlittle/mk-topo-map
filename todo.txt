@@ -1,3 +1,7 @@
+Currently working on initializing variables correctly by finding type of variance Matrix
+Also need to adjust outer 'for' loops to get the iterator... (or find a way around this)
+Gotta run to class; will finish after
+
 Current To-Dos:
 1. Finish implementing 3D model creator.
 2. Update makefile as necessary.

@@ -37,9 +37,9 @@ def executeCommand(command):
     elif command == 'lpc':
         driver.createLaplacianStack(heightDivisor, widthDivisor)
     elif command == '3D':
-        driver.create3Dmodel(startHeight, endHeight)
+        driver.createThreeDmodel(startHeight, endHeight)
     elif command == 'o_3D':
-        driver.o_create3Dmodel(startHeight, endHeight)
+        driver.o_createThreeDmodel(startHeight, endHeight)
     elif command == 'graph':
         print "Graph unimplemented."
     else:

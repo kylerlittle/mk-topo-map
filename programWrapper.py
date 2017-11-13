@@ -43,7 +43,7 @@ class programWrapper:
     def __init__(self):
         self.laplacianImageStack = []
         self.numImages = len(os.listdir(rawImagesDir))
-        self.3Dmodel = 'not initiated correctly'
+        self.threeDmodel = np.zeros(100,100)#pl.zeros((rHeight / heightDivisor, rWidth / widthDivisor))
 
     """
     findMaxVarAt: finds maxVariance at a particular 'cluster' (heightDivisor x widthDivisor) of pixels
@@ -114,9 +114,9 @@ class programWrapper:
                 pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     """
-    create3Dmodel: 
+    createThreeDmodel: 
     """
-    def create3Dmodel(self, startHeight, endHeight):
+    def createThreeDmodel(self, startHeight, endHeight):
         if not self.laplacianImageStack:    # i.e. list is empty, populate it
             pickle.load(self.laplacianImageStack)
         if not self.laplacianImageStack:    # if list is still empty, user didn't run createLaplacianStack yet
@@ -134,18 +134,22 @@ class programWrapper:
             # Now, simply find max variance at each pixel in the stack.
             # Need to store the height for which this occurs at in self.3D model.
             # This height is heightLevels[laplacianOfIm index].
-            self.3Dmodel = laplacianImageStack[0]     # initially each max value is the one in the first matrix
-            for laplacianOfIm in self.laplacianImageStack:
-                for row in self.laplacianImageStack.length:
-                    for col in self.laplacianImageStack.length:
-                        maxVar = self.__findMaxVarAt__(row, col)
-                        self.3Dmodel[laplacianOfIm
+            self.threeDmodel = laplacianImageStack[0]     # initially each max value is the one in the first matrix
+            for laplacianOfImMatrix in self.laplacianImageStack:
+                for row in self.laplacianImageStack.size:   # update size to be num rows
+                    for col in self.laplacianImageStack.size:    # update size to be num cols
+                        print 'Unimplemented.'
+                        """
+                        if laplacianOfImMatrix[row][col] > self.threeDmodel[row][col]:
+                            self.threeDmodel[row][col] = heightLevels[laplacianOfIm index]   # adjust 'for' loop
+                        """
+            # Again, store results using pickle
                                                      
             
     """
-    o_create3Dmodel: same as create3Dmodel, but breaks once values begin to descend
+    o_createThreeDmodel: same as createThreeDmodel, but breaks once values begin to descend
                      'o' stands for optimized; works because of the physics of optics
     """
-    def o_create3Dmodel(self):
+    def o_createThreeDmodel(self):
         print "Unimplemented."
         
