@@ -10,6 +10,8 @@ import numpy as np
 rawImagesDir = "rawImages/"
 croppedImagesDir = "croppedImages/"
 resizedImagesDir = "resizedImages/"
+
+# Internal Files
 internalList = "varLpcMatrixList.pickle"
 
 """
@@ -41,6 +43,17 @@ class programWrapper:
     def __init__(self):
         self.laplacianImageStack = []
         self.numImages = len(os.listdir(rawImagesDir))
+        self.3Dmodel = 'not initiated correctly'
+
+    """
+    findMaxVarAt: finds maxVariance at a particular 'cluster' (heightDivisor x widthDivisor) of pixels
+                  when function is called, it has already been checked that list is non empty
+    """
+    def __findMaxVarAt__(row, col):
+        maxVar = self.laplacianImageStack[0][row][col]
+        for laplacianOfIm in self.laplacianImageStack:
+            if laplacianOfIm[row][col] > maxVar:
+                maxVar = laplacianOfIm[row][col]
 
     """
     execute: main function to execute all tasks in one (CAREFUL WITH THIS)
@@ -119,6 +132,15 @@ class programWrapper:
             except AssertionError:
                 print "Array has off-by-one error."
             # Now, simply find max variance at each pixel in the stack.
+            # Need to store the height for which this occurs at in self.3D model.
+            # This height is heightLevels[laplacianOfIm index].
+            self.3Dmodel = laplacianImageStack[0]     # initially each max value is the one in the first matrix
+            for laplacianOfIm in self.laplacianImageStack:
+                for row in self.laplacianImageStack.length:
+                    for col in self.laplacianImageStack.length:
+                        maxVar = self.__findMaxVarAt__(row, col)
+                        self.3Dmodel[laplacianOfIm
+                                                     
             
     """
     o_create3Dmodel: same as create3Dmodel, but breaks once values begin to descend

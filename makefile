@@ -1,6 +1,6 @@
 # Run the driver program
 run:
-	python2.7 driver.py run
+	python2.7 -O driver.py run
 
 # Remove any files beginning in ~ or ending with pyc/pyo
 clean:
@@ -10,26 +10,26 @@ clean:
 
 # Crop all photos
 crop:
-	python2.7 driver.py crop
+	python2.7 -O driver.py crop
 
 # Resize all photos to minimum image file size in 'croppedImages/'
 resize:
-	python2.7 driver.py resize
+	python2.7 -O driver.py resize
 
 # For each image in 'resizedImages/', calculate variance of laplacian on
 # subdivisions of the image; gives the regions in focus a high variance
 # and blurry regions a very low variance
 lpc:
-	python2.7 driver.py lpc
+	python2.7 -O driver.py lpc
 
 # Create 3D model from laplacian image stack.
 3D:
-	python2.7 driver.py 3D
+	python2.7 -O driver.py 3D
 
 # Create 3D model from laplacian image stack in a slightly
 # faster way and possibly make a few mistakes.
 o_3D:
-	python2.7 driver.py o_3D
+	python2.7 -O driver.py o_3D
 
 # Allows the user to start the program from the top. Delete all
 # processed images (i.e. images in croppedImages/ & resizedImages/)
@@ -42,7 +42,7 @@ help:
 	@echo "clean"
 	@echo "		Removes *.pyc, *.pyo, and ~* files"
 	@echo "run"
-	@echo "		Run driver.py in python2.7 on your machine"
+	@echo "		Run driver.py in python2.7 -O on your machine"
 	@echo "		Warning: it's best to run each command separately."
 	@echo "crop"
 	@echo "		Crop all photos in 'rawImages/' with given threshold lvl"
