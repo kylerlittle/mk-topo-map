@@ -85,7 +85,6 @@ def variance_of_laplacian(filename, heightDivisor, widthDivisor):
             # 4. Compute the variance of the convolution.
             Variance = pl.var(Convolve)
             # 5. Store variance in entry of varianceMatrix
-            print "Type of varianceMatrix: ", type(varianceMatrix)
             varianceMatrix[subset_of_rows][subset_of_columns] = Variance
    # 6. return the varianceMatrix
     return varianceMatrix

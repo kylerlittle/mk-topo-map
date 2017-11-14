@@ -31,6 +31,10 @@ lpc:
 o_3D:
 	python2.7 -O driver.py o_3D
 
+# Graph the 3D model if it has already been created
+graph:
+	python2.7 -O driver.py graph
+
 # Allows the user to start the program from the top. Delete all
 # processed images (i.e. images in croppedImages/ & resizedImages/)
 reset:
@@ -49,8 +53,14 @@ help:
 	@echo "resize"
 	@echo "		Resize all images in 'croppedImages/' to smallest image in dir"
 	@echo "lpc"
-	@echo "		Forms variance of laplacian matrix on each image in 'resizedImages/'"
+	@echo "		Forms variance of laplacian matrix of each image in 'resizedImages/'"
 	@echo "		For more explanation: type 'make help_lpc'"
+	@echo "3D"
+	@echo "		Produce the 3D model of the object."
+	@echo "o_3D"
+	@echo "		Slightly more optimized version of 3D. Could fail with too much image noise."
+	@echo "graph"
+	@echo "		Graph the topographical map of the object."
 	@echo "reset"
 	@echo "		Remove all files from 'resizedImages/' & 'croppedImages/'"
 

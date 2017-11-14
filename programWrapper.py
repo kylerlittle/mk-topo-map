@@ -1,8 +1,9 @@
-
+# Libraries/Modules
 import os as os
 import trim as trm
 from PIL import Image
 from Laplacian_Variance import variance_of_laplacian
+from threeD_plotting import plot_threeDmodel
 import cPickle as pickle
 import numpy as np
 
@@ -13,6 +14,7 @@ resizedImagesDir = "resizedImages/"
 
 # Internal Files
 internalList = "varLpcMatrixList.pickle"
+internalThreeDModel = "threeDmodel.npy"
 
 """
 smallestImage: accepts string which refers to a particular directory
@@ -43,7 +45,7 @@ class programWrapper:
     def __init__(self):
         self.laplacianImageStack = []
         self.numImages = len(os.listdir(rawImagesDir))
-        self.threeDmodel = np.zeros(100,100)#pl.zeros((rHeight / heightDivisor, rWidth / widthDivisor))
+        self.threeDmodel = np.zeros((327,87))
 
     """
     findMaxVarAt: finds maxVariance at a particular 'cluster' (heightDivisor x widthDivisor) of pixels
@@ -57,11 +59,14 @@ class programWrapper:
 
     """
     execute: main function to execute all tasks in one (CAREFUL WITH THIS)
+             by default, createThreeDmodel is used rather than optimized version
     """
-    def execute(self, cropThresholdLevel, heightDivisor, widthDivisor):
+    def execute(self, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight):
         self.cropPhotos(cropThresholdLevel)
         self.resizePhotos()
         self.createLaplacianStack(heightDivisor, widthDivisor)
+        self.createThreeDmodel(startHeight, endHeight)
+        self.graphModel()
 
     """
     cropPhotos: crops raw photos to be approximately inline with the outline of the object
@@ -112,39 +117,40 @@ class programWrapper:
                 self.laplacianImageStack.append(varianceMatrix)
             with open(internalList, 'wb') as f:
                 pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
-
+            
     """
-    createThreeDmodel: 
+    createThreeDmodel: endHeight & startHeight are assumed to be nonnegative
+                       otherwise, error checking is performed
+                       Finds maxVariance at a particular 'cluster' (heightDivisor x widthDivisor) of pixels &
+                       stores the height that this occurred at in self.threeDmodel
     """
     def createThreeDmodel(self, startHeight, endHeight):
         if not self.laplacianImageStack:    # i.e. list is empty, populate it
-            pickle.load(self.laplacianImageStack)
+            with open(internalList, 'rb') as f:
+                self.laplacianImageStack = pickle.load(f)
         if not self.laplacianImageStack:    # if list is still empty, user didn't run createLaplacianStack yet
             print "Try running 'make lpc' first."
         else:
-            increment = (endHeight - startHeight) / (self.numImages - 1)
-            if (heightLevels > 0):
-                heightLevels = np.arange(startHeight, endHeight, increment)
+            increment = (endHeight - startHeight) / float((self.numImages - 1))  # float ensures precision is kept
+            if (increment > 0):   # endHeight > startHeight
+                heightLevels = np.arange(0.0, endHeight - startHeight, increment)
             else:
-                heightLevels = np.arange(endHeight, startHeight, increment)
+                heightLevels = np.arange(0.0, startHeight - endHeight, increment)
             try:
                 assert len(heightLevels) == self.numImages
             except AssertionError:
                 print "Array has off-by-one error."
-            # Now, simply find max variance at each pixel in the stack.
-            # Need to store the height for which this occurs at in self.3D model.
-            # This height is heightLevels[laplacianOfIm index].
-            self.threeDmodel = laplacianImageStack[0]     # initially each max value is the one in the first matrix
-            for laplacianOfImMatrix in self.laplacianImageStack:
-                for row in self.laplacianImageStack.size:   # update size to be num rows
-                    for col in self.laplacianImageStack.size:    # update size to be num cols
-                        print 'Unimplemented.'
-                        """
+            # Now, simply find max variance at each pixel 'cluster' in the stack.
+            self.threeDmodel = np.zeros(self.laplacianImageStack[0].shape)   # initialize w/ correct size
+            print "3D Model Dimensions (l x w x h): ", self.threeDmodel.shape[0], "x", self.threeDmodel.shape[1], "x", self.numImages
+            for index, laplacianOfImMatrix in enumerate(self.laplacianImageStack):
+                for row in range(laplacianOfImMatrix.shape[0]):
+                    for col in range(laplacianOfImMatrix.shape[1]):
                         if laplacianOfImMatrix[row][col] > self.threeDmodel[row][col]:
-                            self.threeDmodel[row][col] = heightLevels[laplacianOfIm index]   # adjust 'for' loop
-                        """
-            # Again, store results using pickle
-                                                     
+                            self.threeDmodel[row][col] = heightLevels[index - 1]   # adjust 'for' loop
+            # This time, store results using numpy since we're dealing with an array object
+            with open(internalThreeDModel, 'wb') as f:
+                np.save(f, self.threeDmodel)
             
     """
     o_createThreeDmodel: same as createThreeDmodel, but breaks once values begin to descend
@@ -152,4 +158,16 @@ class programWrapper:
     """
     def o_createThreeDmodel(self):
         print "Unimplemented."
-        
+
+    """
+    graphModel: plots the graph produced & displays to screen
+    """
+    def graphModel(self):
+        if not self.threeDmodel.size:    # i.e. array is empty, populate it
+            with open(internalThreeDModel, 'rb') as f:
+                self.threeDmodel = np.load(f)
+        if not self.threeDmodel.size:    # if threeDmodel is still empty, user didn't run createThreeDmodel yet
+            print "Try running 'make 3D' first."
+        else:
+            print self.threeDmodel
+            plot_threeDmodel(self.threeDmodel)
