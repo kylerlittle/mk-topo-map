@@ -12,6 +12,9 @@ clean:
 	find . -name '*.pyo' -exec rm --force {} +
 	find . -name '*~' -exec rm --force  {} +
 
+pre_crop:
+	python2.7 driver.py pre_crop
+
 # Crop all photos
 crop:
 	python2.7 driver.py crop

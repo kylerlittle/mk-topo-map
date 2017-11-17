@@ -69,6 +69,18 @@ class programWrapper:
         self.graphModel()
 
     """
+
+    """
+    def preCrop(stuff):
+        imageList = os.listdir(rawImagesDir)
+        if not imageList:
+            print "Please populate 'rawImages/' with images."
+        counter = 1;
+        for imStr in imageList:
+            trm.pre_crop(rawImagesDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg")
+            counter += 1
+        
+    """
     cropPhotos: crops raw photos to be approximately inline with the outline of the object
     """
     def cropPhotos(self, cropThresholdLevel):

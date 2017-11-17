@@ -56,3 +56,15 @@ def trim(inputIm, outputIm, acceptableThreshold, imNum):
             print "Second argument not provided."
     else:
         print "Image to crop not opened successfully."
+
+
+
+from PIL import Image
+
+
+def pre_crop(imStr, croppedImStr):
+    im = Image.open(imStr)
+    imSize = im.size
+    # accepts 4-tuple (left, upper, right, lower)
+    croppedIm = im.crop((0, imSize[0]/4, imSize[1], (imSize[0]*3)/4))
+    croppedIm.save(croppedImStr)
