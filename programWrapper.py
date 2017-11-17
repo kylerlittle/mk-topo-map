@@ -8,7 +8,7 @@ import cPickle as pickle
 import numpy as np
 
 # Directories
-rawImagesDir = "rawImages/"
+rawImagesDir = "testImages/"
 croppedImagesDir = "croppedImages/"
 resizedImagesDir = "resizedImages/"
 
@@ -125,21 +125,18 @@ class programWrapper:
                        stores the height that this occurred at in self.threeDmodel
     """
     def createThreeDmodel(self, startHeight, endHeight):
+        try:
+            assert isinstance(startHeight, float) == True
+            assert isinstance(endHeight, float) == True
+        except AssertionError:
+            print "One or more of 'startHeight' and 'endHeight' are not floating point values."
         if not self.laplacianImageStack:    # i.e. list is empty, populate it
             with open(internalList, 'rb') as f:
                 self.laplacianImageStack = pickle.load(f)
         if not self.laplacianImageStack:    # if list is still empty, user didn't run createLaplacianStack yet
             print "Try running 'make lpc' first."
         else:
-            increment = (endHeight - startHeight) / float((self.numImages - 1))  # float ensures precision is kept
-            if (increment > 0):   # endHeight > startHeight
-                heightLevels = np.arange(0.0, endHeight - startHeight, increment)
-            else:
-                heightLevels = np.arange(0.0, startHeight - endHeight, increment)
-            try:
-                assert len(heightLevels) == self.numImages
-            except AssertionError:
-                print "Array has off-by-one error."
+            heightLevels = np.linspace(0.0, abs(endHeight - startHeight), self.numImages) # by default, linspace includes endpoint
             # Now, simply find max variance at each pixel 'cluster' in the stack.
             self.threeDmodel = np.zeros(self.laplacianImageStack[0].shape)   # initialize w/ correct size
             print "3D Model Dimensions (l x w x h): ", self.threeDmodel.shape[0], "x", self.threeDmodel.shape[1], "x", self.numImages
