@@ -48,7 +48,7 @@ Input Parameters: File_Name (of image), heightDivisor, widthDivisor
 Returns: Variance of Laplacian Matrix (size: (rHeight / heightDivisor)
          x (rWidth / widthDivisor)) where mxn are dimensions of image in pixels.
 """
-def variance_of_laplacian(filename, heightDivisor, widthDivisor):
+def variance_of_laplacian(filename, heightDivisor, widthDivisor, counter):
     # Variables
     image = Image.open(filename)     # open file
     (rWidth, rHeight) = image.size     # returns width, height or x, y or cols, rows
@@ -73,6 +73,7 @@ def variance_of_laplacian(filename, heightDivisor, widthDivisor):
     #    heightDivisor x widthDivisor sub-matrix, convolve with the kernel. Calculate the variance
     #    of this convolution. Place variance in a (rHeight / heightDivisor) x (rWidth / widthDivisor) matrix.    
 
+    print "\t[", counter, "] Convolving subdivisions of image with Laplacian Kernel... Calculating Variance... ",
     for subset_of_rows in totalImageRows:  # TOTAL Image Matrix
         for subset_of_columns in totalImageColumns:
             image_row = subset_of_rows * heightDivisor # keeps track of larger matrix's row index to copy from 
@@ -86,5 +87,6 @@ def variance_of_laplacian(filename, heightDivisor, widthDivisor):
             Variance = pl.var(Convolve)
             # 5. Store variance in entry of varianceMatrix
             varianceMatrix[subset_of_rows][subset_of_columns] = Variance
-   # 6. return the varianceMatrix
+    # 6. return the varianceMatrix
+    print "Done."
     return varianceMatrix

@@ -9,6 +9,7 @@ import sys as sys
 """
 ADJUSTABLE PARAMETERS
 """
+middlePercentSaving = 1.0  # Save middle x% of images | Accepted Values in Interval: (0.0, 1.0]
 cropThresholdLevel = 125   # Higher -> Cut off more of image | Lower -> Cut off less of image | Max ~155
 widthDivisor = 10          # Higher -> Reduce size of laplacian matrix | Lower -> Retain more pixels | Min ???
 heightDivisor = 10         # Higher -> Reduce size of laplacian matrix | Lower -> Retain more pixels | Min ???
@@ -22,7 +23,7 @@ dimension_units = 'mm'     # Currently supports: in, mm, and cm
 PROGRAM EXECUTION
 """
 # Create an instance of the program driver.
-driver = id.programWrapper(heightDivisor, widthDivisor)
+driver = id.programWrapper()
 
 # Grab the command.
 try:
@@ -35,9 +36,9 @@ except IndexError:
 # Execution Function: (tried to use hash map, but I'll accept losing the marginal speed gain over readability)
 def executeCommand(command):
     if command == 'run':
-        driver.execute(cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units)
-    elif command == "pre_crop":
-        driver.preCrop()
+        driver.execute(middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units)
+    elif command == 'pre_crop':
+        driver.preCrop(middlePercentSaving)
     elif command == 'crop':
         driver.cropPhotos(cropThresholdLevel)
     elif command == 'resize':

@@ -43,6 +43,6 @@ def plot_threeDmodel(model, dimension_units):
     ax.set_zlabel('Height (' + dimension_units + ')', fontsize=10, color='blue')
     
     # Set default viewing angle
-    ax.view_init(elev=120, azim=135)
+    ax.view_init(elev=40, azim=-114)
     
     plt.show()

@@ -59,12 +59,23 @@ def trim(inputIm, outputIm, acceptableThreshold, imNum):
 
 
 
+
+"""
+pre_crop: a method to crop the middle x% of an image in the vertical direction
+          i.e. the top/bottom slices are cut off
+"""
 from PIL import Image
 
 
-def pre_crop(imStr, croppedImStr):
-    im = Image.open(imStr)
-    imSize = im.size
-    # accepts 4-tuple (left, upper, right, lower)
-    croppedIm = im.crop((0, imSize[0]/4, imSize[1], (imSize[0]*3)/4))
-    croppedIm.save(croppedImStr)
+def pre_crop(imStr, croppedImStr, middlePercentSaving, imNum):
+    if middlePercentSaving > 1.0 or middlePercentSaving <= 0.0:
+        raise ValueError("You must enter a value in the interval (0.0, 1.0].")
+    else:
+        im = Image.open(imStr)
+        imSize = im.size
+        print "\t[", imNum, "] ", imSize[0], ",", imSize[1],
+        # accepts 4-tuple (left, upper, right, lower)
+        upper = int((0.5 - middlePercentSaving/2) * imSize[1]); lower = int((0.5 + middlePercentSaving/2) * imSize[1])
+        croppedIm = im.crop((0, upper, imSize[0], lower))
+        print "cropped to", imSize[0], ",", imSize[1]
+        croppedIm.save(croppedImStr)

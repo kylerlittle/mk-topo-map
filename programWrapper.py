@@ -8,7 +8,8 @@ import cPickle as pickle
 import numpy as np
 
 # Directories
-rawImagesDir = "testImages/"
+rawImagesDir = "rawImages/"
+preCroppedImagesDir = "preCroppedImages/"
 croppedImagesDir = "croppedImages/"
 resizedImagesDir = "resizedImages/"
 
@@ -42,7 +43,7 @@ class programWrapper:
     """
     ___init___: constructor
     """
-    def __init__(self, heightDivisor, widthDivisor):
+    def __init__(self):
         self.smallestImage = (0,0)
         self.laplacianImageStack = []
         self.numImages = len(os.listdir(rawImagesDir))
@@ -62,7 +63,8 @@ class programWrapper:
     execute: main function to execute all tasks in one (CAREFUL WITH THIS)
              by default, createThreeDmodel is used rather than optimized version
     """
-    def execute(self, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units):
+    def execute(self, middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units):
+        self.preCrop(middlePercentSaving)
         self.cropPhotos(cropThresholdLevel)
         self.resizePhotos()
         self.createLaplacianStack(heightDivisor, widthDivisor)
@@ -72,27 +74,29 @@ class programWrapper:
     """
 
     """
-    def preCrop(stuff):
+    def preCrop(self, middlePercentSaving):
+        print "[x] Initiating image pre-cropping"
         imageList = os.listdir(rawImagesDir)
         if not imageList:
             print "Please populate 'rawImages/' with images."
         counter = 1;
         for imStr in imageList:
-            trm.pre_crop(rawImagesDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg")
+            trm.pre_crop(rawImagesDir + imStr, preCroppedImagesDir + "preCroppedIm" + str(counter) + ".jpg", middlePercentSaving, counter)
             counter += 1
         
     """
     cropPhotos: crops raw photos to be approximately inline with the outline of the object
     """
     def cropPhotos(self, cropThresholdLevel):
-        print "[x] Initiating image cropping"
-        imageList = os.listdir(rawImagesDir)
+        imageList = os.listdir(preCroppedImagesDir)
         if not imageList:
-            print "Please populate 'rawImages/' with images."
-        counter = 1;
-        for imStr in imageList:
-            trm.trim(rawImagesDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", cropThresholdLevel, counter)
-            counter += 1
+            print "Try running 'make pre_crop' first."
+        else:
+            print "[x] Initiating image cropping"
+            counter = 1;
+            for imStr in imageList:
+                trm.trim(preCroppedImagesDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", cropThresholdLevel, counter)
+                counter += 1
 
     """
     resizePhotos: resizes all cropped images to the size of the smallest photo in croppedImagesDir
@@ -127,10 +131,11 @@ class programWrapper:
             print "Try running 'make resize' first."
         else:
             print "[x] Initiating 'variance_of_laplacian' method on resized images"
+            counter = 1   # Counter included for console output
             for imStr in imageList:
-                varianceMatrix = variance_of_laplacian(resizedImagesDir + imStr, heightDivisor, widthDivisor)
-                # For each matrix produced from a single image, append to internal list
-                self.laplacianImageStack.append(varianceMatrix)
+                varianceMatrix = variance_of_laplacian(resizedImagesDir + imStr, heightDivisor, widthDivisor, counter)
+                counter += 1  
+                self.laplacianImageStack.append(varianceMatrix) # For each matrix produced from a single image, append to internal list
             with open(internalList, 'wb') as f:
                 pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
             
@@ -155,13 +160,18 @@ class programWrapper:
         else:
             heightLevels = np.linspace(0.0, abs(endHeight - startHeight), self.numImages) # by default, linspace includes endpoint
             # Now, simply find max variance at each pixel 'cluster' in the stack.
-            self.threeDmodel = np.ones(self.laplacianImageStack[0].shape)
-            print "3D Model Dimensions (l x w x h): ", self.threeDmodel.shape[0], "x", self.threeDmodel.shape[1], "x", self.numImages
+            self.threeDmodel = np.zeros(self.laplacianImageStack[0].shape)
+            print "[x] Creating 3D Model of Size",
+            print "(l x w x h): ", self.threeDmodel.shape[0], "x", self.threeDmodel.shape[1], "x", self.numImages
             for index, laplacianOfImMatrix in enumerate(self.laplacianImageStack):
+                pointsInFocus = 0
                 for row in range(laplacianOfImMatrix.shape[0]):
                     for col in range(laplacianOfImMatrix.shape[1]):
                         if laplacianOfImMatrix[row][col] > self.threeDmodel[row][col]:
+                            pointsInFocus += 1
                             self.threeDmodel[row][col] = heightLevels[index - 1]   # adjust 'for' loop
+                print "\t[", index + 1, "] Percentage of Pixel Clusters Updated: ", pointsInFocus, "/", laplacianOfImMatrix.size, "=",
+                print float(pointsInFocus) / laplacianOfImMatrix.size
             # This time, store results using numpy since we're dealing with an array object
             with open(internalThreeDModel, 'wb') as f:
                 np.save(f, self.threeDmodel)
@@ -183,5 +193,5 @@ class programWrapper:
         if len(self.threeDmodel) == 1:    # i.e. threeDmodel is STILL in invalid initialized state
             print "Try running 'make 3D' first."
         else:
-            print self.threeDmodel
+            print "[x] Graphing 3D Model"
             plot_threeDmodel(self.threeDmodel, dimension_units)
