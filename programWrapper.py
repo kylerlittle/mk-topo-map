@@ -8,8 +8,7 @@ import cPickle as pickle
 import numpy as np
 
 # Directories
-rawImagesDir = "rawImages/"
-preCroppedImagesDir = "preCroppedImages/"
+rawImagesDir = "../rawImagesTest1/"
 croppedImagesDir = "croppedImages/"
 resizedImagesDir = "resizedImages/"
 
@@ -44,58 +43,34 @@ class programWrapper:
     ___init___: constructor
     """
     def __init__(self):
-        self.smallestImage = (0,0)
+        self.smallestImage = 'invalid'
         self.laplacianImageStack = []
         self.numImages = len(os.listdir(rawImagesDir))
-        self.threeDmodel = np.zeros((1,1))
-        
-    """
-    findMaxVarAt: finds maxVariance at a particular 'cluster' (heightDivisor x widthDivisor) of pixels
-                  when function is called, it has already been checked that list is non empty
-    """
-    def __findMaxVarAt__(row, col):
-        maxVar = self.laplacianImageStack[0][row][col]
-        for laplacianOfIm in self.laplacianImageStack:
-            if laplacianOfIm[row][col] > maxVar:
-                maxVar = laplacianOfIm[row][col]
+        self.threeDmodel = 'invalid'
 
     """
     execute: main function to execute all tasks in one (CAREFUL WITH THIS)
              by default, createThreeDmodel is used rather than optimized version
     """
     def execute(self, middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units):
-        self.preCrop(middlePercentSaving)
-        self.cropPhotos(cropThresholdLevel)
+        self.cropPhotos(middlePercentSaving, cropThresholdLevel)
         self.resizePhotos()
         self.createLaplacianStack(heightDivisor, widthDivisor)
         self.createThreeDmodel(startHeight, endHeight)
         self.graphModel(dimension_units)
 
     """
-
+    cropPhotos: crops 'raw' photos to be approximately inline with the outline of the object
     """
-    def preCrop(self, middlePercentSaving):
-        print "[x] Initiating image pre-cropping"
+    def cropPhotos(self, middlePercentSaving, cropThresholdLevel):
         imageList = os.listdir(rawImagesDir)
         if not imageList:
             print "Please populate 'rawImages/' with images."
-        counter = 1;
-        for imStr in imageList:
-            trm.pre_crop(rawImagesDir + imStr, preCroppedImagesDir + "preCroppedIm" + str(counter) + ".jpg", middlePercentSaving, counter)
-            counter += 1
-        
-    """
-    cropPhotos: crops raw photos to be approximately inline with the outline of the object
-    """
-    def cropPhotos(self, cropThresholdLevel):
-        imageList = os.listdir(preCroppedImagesDir)
-        if not imageList:
-            print "Try running 'make pre_crop' first."
         else:
             print "[x] Initiating image cropping"
             counter = 1;
             for imStr in imageList:
-                trm.trim(preCroppedImagesDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", cropThresholdLevel, counter)
+                trm.trim(rawImagesDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", middlePercentSaving, cropThresholdLevel, counter)
                 counter += 1
 
     """
@@ -138,6 +113,28 @@ class programWrapper:
                 self.laplacianImageStack.append(varianceMatrix) # For each matrix produced from a single image, append to internal list
             with open(internalList, 'wb') as f:
                 pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+    """
+    __createThreeDmodel__: helper function for createThreeDmodel
+    """
+    def __createThreeDmodel__(self, startHeight, endHeight):
+        heightLevels = np.linspace(0.0, abs(endHeight - startHeight), self.numImages) # by default, linspace includes endpoint
+        # Now, simply find max variance at each pixel 'cluster' in the stack.
+        self.threeDmodel = np.zeros(self.laplacianImageStack[0].shape)
+        print "[x] Creating 3D Model of Size",
+        print "(l x w x h): ", self.threeDmodel.shape[0], "x", self.threeDmodel.shape[1], "x", self.numImages
+        for index, laplacianOfImMatrix in enumerate(self.laplacianImageStack):
+            pointsInFocus = 0
+            for row in range(laplacianOfImMatrix.shape[0]):
+                for col in range(laplacianOfImMatrix.shape[1]):
+                    if laplacianOfImMatrix[row][col] > self.threeDmodel[row][col]:
+                        pointsInFocus += 1
+                        self.threeDmodel[row][col] = heightLevels[index - 1]   # adjust 'for' loop
+            print "\t[", index + 1, "] Percentage of Pixel Clusters Updated: ", pointsInFocus, "/", laplacianOfImMatrix.size, "=",
+            print float(pointsInFocus) / laplacianOfImMatrix.size
+        # This time, store results using numpy since we're dealing with an array object
+        with open(internalThreeDModel, 'wb') as f:
+            np.save(f, self.threeDmodel)
             
     """
     createThreeDmodel: endHeight & startHeight are assumed to be nonnegative
@@ -151,30 +148,18 @@ class programWrapper:
             assert isinstance(endHeight, float) == True
         except AssertionError:
             print "One or more of 'startHeight' and 'endHeight' are not floating point values."
-        if not self.laplacianImageStack:    # i.e. list is empty, populate it
-            with open(internalList, 'rb') as f:
-                self.laplacianImageStack = pickle.load(f)
-            self.smallestImage = smallestImage(croppedImagesDir)   # If not running 'execute' style, this needs to be updated
-        if not self.laplacianImageStack:    # if list is still empty, user didn't run createLaplacianStack yet
+
+        try:
+            if os.stat(internalList).st_size > 0:  # checks for empty file; if so, OSError thrown
+                with open(internalList, 'rb') as f:
+                    try:
+                        self.laplacianImageStack = pickle.load(f)
+                        self.smallestImage = smallestImage(croppedImagesDir)   # If not running 'execute' style, this needs to be updated
+                        self.__createThreeDmodel__(startHeight, endHeight)
+                    except IOError:
+                        print "Error reading", internalList
+        except OSError:
             print "Try running 'make lpc' first."
-        else:
-            heightLevels = np.linspace(0.0, abs(endHeight - startHeight), self.numImages) # by default, linspace includes endpoint
-            # Now, simply find max variance at each pixel 'cluster' in the stack.
-            self.threeDmodel = np.zeros(self.laplacianImageStack[0].shape)
-            print "[x] Creating 3D Model of Size",
-            print "(l x w x h): ", self.threeDmodel.shape[0], "x", self.threeDmodel.shape[1], "x", self.numImages
-            for index, laplacianOfImMatrix in enumerate(self.laplacianImageStack):
-                pointsInFocus = 0
-                for row in range(laplacianOfImMatrix.shape[0]):
-                    for col in range(laplacianOfImMatrix.shape[1]):
-                        if laplacianOfImMatrix[row][col] > self.threeDmodel[row][col]:
-                            pointsInFocus += 1
-                            self.threeDmodel[row][col] = heightLevels[index - 1]   # adjust 'for' loop
-                print "\t[", index + 1, "] Percentage of Pixel Clusters Updated: ", pointsInFocus, "/", laplacianOfImMatrix.size, "=",
-                print float(pointsInFocus) / laplacianOfImMatrix.size
-            # This time, store results using numpy since we're dealing with an array object
-            with open(internalThreeDModel, 'wb') as f:
-                np.save(f, self.threeDmodel)
             
     """
     o_createThreeDmodel: same as createThreeDmodel, but breaks once values begin to descend
@@ -187,11 +172,13 @@ class programWrapper:
     graphModel: plots the graph produced & displays to screen
     """
     def graphModel(self, dimension_units):
-        if len(self.threeDmodel) == 1:    # i.e. threeDmodel is still in invalid initialized state
-            with open(internalThreeDModel, 'rb') as f:
-                self.threeDmodel = np.load(f)
-        if len(self.threeDmodel) == 1:    # i.e. threeDmodel is STILL in invalid initialized state
+        try:
+            if os.stat(internalThreeDModel).st_size > 0:  # checks for empty file; if so, OSError thrown
+                with open(internalThreeDModel, 'rb') as f:    # handles open, close, and errors with opening
+                    try:   # If file doesn't load correctly, IOError is thrown.
+                        self.threeDmodel = np.load(f)
+                        plot_threeDmodel(self.threeDmodel, dimension_units)
+                    except IOError:
+                        print "Error reading", internalThreeDModel
+        except OSError:
             print "Try running 'make 3D' first."
-        else:
-            print "[x] Graphing 3D Model"
-            plot_threeDmodel(self.threeDmodel, dimension_units)

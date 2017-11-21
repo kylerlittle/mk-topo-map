@@ -14,6 +14,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
 def plot_threeDmodel(model, dimension_units):
+    print "[x] Graphing 3D Model"
     # Set up plot.    
     fig = plt.figure()
     ax = fig.gca(projection='3d')

@@ -9,12 +9,12 @@ import sys as sys
 """
 ADJUSTABLE PARAMETERS
 """
-middlePercentSaving = 1.0  # Save middle x% of images | Accepted Values in Interval: (0.0, 1.0]
+middlePercentSaving = 0.5  # Save middle x% of images | Accepted Values in Interval: (0.0, 1.0]
 cropThresholdLevel = 125   # Higher -> Cut off more of image | Lower -> Cut off less of image | Max ~155
 widthDivisor = 10          # Higher -> Reduce size of laplacian matrix | Lower -> Retain more pixels | Min ???
 heightDivisor = 10         # Higher -> Reduce size of laplacian matrix | Lower -> Retain more pixels | Min ???
-startHeight = 0.0          # Height of first image taken in 'rawImages/'
-endHeight = 0.1            # Height of last image taken in 'rawImages/'
+startHeight = 110.7        # Height of first image taken in 'rawImages/'
+endHeight = 149.6          # Height of last image taken in 'rawImages/'
 dimension_units = 'mm'     # Currently supports: in, mm, and cm
 
 
@@ -37,10 +37,8 @@ except IndexError:
 def executeCommand(command):
     if command == 'run':
         driver.execute(middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units)
-    elif command == 'pre_crop':
-        driver.preCrop(middlePercentSaving)
     elif command == 'crop':
-        driver.cropPhotos(cropThresholdLevel)
+        driver.cropPhotos(middlePercentSaving, cropThresholdLevel)
     elif command == 'resize':
         driver.resizePhotos()
     elif command == 'lpc':

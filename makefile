@@ -12,9 +12,6 @@ clean:
 	find . -name '*.pyo' -exec rm --force {} +
 	find . -name '*~' -exec rm --force  {} +
 
-pre_crop:
-	python2.7 driver.py pre_crop
-
 # Crop all photos
 crop:
 	python2.7 driver.py crop
@@ -43,9 +40,8 @@ graph:
 	python2.7 driver.py graph
 
 # Allows the user to start the program from the top. Delete all
-# processed images (i.e. images in preCroppedImages/, croppedImages/, & resizedImages/)
+# processed images (i.e. images in croppedImages/ & resizedImages/)
 reset:
-	rm -I preCroppedImages/*
 	rm -I croppedImages/*
 	rm -I resizedImages/*
 
@@ -56,10 +52,8 @@ help:
 	@echo "run"
 	@echo "		Run driver.py in python2.7 on your machine"
 	@echo "		Warning: it's best to run each command separately."
-	@echo "pre_crop"
-	@echo "		Crop all photos in 'rawImages/' to retain middle x% of image in vert. direction."
 	@echo "crop"
-	@echo "		Crop all photos in 'preCroppedImages/' with given threshold lvl"
+	@echo "		Crop all photos in 'rawImages/' with given threshold lvl"
 	@echo "resize"
 	@echo "		Resize all images in 'croppedImages/' to smallest image in dir"
 	@echo "lpc"
@@ -72,7 +66,7 @@ help:
 	@echo "graph"
 	@echo "		Graph the topographical map of the object."
 	@echo "reset"
-	@echo "		Remove all files from 'preCroppedImages/', 'croppedImages/', & 'resizedImages/'"
+	@echo "		Remove all files from 'croppedImages/' & 'resizedImages/'"
 
 help_lpc:
 	@echo "LPC help:"
