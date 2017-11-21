@@ -13,7 +13,8 @@ cropThresholdLevel = 125   # Higher -> Cut off more of image | Lower -> Cut off 
 widthDivisor = 10          # Higher -> Reduce size of laplacian matrix | Lower -> Retain more pixels | Min ???
 heightDivisor = 10         # Higher -> Reduce size of laplacian matrix | Lower -> Retain more pixels | Min ???
 startHeight = 0.0          # Height of first image taken in 'rawImages/'
-endHeight = 0.1           # Height of last image taken in 'rawImages/'
+endHeight = 0.1            # Height of last image taken in 'rawImages/'
+dimension_units = 'mm'     # Currently supports: in, mm, and cm
 
 
 
@@ -21,7 +22,7 @@ endHeight = 0.1           # Height of last image taken in 'rawImages/'
 PROGRAM EXECUTION
 """
 # Create an instance of the program driver.
-driver = id.programWrapper()
+driver = id.programWrapper(heightDivisor, widthDivisor)
 
 # Grab the command.
 try:
@@ -34,7 +35,7 @@ except IndexError:
 # Execution Function: (tried to use hash map, but I'll accept losing the marginal speed gain over readability)
 def executeCommand(command):
     if command == 'run':
-        driver.execute(cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight)
+        driver.execute(cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units)
     elif command == "pre_crop":
         driver.preCrop()
     elif command == 'crop':
@@ -48,7 +49,7 @@ def executeCommand(command):
     elif command == 'o_3D':
         driver.o_createThreeDmodel(startHeight, endHeight)
     elif command == 'graph':
-        driver.graphModel()
+        driver.graphModel(dimension_units)
     else:
         print "Invalid Command"
 

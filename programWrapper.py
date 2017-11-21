@@ -42,11 +42,12 @@ class programWrapper:
     """
     ___init___: constructor
     """
-    def __init__(self):
+    def __init__(self, heightDivisor, widthDivisor):
+        self.smallestImage = (0,0)
         self.laplacianImageStack = []
         self.numImages = len(os.listdir(rawImagesDir))
-        self.threeDmodel = np.zeros((327,87))
-
+        self.threeDmodel = np.zeros((1,1))
+        
     """
     findMaxVarAt: finds maxVariance at a particular 'cluster' (heightDivisor x widthDivisor) of pixels
                   when function is called, it has already been checked that list is non empty
@@ -61,12 +62,12 @@ class programWrapper:
     execute: main function to execute all tasks in one (CAREFUL WITH THIS)
              by default, createThreeDmodel is used rather than optimized version
     """
-    def execute(self, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight):
+    def execute(self, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units):
         self.cropPhotos(cropThresholdLevel)
         self.resizePhotos()
         self.createLaplacianStack(heightDivisor, widthDivisor)
         self.createThreeDmodel(startHeight, endHeight)
-        self.graphModel()
+        self.graphModel(dimension_units)
 
     """
 
@@ -99,16 +100,18 @@ class programWrapper:
                   performance is least important in this case, so we sacrifice it
     """
     def resizePhotos(self):
-        resizeAllImagesTo = smallestImage(croppedImagesDir)        # get smallest image size in directory
+        self.smallestImage = smallestImage(croppedImagesDir)
         imageList = os.listdir(croppedImagesDir)
         if not imageList:
             print "Try running 'make crop' first."
         else:
             counter = 1   # utilize counter for appropriate file naming
-            print "[x] Resizing all images to: ", resizeAllImagesTo
+            print "[x] Resizing all images to: ", self.smallestImage
             for imStr in imageList:
                 im = Image.open(croppedImagesDir + imStr)
-                resizedIm = im.resize(resizeAllImagesTo, resample=Image.LANCZOS)    # resize using LANCZOS filtering
+                print "\t[", counter, "] ", im.size[0], ",", im.size[1], "resized to",
+                resizedIm = im.resize(self.smallestImage, resample=Image.LANCZOS)    # resize using LANCZOS filtering
+                print resizedIm.size[0], ",", resizedIm.size[1]
                 resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
                 im.close()
                 counter += 1
@@ -123,6 +126,7 @@ class programWrapper:
         if not imageList:
             print "Try running 'make resize' first."
         else:
+            print "[x] Initiating 'variance_of_laplacian' method on resized images"
             for imStr in imageList:
                 varianceMatrix = variance_of_laplacian(resizedImagesDir + imStr, heightDivisor, widthDivisor)
                 # For each matrix produced from a single image, append to internal list
@@ -145,12 +149,13 @@ class programWrapper:
         if not self.laplacianImageStack:    # i.e. list is empty, populate it
             with open(internalList, 'rb') as f:
                 self.laplacianImageStack = pickle.load(f)
+            self.smallestImage = smallestImage(croppedImagesDir)   # If not running 'execute' style, this needs to be updated
         if not self.laplacianImageStack:    # if list is still empty, user didn't run createLaplacianStack yet
             print "Try running 'make lpc' first."
         else:
             heightLevels = np.linspace(0.0, abs(endHeight - startHeight), self.numImages) # by default, linspace includes endpoint
             # Now, simply find max variance at each pixel 'cluster' in the stack.
-            self.threeDmodel = np.zeros(self.laplacianImageStack[0].shape)   # initialize w/ correct size
+            self.threeDmodel = np.ones(self.laplacianImageStack[0].shape)
             print "3D Model Dimensions (l x w x h): ", self.threeDmodel.shape[0], "x", self.threeDmodel.shape[1], "x", self.numImages
             for index, laplacianOfImMatrix in enumerate(self.laplacianImageStack):
                 for row in range(laplacianOfImMatrix.shape[0]):
@@ -171,12 +176,12 @@ class programWrapper:
     """
     graphModel: plots the graph produced & displays to screen
     """
-    def graphModel(self):
-        if not self.threeDmodel.size:    # i.e. array is empty, populate it
+    def graphModel(self, dimension_units):
+        if len(self.threeDmodel) == 1:    # i.e. threeDmodel is still in invalid initialized state
             with open(internalThreeDModel, 'rb') as f:
                 self.threeDmodel = np.load(f)
-        if not self.threeDmodel.size:    # if threeDmodel is still empty, user didn't run createThreeDmodel yet
+        if len(self.threeDmodel) == 1:    # i.e. threeDmodel is STILL in invalid initialized state
             print "Try running 'make 3D' first."
         else:
             print self.threeDmodel
-            plot_threeDmodel(self.threeDmodel)
+            plot_threeDmodel(self.threeDmodel, dimension_units)

@@ -13,7 +13,7 @@ from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
-def plot_threeDmodel(model):
+def plot_threeDmodel(model, dimension_units):
     # Set up plot.    
     fig = plt.figure()
     ax = fig.gca(projection='3d')
@@ -38,11 +38,11 @@ def plot_threeDmodel(model):
     
     # Label my axes
     plt.title('Topographical Map', fontsize=14, color='blue')
-    ax.set_xlabel('Vertical Direction (1.00E2 pixels)', fontsize=10, color='blue')
-    ax.set_ylabel('Horizontal Direction (1.00E2 pixels)', fontsize=10, color='blue')
-    ax.set_zlabel('Height (mm)', fontsize=10, color='blue')
+    ax.set_xlabel('Length (' + dimension_units + ')', fontsize=10, color='blue')
+    ax.set_ylabel('Width (' + dimension_units + ')', fontsize=10, color='blue')
+    ax.set_zlabel('Height (' + dimension_units + ')', fontsize=10, color='blue')
     
     # Set default viewing angle
-    ax.view_init(elev=-120, azim=-135)
+    ax.view_init(elev=120, azim=135)
     
     plt.show()
