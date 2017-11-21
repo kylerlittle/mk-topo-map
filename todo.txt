@@ -2,16 +2,9 @@ Current To-Dos:
 
 **Actually have real data now! Woohoo!
 
-1. Make pre-crop-- to start, crop first & last images in rawImagesTest (either), so that fiber is left in tact,
-   		   but you cannot see the optical table. Then run pre-crop on all. Then make crop.
-2. Finish graph function in 3D_plotting.py.
-   	  First, make default view right side up (rather than upside down).
-3. Need to initialize self.threeDmodel correctly! I know I don't know the side at the start of the program
-   so it's a little bit tricky. However, this is screwing up my graph function.
-4. Figure out a clever way of adding the xy dimensions to the model
-   	  (should be better than simply having the user measure the length/width of the black box;
-	  however, to start, I'll use that to show Kuzyk)
-5. Update makefile as necessary.
+1. Finish graph function. Accept parameters: tuple: (len, width), so that xy dimensions are actually real and accurate.
+2. Run a full test on real data.
+3. Set up a long test where parameters are varied. Pick the best one.
 
 
 Once project actually functions:
