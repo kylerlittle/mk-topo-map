@@ -2,6 +2,10 @@
 #Currently running unoptimized (i.e. not python2.7 -O), so that assertions are checked.
 #######
 
+# Run all. (i.e. all options as a single function)
+all:
+	python2.7 driver.py all
+
 # Run the driver program
 run:
 	python2.7 driver.py run

@@ -35,7 +35,9 @@ except IndexError:
 
 # Execution Function: (tried to use hash map, but I'll accept losing the marginal speed gain over readability)
 def executeCommand(command):
-    if command == 'run':
+    if command == 'all':
+        driver.runAll(middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units)
+    elif command == 'run':
         driver.execute(middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units)
     elif command == 'crop':
         driver.cropPhotos(middlePercentSaving, cropThresholdLevel)

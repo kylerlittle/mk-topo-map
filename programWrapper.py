@@ -4,6 +4,7 @@ import trim as trm
 from PIL import Image
 from Laplacian_Variance import variance_of_laplacian
 from threeD_plotting import plot_threeDmodel
+from crop_resize_lpc import crop_resize_lpc
 import cPickle as pickle
 import numpy as np
 
@@ -48,6 +49,14 @@ class programWrapper:
         self.numImages = len(os.listdir(rawImagesDir))
         self.threeDmodel = 'invalid'
 
+    """
+    runAll: same as 'execute' but with 'cropPhotos', 'resizePhotos', & 'createLaplacianStack' methods combined
+    """
+    def runAll(self, middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units):
+        crop_resize_lpc(middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor)
+        self.createThreeDmodel(startHeight, endHeight)
+        self.graphModel(dimension_units)
+    
     """
     execute: main function to execute all tasks in one (CAREFUL WITH THIS)
              by default, createThreeDmodel is used rather than optimized version
