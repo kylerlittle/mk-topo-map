@@ -7,6 +7,9 @@ from threeD_plotting import plot_threeDmodel
 from crop_resize_lpc import crop_resize_lpc
 import cPickle as pickle
 import numpy as np
+import gi
+gi.require_version('Vips', '8.0')       # Ensure the right version is imported
+from gi.repository import Vips
 
 # Directories
 rawImagesDir = "../rawImagesTest1/"
@@ -53,7 +56,7 @@ class programWrapper:
     runAll: same as 'execute' but with 'cropPhotos', 'resizePhotos', & 'createLaplacianStack' methods combined
     """
     def runAll(self, middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units):
-        crop_resize_lpc(middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor)
+        self.crop_resize_lpc(middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor)
         self.createThreeDmodel(startHeight, endHeight)
         self.graphModel(dimension_units)
     
@@ -122,7 +125,150 @@ class programWrapper:
                 self.laplacianImageStack.append(varianceMatrix) # For each matrix produced from a single image, append to internal list
             with open(internalList, 'wb') as f:
                 pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
+                
+                
+    """
+    crop_resize_lpc: shoving everything into one function right now. Will fix later.
+    """
+    def crop_resize_lpc(self, middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor):
+        imageList = os.listdir(rawImagesDir)
+        if not imageList:
+            print "Please populate 'rawImages/' with images."
+        else:
+            print "[x] Initiating image cropping"
+            counter = 1;
+            for imStr in imageList:
+                trm.trim(rawImagesDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", middlePercentSaving, cropThresholdLevel, counter)
+            counter += 1
 
+
+
+        firstArgProvided = True
+        try:    
+            im = Vips.Image.new_from_file(inputIm)
+        except IndexError:
+            print "First argument not provided."
+            firstArgProvided = False
+            
+            if (firstArgProvided):       # Image provided & opened successfully.
+                # Output image's starting size to console.
+                print "\t[", imNum, "] ", im.width, ",", im.height,
+                
+                # "Pre" cropping the image to ignore a few dumb things in the lab.
+                if middlePercentSaving > 1.0 or middlePercentSaving <= 0.0:
+                    raise ValueError("You must enter a value in the interval (0.0, 1.0].")
+                else:
+                    upper = int((0.5 - middlePercentSaving/2) * im.height); lower = int((0.5 + middlePercentSaving/2) * im.height)
+                    im = im.crop(0, upper, im.width, lower)
+                    
+                    # Find the value of the pixel at (0, 0) ... we will search for all pixels 
+                    # significantly different from this
+                    background = im.getpoint(0, 0)
+                    
+                    # We need to smooth the image, subtract the background from every pixel, take 
+                    # the absolute value of the difference, then threshold
+                    mask = (im.median(3) - background).abs() > acceptableThreshold
+                    
+                    # Sum mask rows and columns, then search for the first non-zero sum in each
+                    # direction
+                    columns, rows = mask.project()
+                    
+                    # .profile() returns a pair (v-profile, h-profile) 
+                    left = columns.profile()[1].min()
+                    right = columns.width - columns.flip("horizontal").profile()[1].min()
+                    top = rows.profile()[0].min()
+                    bottom = rows.height - rows.flip("vertical").profile()[0].min()
+                    
+                    # ... and now crop the original image
+                    im = im.crop(left, top, right - left, bottom - top)
+                    
+                    # Output ending size to the console
+                    print "cropped to", im.width, ",", im.height
+                    
+                    # Save to a file
+                    try:
+                        im.write_to_file(outputIm)
+                    except IndexError:
+                        print "Second argument not provided."
+            else:
+                print "Image to crop not opened successfully."
+
+
+            
+        self.smallestImage = smallestImage(croppedImagesDir)
+        imageList = os.listdir(croppedImagesDir)
+        if not imageList:
+            print "Try running 'make crop' first."
+        else:
+            counter = 1   # utilize counter for appropriate file naming
+            print "[x] Resizing all images to: ", self.smallestImage
+            for imStr in imageList:
+                im = Image.open(croppedImagesDir + imStr)
+                print "\t[", counter, "] ", im.size[0], ",", im.size[1], "resized to",
+                resizedIm = im.resize(self.smallestImage, resample=Image.LANCZOS)    # resize using LANCZOS filtering
+                print resizedIm.size[0], ",", resizedIm.size[1]
+                resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
+                im.close()
+                counter += 1
+
+        # Variables
+        image = Image.open(filename)     # open file
+        (rWidth, rHeight) = image.size     # returns width, height or x, y or cols, rows
+        image.close();      # close file
+        totalImageRows = pl.arange(rHeight / heightDivisor)
+        totalImageColumns = pl.arange(rWidth / widthDivisor)
+        numRows_MiniMatrix = pl.arange(heightDivisor)
+        numCols_MiniMatrix = pl.arange(widthDivisor)
+        miniMatrix = pl.zeros((heightDivisor,widthDivisor)) # heightDivisor x widthDivisor Matrix to copy elements to
+        varianceMatrix = pl.zeros((rHeight / heightDivisor, rWidth / widthDivisor))
+        Laplacian_Kernel = (pl.array([[0.,-1.,0.],[-1.,4.,-1.],[0.,-1.,0.]])) * (1./60)
+        
+        # 1. Convert image to matrix.                                        
+        toBeConverted = pil.Image.open(filename)
+        # resize (columns, width)                                                                               
+        toBeConverted = toBeConverted.resize([(rWidth / widthDivisor) * widthDivisor,(rHeight / heightDivisor) * heightDivisor], resample=Image.LANCZOS)    # resize using LANCZOS filtering        
+        # truncating the width and height so that they're divisible by heightDivisor & widthDivisor                    
+        imageMatrix = pl.asarray(toBeConverted.convert('L')) # convert image to greyscale; return matrix                 
+        toBeConverted.close();  # close file                                                                                                   
+        # 2. Split Image into sub-matrices, each of size heightDivisor x widthDivisor. For each           
+        #    heightDivisor x widthDivisor sub-matrix, convolve with the kernel. Calculate the variance                              
+        #    of this convolution. Place variance in a (rHeight / heightDivisor) x (rWidth / widthDivisor) matrix.     
+        
+        print "\t[", counter, "] Convolving subdivisions of image with Laplacian Kernel... Calculating Variance... ",
+        for subset_of_rows in totalImageRows:  # TOTAL Image Matrix                                                         
+            for subset_of_columns in totalImageColumns:
+                image_row = subset_of_rows * heightDivisor # keeps track of larger matrix's row index to copy from      
+                image_col = subset_of_columns * widthDivisor # keeps track of larger matrix's dolumn index to copy from     
+                for row in numRows_MiniMatrix:
+                    for col in numCols_MiniMatrix:
+                        miniMatrix[row][col] = imageMatrix[image_row + row][image_col + col]
+                        # 3. Convolve part of the image with the Laplacian kernel                                    
+                        Convolve = signal.fftconvolve(miniMatrix, Laplacian_Kernel, mode='full')
+                        # 4. Compute the variance of the convolution.                                                     
+                        Variance = pl.var(Convolve)
+                        # 5. Store variance in entry of varianceMatrix                    
+                        varianceMatrix[subset_of_rows][subset_of_columns] = Variance
+        # 6. return the varianceMatrix                                          
+        print "Done."
+        return varianceMatrix
+
+
+    imageList = os.listdir(resizedImagesDir)
+    if not imageList:
+        print "Try running 'make resize' first."
+    else:
+        print "[x] Initiating 'variance_of_laplacian' method on resized images"
+        counter = 1   # Counter included for console output
+        for imStr in imageList:
+            varianceMatrix = variance_of_laplacian(resizedImagesDir + imStr, heightDivisor, widthDivisor, counter)
+            counter += 1
+            self.laplacianImageStack.append(varianceMatrix) # For each matrix produced from a single image, append to internal list
+            with open(internalList, 'wb') as f:
+                pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+
+                
     """
     __createThreeDmodel__: helper function for createThreeDmodel
     """
