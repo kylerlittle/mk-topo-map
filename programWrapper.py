@@ -56,7 +56,7 @@ class programWrapper:
     runAll: same as 'execute' but with 'cropPhotos', 'resizePhotos', & 'createLaplacianStack' methods combined
     """
     def runAll(self, middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units):
-        self.crop_resize_lpc(middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor)
+        self.crop_lpc(middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor)
         self.createThreeDmodel(startHeight, endHeight)
         self.graphModel(dimension_units)
     
@@ -126,72 +126,36 @@ class programWrapper:
             with open(internalList, 'wb') as f:
                 pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
                 
-                
     """
-    crop_resize_lpc: shoving everything into one function right now. Will fix later.
+    crop_lpc: shoving everything into one function right now. Will fix later.
     """
-    def crop_resize_lpc(self, middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor):
+    def crop_lpc(self, middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor):
         imageList = os.listdir(rawImagesDir)
         if not imageList:
             print "Please populate 'rawImages/' with images."
         else:
             print "[x] Initiating image cropping"
-            counter = 1;
+            couter = 1;
             for imStr in imageList:
-                trm.trim(rawImagesDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", middlePercentSaving, cropThresholdLevel, counter)
-            counter += 1
-
-
-
-        firstArgProvided = True
-        try:    
-            im = Vips.Image.new_from_file(inputIm)
-        except IndexError:
-            print "First argument not provided."
-            firstArgProvided = False
-            
-            if (firstArgProvided):       # Image provided & opened successfully.
-                # Output image's starting size to console.
-                print "\t[", imNum, "] ", im.width, ",", im.height,
-                
-                # "Pre" cropping the image to ignore a few dumb things in the lab.
-                if middlePercentSaving > 1.0 or middlePercentSaving <= 0.0:
-                    raise ValueError("You must enter a value in the interval (0.0, 1.0].")
+                im = Vips.Image.new_from_file(rawImagesDir + imStr)
+                if (im != NULL):       # Image provided & opened successfully.
+                    print "\t[", counter, "] ", im.width, ",", im.height, # Output image's starting size to console.
+                    if middlePercentSaving > 1.0 or middlePercentSaving <= 0.0:
+                        raise ValueError("You must enter a value in the interval (0.0, 1.0].")
+                    else:
+                        upper = int((0.5 - middlePercentSaving/2) * im.height); lower = int((0.5 + middlePercentSaving/2) * im.height)
+                        im = im.crop(0, upper, im.width, lower) # "Pre" cropping the image to ignore a few dumb things in the lab.
+                        background = im.getpoint(0, 0)
+                        mask = (im.median(3) - background).abs() > acceptableThreshold
+                        columns, rows = mask.project()
+                        left = columns.profile()[1].min()
+                        right = columns.width - columns.flip("horizontal").profile()[1].min()
+                        top = rows.profile()[0].min()
+                        bottom = rows.height - rows.flip("vertical").profile()[0].min()
+                        im = im.crop(left, top, right - left, bottom - top)
+                        print "cropped to", im.width, ",", im.height     # Output ending size to the console
                 else:
-                    upper = int((0.5 - middlePercentSaving/2) * im.height); lower = int((0.5 + middlePercentSaving/2) * im.height)
-                    im = im.crop(0, upper, im.width, lower)
-                    
-                    # Find the value of the pixel at (0, 0) ... we will search for all pixels 
-                    # significantly different from this
-                    background = im.getpoint(0, 0)
-                    
-                    # We need to smooth the image, subtract the background from every pixel, take 
-                    # the absolute value of the difference, then threshold
-                    mask = (im.median(3) - background).abs() > acceptableThreshold
-                    
-                    # Sum mask rows and columns, then search for the first non-zero sum in each
-                    # direction
-                    columns, rows = mask.project()
-                    
-                    # .profile() returns a pair (v-profile, h-profile) 
-                    left = columns.profile()[1].min()
-                    right = columns.width - columns.flip("horizontal").profile()[1].min()
-                    top = rows.profile()[0].min()
-                    bottom = rows.height - rows.flip("vertical").profile()[0].min()
-                    
-                    # ... and now crop the original image
-                    im = im.crop(left, top, right - left, bottom - top)
-                    
-                    # Output ending size to the console
-                    print "cropped to", im.width, ",", im.height
-                    
-                    # Save to a file
-                    try:
-                        im.write_to_file(outputIm)
-                    except IndexError:
-                        print "Second argument not provided."
-            else:
-                print "Image to crop not opened successfully."
+                    print "Image to process not opened successfully."
 
 
             
