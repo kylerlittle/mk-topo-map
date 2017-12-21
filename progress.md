@@ -3,6 +3,7 @@
 * There is an issue with image writing/resizing. I created a new [issue](https://github.com/kylerlittle/mk-topo-map/issues/1) on github to describe it.
    * I need to completely rid the program of intermediate image writes & probably resizes. I can work around the writes fairly easily, but the resizes are something I need. Each image must be the same size before they're stacked. A simple extra crop won't do the trick because the fields of view are different.
    * For now, I'll keep the resize. But I'll need to use the initial run through the program to determine the correct size to resize to so that image processing can be done in a single loop.
+   * The reason why resizing messes up with my data is because of how resizing works. The inherent nature of resizing is image interpolation, or using values of surrounding pixels to make a good approximation of added/removed pixels. Thus, resizing gets rid of large deviations between individual pixels. These deviations are what a variance of laplacian method relies on to pick out clusters of pixels which are in focus. In this way, a lower-quality resize filter might actually be better in my situation. We'll find out.
 
 # To Do Immediately
 1. Fix the issue described above. Instead of:
