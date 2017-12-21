@@ -130,14 +130,6 @@ class programWrapper:
     crop_resize_lpc: crop, resize, and create Laplacian Stack without a single image write
     """
     def crop_resize_lpc(self, middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor):
-        # Laplacian PreProcessing
-        (rWidth, rHeight) = image.size     # returns width, height or x, y or cols, rows
-        totalImageRows = pl.arange(rHeight / heightDivisor)
-        totalImageColumns = pl.arange(rWidth / widthDivisor)
-        numRows_MiniMatrix = pl.arange(heightDivisor)
-        numCols_MiniMatrix = pl.arange(widthDivisor)
-        miniMatrix = pl.zeros((heightDivisor,widthDivisor)) # heightDivisor x widthDivisor Matrix to copy elements to
-        varianceMatrix = pl.zeros((rHeight / heightDivisor, rWidth / widthDivisor))
         Laplacian_Kernel = (pl.array([[0.,-1.,0.],[-1.,4.,-1.],[0.,-1.,0.]])) * (1./60)
         imageList = os.listdir(rawImagesDir)
         if not imageList:
@@ -172,7 +164,13 @@ class programWrapper:
                         print resizedIm.size[0], ",", resizedIm.size[1]
 
                         # Create Laplacian Stack; modularize
-                        toBeConverted = toBeConverted.resize([(rWidth / widthDivisor) * widthDivisor,(rHeight / heightDivisor) * heightDivisor], resample=Image.LANCZOS)    # resize using LANCZOS filtering        
+                        totalImageRows = pl.arange(im.height / heightDivisor)
+                        totalImageColumns = pl.arange(im.width / widthDivisor)
+                        numRows_MiniMatrix = pl.arange(heightDivisor)
+                        numCols_MiniMatrix = pl.arange(widthDivisor)
+                        miniMatrix = pl.zeros((heightDivisor,widthDivisor)) # heightDivisor x widthDivisor Matrix to copy elements to
+                        varianceMatrix = pl.zeros((im.height / heightDivisor, im.width / widthDivisor))
+                        toBeConverted = toBeConverted.resize([(im.width / widthDivisor) * widthDivisor,(im.height / heightDivisor) * heightDivisor], resample=Image.LANCZOS)    # resize using LANCZOS filtering        
                         # truncating the width and height so that they're divisible by heightDivisor & widthDivisor                    
                         imageMatrix = pl.asarray(toBeConverted.convert('L')) # convert image to greyscale; return matrix                 
                         print "\t[", counter, "] Convolving subdivisions of image with Laplacian Kernel... Calculating Variance... ",
