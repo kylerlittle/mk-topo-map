@@ -7,8 +7,8 @@ all:
 	python2.7 driver.py all
 
 # Run the driver program
-run:
-	python2.7 driver.py run
+#run:
+#	python2.7 driver.py run
 
 # Remove any files beginning in ~ or ending with pyc/pyo
 clean:
@@ -53,7 +53,7 @@ reset:
 help:
 	@echo "clean"
 	@echo "		Removes *.pyc, *.pyo, and ~* files"
-	@echo "run"
+	@echo "all"
 	@echo "		Run driver.py in python2.7 on your machine"
 	@echo "		Warning: it's best to run each command separately."
 	@echo "crop"

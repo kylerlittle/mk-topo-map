@@ -28,7 +28,7 @@ def trim(inputIm, outputIm, middlePercentSaving, acceptableThreshold, imNum):
 
     if (firstArgProvided):       # Image provided & opened successfully.
         # Output image's starting size to console.
-        print "\t[", imNum, "] ", im.width, ",", im.height,
+#        print "\t[", imNum, "] ", im.width, ",", im.height,
         
         # "Pre" cropping the image to ignore a few dumb things in the lab.
         if middlePercentSaving > 1.0 or middlePercentSaving <= 0.0:
@@ -59,7 +59,7 @@ def trim(inputIm, outputIm, middlePercentSaving, acceptableThreshold, imNum):
             im = im.crop(left, top, right - left, bottom - top)
             
             # Output ending size to the console
-            print "cropped to", im.width, ",", im.height
+            #print "cropped to", im.width, ",", im.height
             
             # Save to a file
             try:

@@ -37,8 +37,8 @@ except IndexError:
 def executeCommand(command):
     if command == 'all':
         driver.runAll(middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units)
-    elif command == 'run':
-        driver.execute(middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units)
+#   elif command == 'run':
+#       driver.execute(middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units)
     elif command == 'crop':
         driver.cropPhotos(middlePercentSaving, cropThresholdLevel)
     elif command == 'resize':
