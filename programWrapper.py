@@ -2,6 +2,7 @@
 import os as os
 import trim as trm
 from PIL import Image
+from scipy import signal    # convolving operation, optimized for large matrices
 from Laplacian_Variance import variance_of_laplacian
 from threeD_plotting import plot_threeDmodel
 import cPickle as pickle
@@ -46,7 +47,8 @@ class programWrapper:
     ___init___: constructor
     """
     def __init__(self):
-        self.smallestImage = 'invalid'
+        self.smallestImageSize = 'invalid'
+        self.resizeImagesTo = 'invalid'
         self.laplacianImageStack = []
         self.numImages = len(os.listdir(rawImagesDir))
         self.threeDmodel = 'invalid'
@@ -55,7 +57,7 @@ class programWrapper:
     runAll: same as 'execute' but with 'cropPhotos', 'resizePhotos', & 'createLaplacianStack' methods combined
     """
     def runAll(self, middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor, startHeight, endHeight, dimension_units):
-        # run through the initial parts of the program in order to find resize size (i.e. self.smallestImage)
+        # run through the initial parts of the program in order to find resize size (i.e. self.smallestImageSize)
         self.cropPhotos(middlePercentSaving, cropThresholdLevel)
         self.resizePhotos()
         # now process the images in place and one-by-one
@@ -94,17 +96,17 @@ class programWrapper:
                   performance is least important in this case, so we sacrifice it
     """
     def resizePhotos(self):
-        self.smallestImage = smallestImage(croppedImagesDir)
+        self.smallestImageSize = smallestImage(croppedImagesDir)
         imageList = os.listdir(croppedImagesDir)
         if not imageList:
             print "Try running 'make crop' first."
         else:
             counter = 1   # utilize counter for appropriate file naming
-#           print "[x] Resizing all images to: ", self.smallestImage
+#           print "[x] Resizing all images to: ", self.smallestImageSize
             for imStr in imageList:
                 im = Image.open(croppedImagesDir + imStr)
                 #print "\t[", counter, "] ", im.size[0], ",", im.size[1], "resized to",
-                resizedIm = im.resize(self.smallestImage, resample=Image.LANCZOS)    # resize using LANCZOS filtering
+                resizedIm = im.resize(self.smallestImageSize, resample=Image.LANCZOS)    # resize using LANCZOS filtering
                 #print resizedIm.size[0], ",", resizedIm.size[1]
                 resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
                 im.close()
@@ -133,12 +135,14 @@ class programWrapper:
     crop_resize_lpc: crop, resize, and create Laplacian Stack without a single image write
     """
     def crop_resize_lpc(self, middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor):
+        # These are things I can calculate before this function is called
         Laplacian_Kernel = (pl.array([[0.,-1.,0.],[-1.,4.,-1.],[0.,-1.,0.]])) * (1./60)
+        self.resizeImagesTo = (self.smallestImageSize[0] - (self.smallestImageSize[0] % widthDivisor), self.smallestImageSize[1] - (self.smallestImageSize[1] % widthDivisor))
+        
         imageList = os.listdir(rawImagesDir)
         if not imageList:
             print "Please populate 'rawImages/' with images."
         else:
-            print "[x] Initiating image cropping"
             counter = 1;
             for imStr in imageList:
                 im = Vips.Image.new_from_file(rawImagesDir + imStr)
@@ -162,29 +166,20 @@ class programWrapper:
                         
                         # Convert to PIL image; modularize...
                         mem_img = im.write_to_memory()
-                        #mem_img = im.cast(Vips.BandFormat.FLOAT).write_to_memory()
-                        # format_to_dtype[]
-                        pil_img = Image.fromarray(pl.fromstring(mem_img, dtype=pl.uint8).reshape(im.width, im.height, im.bands), mode='RGB')
-                        #pl_3d = pl.ndarray(buffer=mem_img, dtype=float, shape=[im.height, im.width, im.bands])
-                        #pil_img = Image.fromarray(pl_3d, mode=RGB)
-
+                        pil_img = Image.fromarray(pl.fromstring(mem_img, dtype=pl.uint8).reshape(im.height, im.width, im.bands), mode='RGB')
                         # Resize PIL image
                         print "\t[", counter, "] ", pil_img.size[0], ",", pil_img.size[1], "resized to",
-                        resizedIm = pil_img.resize(self.smallestImage, resample=Image.NEAREST)    # resize using LANCZOS filtering
+                        resizedIm = pil_img.resize(self.resizeImagesTo, resample=Image.NEAREST)
+                        resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
                         print resizedIm.size[0], ",", resizedIm.size[1]
-
+                        print resizedIm
                         # Create Laplacian Stack; modularize
+                        print "\t[", counter, "] Performing 'variance_of_laplacian' method on resized image...",
                         miniMatrix = pl.zeros((heightDivisor,widthDivisor)) # heightDivisor x widthDivisor Matrix to copy elements to
-                        varianceMatrix = pl.zeros((im.height / heightDivisor, im.width / widthDivisor))
-
-
-                        # I guess I need to resize... otherwise, need to not go out of bounds in the loop below
-
-                        
-                        imageMatrix = pl.asarray(resizedIm.convert('L')) # convert image to greyscale; return matrix                 
-                        print "\t[", counter, "] Convolving subdivisions of image with Laplacian Kernel... Calculating Variance... ",
-                        for subset_of_rows in pl.arange(im.height / heightDivisor):  # TOTAL Image Matrix
-                            for subset_of_columns in pl.arange(im.width / widthDivisor):
+                        varianceMatrix = pl.zeros((resizedIm.size[1] / heightDivisor, resizedIm.size[0] / widthDivisor))
+                        imageMatrix = pl.asarray(resizedIm.convert('L')) # convert image to greyscale; return matrix
+                        for subset_of_rows in pl.arange(resizedIm.size[1] / heightDivisor):  # TOTAL Image Matrix
+                            for subset_of_columns in pl.arange(resizedIm.size[0] / widthDivisor):
                                 image_row = subset_of_rows * heightDivisor # keeps track of larger matrix's row index to copy from      
                                 image_col = subset_of_columns * widthDivisor # keeps track of larger matrix's dolumn index to copy from
                                 for row in pl.arange(heightDivisor):
@@ -198,8 +193,8 @@ class programWrapper:
                         # Append to internal laplacian stack; modularize
                         self.laplacianImageStack.append(varianceMatrix)
 
-                        # Lastly, update counter
-                        counter += 1
+                    # Lastly, update counter
+                    counter += 1
                         
                     # After all of that, finally just dump it to a file
                     with open(internalList, 'wb') as f:
@@ -218,8 +213,8 @@ class programWrapper:
         print "(l x w x h): ", self.threeDmodel.shape[0], "x", self.threeDmodel.shape[1], "x", self.numImages
         for index, laplacianOfImMatrix in enumerate(self.laplacianImageStack):
             pointsInFocus = 0
-            for row in range(laplacianOfImMatrix.shape[0]):
-                for col in range(laplacianOfImMatrix.shape[1]):
+            for row in range(laplacianOfImMatrix.shape[1]):
+                for col in range(laplacianOfImMatrix.shape[0]):
                     if laplacianOfImMatrix[row][col] > self.threeDmodel[row][col]:
                         pointsInFocus += 1
                         self.threeDmodel[row][col] = heightLevels[index - 1]   # adjust 'for' loop
@@ -247,7 +242,7 @@ class programWrapper:
                 with open(internalList, 'rb') as f:
                     try:
                         self.laplacianImageStack = pickle.load(f)
-                        self.smallestImage = smallestImage(croppedImagesDir)   # If not running 'execute' style, this needs to be updated
+                        self.smallestImageSize = smallestImage(croppedImagesDir)   # If not running 'execute', this needs to be updated
                         self.__createThreeDmodel__(startHeight, endHeight)
                     except IOError:
                         print "Error reading", internalList
