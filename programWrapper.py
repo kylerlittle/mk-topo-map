@@ -12,7 +12,7 @@ gi.require_version('Vips', '8.0')       # Ensure the right version is imported
 from gi.repository import Vips
 
 # Directories
-rawImagesDir = "rawImages/"    #"../rawImagesTest1/"
+rawImagesDir = "../rawImagesTest1/"    #"rawImages/"
 croppedImagesDir = "croppedImages/"
 resizedImagesDir = "resizedImages/"
 
@@ -135,10 +135,8 @@ class programWrapper:
     crop_resize_lpc: crop, resize, and create Laplacian Stack without a single image write
     """
     def crop_resize_lpc(self, middlePercentSaving, cropThresholdLevel, heightDivisor, widthDivisor):
-        # These are things I can calculate before this function is called
         Laplacian_Kernel = (pl.array([[0.,-1.,0.],[-1.,4.,-1.],[0.,-1.,0.]])) * (1./60)
         self.resizeImagesTo = (self.smallestImageSize[0] - (self.smallestImageSize[0] % widthDivisor), self.smallestImageSize[1] - (self.smallestImageSize[1] % widthDivisor))
-        
         imageList = os.listdir(rawImagesDir)
         if not imageList:
             print "Please populate 'rawImages/' with images."
@@ -146,7 +144,9 @@ class programWrapper:
             counter = 1;
             for imStr in imageList:
                 im = Vips.Image.new_from_file(rawImagesDir + imStr)
-                if im is not None:       # Image provided & opened successfully.
+                if im is None:
+                    print "Image to process not opened successfully."
+                else:       # Image provided & opened successfully.
                     print "\t[", counter, "] ", im.width, ",", im.height, # Output image's starting size to console.
                     if middlePercentSaving > 1.0 or middlePercentSaving <= 0.0:
                         raise ValueError("You must enter a value in the interval (0.0, 1.0].")
@@ -163,7 +163,6 @@ class programWrapper:
                         bottom = rows.height - rows.flip("vertical").profile()[0].min()
                         im = im.crop(left, top, right - left, bottom - top)
                         print "cropped to", im.width, ",", im.height     # Output ending size to the console
-                        
                         # Convert to PIL image; modularize...
                         mem_img = im.write_to_memory()
                         pil_img = Image.fromarray(pl.fromstring(mem_img, dtype=pl.uint8).reshape(im.height, im.width, im.bands), mode='RGB')
@@ -172,9 +171,8 @@ class programWrapper:
                         resizedIm = pil_img.resize(self.resizeImagesTo, resample=Image.NEAREST)
                         resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
                         print resizedIm.size[0], ",", resizedIm.size[1]
-                        print resizedIm
                         # Create Laplacian Stack; modularize
-                        print "\t[", counter, "] Performing 'variance_of_laplacian' method on resized image...",
+                        print "\t[", counter, "]  Performing 'variance_of_laplacian' method on resized image...",
                         miniMatrix = pl.zeros((heightDivisor,widthDivisor)) # heightDivisor x widthDivisor Matrix to copy elements to
                         varianceMatrix = pl.zeros((resizedIm.size[1] / heightDivisor, resizedIm.size[0] / widthDivisor))
                         imageMatrix = pl.asarray(resizedIm.convert('L')) # convert image to greyscale; return matrix
@@ -185,22 +183,17 @@ class programWrapper:
                                 for row in pl.arange(heightDivisor):
                                     for col in pl.arange(widthDivisor):
                                         miniMatrix[row][col] = imageMatrix[image_row + row][image_col + col]
-                            Convolve = signal.fftconvolve(miniMatrix, Laplacian_Kernel, mode='full')
-                            Variance = pl.var(Convolve)
-                            varianceMatrix[subset_of_rows][subset_of_columns] = Variance
+                                Convolve = signal.fftconvolve(miniMatrix, Laplacian_Kernel, mode='full')
+                                Variance = pl.var(Convolve)
+                                varianceMatrix[subset_of_rows][subset_of_columns] = Variance
                         print "Done."
-
                         # Append to internal laplacian stack; modularize
                         self.laplacianImageStack.append(varianceMatrix)
-
-                    # Lastly, update counter
-                    counter += 1
-                        
-                    # After all of that, finally just dump it to a file
-                    with open(internalList, 'wb') as f:
-                        pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
-                else:
-                    print "Image to process not opened successfully."
+                        # Lastly, update counter
+                        counter += 1                        
+        # After all of that, finally just dump it to a file
+        with open(internalList, 'wb') as f:
+            pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
                 
     """
     __createThreeDmodel__: helper function for createThreeDmodel
@@ -213,11 +206,11 @@ class programWrapper:
         print "(l x w x h): ", self.threeDmodel.shape[0], "x", self.threeDmodel.shape[1], "x", self.numImages
         for index, laplacianOfImMatrix in enumerate(self.laplacianImageStack):
             pointsInFocus = 0
-            for row in range(laplacianOfImMatrix.shape[1]):
-                for col in range(laplacianOfImMatrix.shape[0]):
+            for row in pl.arange(laplacianOfImMatrix.shape[0]):
+                for col in pl.arange(laplacianOfImMatrix.shape[1]):
                     if laplacianOfImMatrix[row][col] > self.threeDmodel[row][col]:
                         pointsInFocus += 1
-                        self.threeDmodel[row][col] = heightLevels[index - 1]   # adjust 'for' loop
+                        self.threeDmodel[row][col] = heightLevels[index]
             print "\t[", index + 1, "] Percentage of Pixel Clusters Updated: ", pointsInFocus, "/", laplacianOfImMatrix.size, "=",
             print float(pointsInFocus) / laplacianOfImMatrix.size
         # This time, store results using numpy since we're dealing with an array object

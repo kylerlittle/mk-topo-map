@@ -1,0 +1,592 @@
+python2.7 driver.py all
+command entered:  all
+	[ 1 ]  3264 , 2448 cropped to 3258 , 1489
+	[ 1 ]  3258 , 1489 resized to 3130 , 1600
+	[ 1 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 2 ]  3264 , 2448 cropped to 3255 , 1525
+	[ 2 ]  3255 , 1525 resized to 3130 , 1600
+	[ 2 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 3 ]  3264 , 2448 cropped to 3248 , 1556
+	[ 3 ]  3248 , 1556 resized to 3130 , 1600
+	[ 3 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 4 ]  3264 , 2448 cropped to 3194 , 1585
+	[ 4 ]  3194 , 1585 resized to 3130 , 1600
+	[ 4 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 5 ]  3264 , 2448 cropped to 3233 , 1612
+	[ 5 ]  3233 , 1612 resized to 3130 , 1600
+	[ 5 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 6 ]  3264 , 2448 cropped to 3242 , 1553
+	[ 6 ]  3242 , 1553 resized to 3130 , 1600
+	[ 6 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 7 ]  3264 , 2448 cropped to 3252 , 1487
+	[ 7 ]  3252 , 1487 resized to 3130 , 1600
+	[ 7 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 8 ]  3264 , 2448 cropped to 3252 , 1556
+	[ 8 ]  3252 , 1556 resized to 3130 , 1600
+	[ 8 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 9 ]  3264 , 2448 cropped to 3231 , 1477
+	[ 9 ]  3231 , 1477 resized to 3130 , 1600
+	[ 9 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 10 ]  3264 , 2448 cropped to 3235 , 1501
+	[ 10 ]  3235 , 1501 resized to 3130 , 1600
+	[ 10 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 11 ]  3264 , 2448 cropped to 3237 , 1457
+	[ 11 ]  3237 , 1457 resized to 3130 , 1600
+	[ 11 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 12 ]  3264 , 2448 cropped to 3220 , 1603
+	[ 12 ]  3220 , 1603 resized to 3130 , 1600
+	[ 12 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 13 ]  3264 , 2448 cropped to 3245 , 1461
+	[ 13 ]  3245 , 1461 resized to 3130 , 1600
+	[ 13 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 14 ]  3264 , 2448 cropped to 3251 , 1463
+	[ 14 ]  3251 , 1463 resized to 3130 , 1600
+	[ 14 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 15 ]  3264 , 2448 cropped to 3171 , 1532
+	[ 15 ]  3171 , 1532 resized to 3130 , 1600
+	[ 15 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 16 ]  3264 , 2448 cropped to 3221 , 1530
+	[ 16 ]  3221 , 1530 resized to 3130 , 1600
+	[ 16 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 17 ]  3264 , 2448 cropped to 3264 , 1493
+	[ 17 ]  3264 , 1493 resized to 3130 , 1600
+	[ 17 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 18 ]  3264 , 2448 cropped to 3237 , 1479
+	[ 18 ]  3237 , 1479 resized to 3130 , 1600
+	[ 18 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 19 ]  3264 , 2448 cropped to 3249 , 1461
+	[ 19 ]  3249 , 1461 resized to 3130 , 1600
+	[ 19 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 20 ]  3264 , 2448 cropped to 3193 , 1537
+	[ 20 ]  3193 , 1537 resized to 3130 , 1600
+	[ 20 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 21 ]  3264 , 2448 cropped to 3264 , 1495
+	[ 21 ]  3264 , 1495 resized to 3130 , 1600
+	[ 21 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 22 ]  3264 , 2448 cropped to 3245 , 1483
+	[ 22 ]  3245 , 1483 resized to 3130 , 1600
+	[ 22 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 23 ]  3264 , 2448 cropped to 3233 , 1455
+	[ 23 ]  3233 , 1455 resized to 3130 , 1600
+	[ 23 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 24 ]  3264 , 2448 cropped to 3256 , 1511
+	[ 24 ]  3256 , 1511 resized to 3130 , 1600
+	[ 24 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 25 ]  3264 , 2448 cropped to 3240 , 1458
+	[ 25 ]  3240 , 1458 resized to 3130 , 1600
+	[ 25 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 26 ]  3264 , 2448 cropped to 3251 , 1509
+	[ 26 ]  3251 , 1509 resized to 3130 , 1600
+	[ 26 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 27 ]  3264 , 2448 cropped to 3258 , 1489
+	[ 27 ]  3258 , 1489 resized to 3130 , 1600
+	[ 27 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 28 ]  3264 , 2448 cropped to 3264 , 1474
+	[ 28 ]  3264 , 1474 resized to 3130 , 1600
+	[ 28 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 29 ]  3264 , 2448 cropped to 3219 , 1602
+	[ 29 ]  3219 , 1602 resized to 3130 , 1600
+	[ 29 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 30 ]  3264 , 2448 cropped to 3264 , 1473
+	[ 30 ]  3264 , 1473 resized to 3130 , 1600
+	[ 30 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 31 ]  3264 , 2448 cropped to 3183 , 1520
+	[ 31 ]  3183 , 1520 resized to 3130 , 1600
+	[ 31 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 32 ]  3264 , 2448 cropped to 3243 , 1482
+	[ 32 ]  3243 , 1482 resized to 3130 , 1600
+	[ 32 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 33 ]  3264 , 2448 cropped to 3246 , 1484
+	[ 33 ]  3246 , 1484 resized to 3130 , 1600
+	[ 33 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 34 ]  3264 , 2448 cropped to 3210 , 1593
+	[ 34 ]  3210 , 1593 resized to 3130 , 1600
+	[ 34 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 35 ]  3264 , 2448 cropped to 3206 , 1611
+	[ 35 ]  3206 , 1611 resized to 3130 , 1600
+	[ 35 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 36 ]  3264 , 2448 cropped to 3248 , 1461
+	[ 36 ]  3248 , 1461 resized to 3130 , 1600
+	[ 36 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 37 ]  3264 , 2448 cropped to 3152 , 1572
+	[ 37 ]  3152 , 1572 resized to 3130 , 1600
+	[ 37 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 38 ]  3264 , 2448 cropped to 3224 , 1497
+	[ 38 ]  3224 , 1497 resized to 3130 , 1600
+	[ 38 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 39 ]  3264 , 2448 cropped to 3237 , 1552
+	[ 39 ]  3237 , 1552 resized to 3130 , 1600
+	[ 39 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 40 ]  3264 , 2448 cropped to 3144 , 1604
+	[ 40 ]  3144 , 1604 resized to 3130 , 1600
+	[ 40 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 41 ]  3264 , 2448 cropped to 3256 , 1559
+	[ 41 ]  3256 , 1559 resized to 3130 , 1600
+	[ 41 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 42 ]  3264 , 2448 cropped to 3175 , 1579
+	[ 42 ]  3175 , 1579 resized to 3130 , 1600
+	[ 42 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 43 ]  3264 , 2448 cropped to 3179 , 1533
+	[ 43 ]  3179 , 1533 resized to 3130 , 1600
+	[ 43 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 44 ]  3264 , 2448 cropped to 3236 , 1536
+	[ 44 ]  3236 , 1536 resized to 3130 , 1600
+	[ 44 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 45 ]  3264 , 2448 cropped to 3167 , 1576
+	[ 45 ]  3167 , 1576 resized to 3130 , 1600
+	[ 45 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 46 ]  3264 , 2448 cropped to 3264 , 1459
+	[ 46 ]  3264 , 1459 resized to 3130 , 1600
+	[ 46 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 47 ]  3264 , 2448 cropped to 3264 , 1495
+	[ 47 ]  3264 , 1495 resized to 3130 , 1600
+	[ 47 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 48 ]  3264 , 2448 cropped to 3255 , 1464
+	[ 48 ]  3255 , 1464 resized to 3130 , 1600
+	[ 48 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 49 ]  3264 , 2448 cropped to 3264 , 1564
+	[ 49 ]  3264 , 1564 resized to 3130 , 1600
+	[ 49 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 50 ]  3264 , 2448 cropped to 3264 , 1494
+	[ 50 ]  3264 , 1494 resized to 3130 , 1600
+	[ 50 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 51 ]  3264 , 2448 cropped to 3179 , 1582
+	[ 51 ]  3179 , 1582 resized to 3130 , 1600
+	[ 51 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 52 ]  3264 , 2448 cropped to 3235 , 1456
+	[ 52 ]  3235 , 1456 resized to 3130 , 1600
+	[ 52 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 53 ]  3264 , 2448 cropped to 3241 , 1481
+	[ 53 ]  3241 , 1481 resized to 3130 , 1600
+	[ 53 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 54 ]  3264 , 2448 cropped to 3209 , 1595
+	[ 54 ]  3209 , 1595 resized to 3130 , 1600
+	[ 54 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 55 ]  3264 , 2448 cropped to 3241 , 1517
+	[ 55 ]  3241 , 1517 resized to 3130 , 1600
+	[ 55 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 56 ]  3264 , 2448 cropped to 3216 , 1529
+	[ 56 ]  3216 , 1529 resized to 3130 , 1600
+	[ 56 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 57 ]  3264 , 2448 cropped to 3230 , 1453
+	[ 57 ]  3230 , 1453 resized to 3130 , 1600
+	[ 57 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 58 ]  3264 , 2448 cropped to 3207 , 1593
+	[ 58 ]  3207 , 1593 resized to 3130 , 1600
+	[ 58 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 59 ]  3264 , 2448 cropped to 3260 , 1466
+	[ 59 ]  3260 , 1466 resized to 3130 , 1600
+	[ 59 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 60 ]  3264 , 2448 cropped to 3253 , 1487
+	[ 60 ]  3253 , 1487 resized to 3130 , 1600
+	[ 60 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 61 ]  3264 , 2448 cropped to 3227 , 1475
+	[ 61 ]  3227 , 1475 resized to 3130 , 1600
+	[ 61 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 62 ]  3264 , 2448 cropped to 3179 , 1517
+	[ 62 ]  3179 , 1517 resized to 3130 , 1600
+	[ 62 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 63 ]  3264 , 2448 cropped to 3159 , 1528
+	[ 63 ]  3159 , 1528 resized to 3130 , 1600
+	[ 63 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 64 ]  3264 , 2448 cropped to 3212 , 1543
+	[ 64 ]  3212 , 1543 resized to 3130 , 1600
+	[ 64 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 65 ]  3264 , 2448 cropped to 3264 , 1470
+	[ 65 ]  3264 , 1470 resized to 3130 , 1600
+	[ 65 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 66 ]  3264 , 2448 cropped to 3202 , 1541
+	[ 66 ]  3202 , 1541 resized to 3130 , 1600
+	[ 66 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 67 ]  3264 , 2448 cropped to 3235 , 1571
+	[ 67 ]  3235 , 1571 resized to 3130 , 1600
+	[ 67 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 68 ]  3264 , 2448 cropped to 3256 , 1465
+	[ 68 ]  3256 , 1465 resized to 3130 , 1600
+	[ 68 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 69 ]  3264 , 2448 cropped to 3136 , 1521
+	[ 69 ]  3136 , 1521 resized to 3130 , 1600
+	[ 69 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 70 ]  3264 , 2448 cropped to 3202 , 1507
+	[ 70 ]  3202 , 1507 resized to 3130 , 1600
+	[ 70 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 71 ]  3264 , 2448 cropped to 3264 , 1456
+	[ 71 ]  3264 , 1456 resized to 3130 , 1600
+	[ 71 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 72 ]  3264 , 2448 cropped to 3185 , 1584
+	[ 72 ]  3185 , 1584 resized to 3130 , 1600
+	[ 72 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 73 ]  3264 , 2448 cropped to 3245 , 1506
+	[ 73 ]  3245 , 1506 resized to 3130 , 1600
+	[ 73 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 74 ]  3264 , 2448 cropped to 3264 , 1468
+	[ 74 ]  3264 , 1468 resized to 3130 , 1600
+	[ 74 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 75 ]  3264 , 2448 cropped to 3229 , 1499
+	[ 75 ]  3229 , 1499 resized to 3130 , 1600
+	[ 75 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 76 ]  3264 , 2448 cropped to 3250 , 1485
+	[ 76 ]  3250 , 1485 resized to 3130 , 1600
+	[ 76 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 77 ]  3264 , 2448 cropped to 3231 , 1453
+	[ 77 ]  3231 , 1453 resized to 3130 , 1600
+	[ 77 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 78 ]  3264 , 2448 cropped to 3130 , 1600
+	[ 78 ]  3130 , 1600 resized to 3130 , 1600
+	[ 78 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 79 ]  3264 , 2448 cropped to 3187 , 1605
+	[ 79 ]  3187 , 1605 resized to 3130 , 1600
+	[ 79 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 80 ]  3264 , 2448 cropped to 3264 , 1565
+	[ 80 ]  3264 , 1565 resized to 3130 , 1600
+	[ 80 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 81 ]  3264 , 2448 cropped to 3262 , 1514
+	[ 81 ]  3262 , 1514 resized to 3130 , 1600
+	[ 81 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 82 ]  3264 , 2448 cropped to 3221 , 1532
+	[ 82 ]  3221 , 1532 resized to 3130 , 1600
+	[ 82 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 83 ]  3264 , 2448 cropped to 3243 , 1505
+	[ 83 ]  3243 , 1505 resized to 3130 , 1600
+	[ 83 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 84 ]  3264 , 2448 cropped to 3240 , 1480
+	[ 84 ]  3240 , 1480 resized to 3130 , 1600
+	[ 84 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 85 ]  3264 , 2448 cropped to 3259 , 1513
+	[ 85 ]  3259 , 1513 resized to 3130 , 1600
+	[ 85 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 86 ]  3264 , 2448 cropped to 3264 , 1471
+	[ 86 ]  3264 , 1471 resized to 3130 , 1600
+	[ 86 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 87 ]  3264 , 2448 cropped to 3228 , 1548
+	[ 87 ]  3228 , 1548 resized to 3130 , 1600
+	[ 87 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 88 ]  3264 , 2448 cropped to 3231 , 1548
+	[ 88 ]  3231 , 1548 resized to 3130 , 1600
+	[ 88 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 89 ]  3264 , 2448 cropped to 3263 , 1461
+	[ 89 ]  3263 , 1461 resized to 3130 , 1600
+	[ 89 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 90 ]  3264 , 2448 cropped to 3224 , 1605
+	[ 90 ]  3224 , 1605 resized to 3130 , 1600
+	[ 90 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 91 ]  3264 , 2448 cropped to 3230 , 1567
+	[ 91 ]  3230 , 1567 resized to 3130 , 1600
+	[ 91 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 92 ]  3264 , 2448 cropped to 3198 , 1539
+	[ 92 ]  3198 , 1539 resized to 3130 , 1600
+	[ 92 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 93 ]  3264 , 2448 cropped to 3208 , 1589
+	[ 93 ]  3208 , 1589 resized to 3130 , 1600
+	[ 93 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 94 ]  3264 , 2448 cropped to 3186 , 1519
+	[ 94 ]  3186 , 1519 resized to 3130 , 1600
+	[ 94 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 95 ]  3264 , 2448 cropped to 3232 , 1504
+	[ 95 ]  3232 , 1504 resized to 3130 , 1600
+	[ 95 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 96 ]  3264 , 2448 cropped to 3184 , 1582
+	[ 96 ]  3184 , 1582 resized to 3130 , 1600
+	[ 96 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 97 ]  3264 , 2448 cropped to 3168 , 1513
+	[ 97 ]  3168 , 1513 resized to 3130 , 1600
+	[ 97 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 98 ]  3264 , 2448 cropped to 3256 , 1488
+	[ 98 ]  3256 , 1488 resized to 3130 , 1600
+	[ 98 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 99 ]  3264 , 2448 cropped to 3249 , 1524
+	[ 99 ]  3249 , 1524 resized to 3130 , 1600
+	[ 99 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 100 ]  3264 , 2448 cropped to 3251 , 1525
+	[ 100 ]  3251 , 1525 resized to 3130 , 1600
+	[ 100 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 101 ]  3264 , 2448 cropped to 3227 , 1497
+	[ 101 ]  3227 , 1497 resized to 3130 , 1600
+	[ 101 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 102 ]  3264 , 2448 cropped to 3230 , 1476
+	[ 102 ]  3230 , 1476 resized to 3130 , 1600
+	[ 102 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 103 ]  3264 , 2448 cropped to 3206 , 1541
+	[ 103 ]  3206 , 1541 resized to 3130 , 1600
+	[ 103 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 104 ]  3264 , 2448 cropped to 3259 , 1489
+	[ 104 ]  3259 , 1489 resized to 3130 , 1600
+	[ 104 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 105 ]  3264 , 2448 cropped to 3258 , 1465
+	[ 105 ]  3258 , 1465 resized to 3130 , 1600
+	[ 105 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 106 ]  3264 , 2448 cropped to 3235 , 1478
+	[ 106 ]  3235 , 1478 resized to 3130 , 1600
+	[ 106 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 107 ]  3264 , 2448 cropped to 3155 , 1527
+	[ 107 ]  3155 , 1527 resized to 3130 , 1600
+	[ 107 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 108 ]  3264 , 2448 cropped to 3224 , 1547
+	[ 108 ]  3224 , 1547 resized to 3130 , 1600
+	[ 108 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 109 ]  3264 , 2448 cropped to 3260 , 1562
+	[ 109 ]  3260 , 1562 resized to 3130 , 1600
+	[ 109 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 110 ]  3264 , 2448 cropped to 3158 , 1573
+	[ 110 ]  3158 , 1573 resized to 3130 , 1600
+	[ 110 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 111 ]  3264 , 2448 cropped to 3264 , 1492
+	[ 111 ]  3264 , 1492 resized to 3130 , 1600
+	[ 111 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 112 ]  3264 , 2448 cropped to 3220 , 1600
+	[ 112 ]  3220 , 1600 resized to 3130 , 1600
+	[ 112 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 113 ]  3264 , 2448 cropped to 3184 , 1534
+	[ 113 ]  3184 , 1534 resized to 3130 , 1600
+	[ 113 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 114 ]  3264 , 2448 cropped to 3253 , 1464
+	[ 114 ]  3253 , 1464 resized to 3130 , 1600
+	[ 114 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 115 ]  3264 , 2448 cropped to 3264 , 1470
+	[ 115 ]  3264 , 1470 resized to 3130 , 1600
+	[ 115 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 116 ]  3264 , 2448 cropped to 3226 , 1610
+	[ 116 ]  3226 , 1610 resized to 3130 , 1600
+	[ 116 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 117 ]  3264 , 2448 cropped to 3232 , 1569
+	[ 117 ]  3232 , 1569 resized to 3130 , 1600
+	[ 117 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 118 ]  3264 , 2448 cropped to 3238 , 1518
+	[ 118 ]  3238 , 1518 resized to 3130 , 1600
+	[ 118 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 119 ]  3264 , 2448 cropped to 3200 , 1587
+	[ 119 ]  3200 , 1587 resized to 3130 , 1600
+	[ 119 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 120 ]  3264 , 2448 cropped to 3137 , 1504
+	[ 120 ]  3137 , 1504 resized to 3130 , 1600
+	[ 120 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 121 ]  3264 , 2448 cropped to 3236 , 1503
+	[ 121 ]  3236 , 1503 resized to 3130 , 1600
+	[ 121 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 122 ]  3264 , 2448 cropped to 3191 , 1605
+	[ 122 ]  3191 , 1605 resized to 3130 , 1600
+	[ 122 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 123 ]  3264 , 2448 cropped to 3254 , 1525
+	[ 123 ]  3254 , 1525 resized to 3130 , 1600
+	[ 123 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 124 ]  3264 , 2448 cropped to 3228 , 1498
+	[ 124 ]  3228 , 1498 resized to 3130 , 1600
+	[ 124 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 125 ]  3264 , 2448 cropped to 3264 , 1467
+	[ 125 ]  3264 , 1467 resized to 3130 , 1600
+	[ 125 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 126 ]  3264 , 2448 cropped to 3264 , 1472
+	[ 126 ]  3264 , 1472 resized to 3130 , 1600
+	[ 126 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 127 ]  3264 , 2448 cropped to 3264 , 1472
+	[ 127 ]  3264 , 1472 resized to 3130 , 1600
+	[ 127 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 128 ]  3264 , 2448 cropped to 3232 , 1500
+	[ 128 ]  3232 , 1500 resized to 3130 , 1600
+	[ 128 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 129 ]  3264 , 2448 cropped to 3232 , 1477
+	[ 129 ]  3232 , 1477 resized to 3130 , 1600
+	[ 129 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 130 ]  3264 , 2448 cropped to 3251 , 1486
+	[ 130 ]  3251 , 1486 resized to 3130 , 1600
+	[ 130 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 131 ]  3264 , 2448 cropped to 3195 , 1609
+	[ 131 ]  3195 , 1609 resized to 3130 , 1600
+	[ 131 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 132 ]  3264 , 2448 cropped to 3238 , 1503
+	[ 132 ]  3238 , 1503 resized to 3130 , 1600
+	[ 132 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 133 ]  3264 , 2448 cropped to 3195 , 1523
+	[ 133 ]  3195 , 1523 resized to 3130 , 1600
+	[ 133 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 134 ]  3264 , 2448 cropped to 3171 , 1577
+	[ 134 ]  3171 , 1577 resized to 3130 , 1600
+	[ 134 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 135 ]  3264 , 2448 cropped to 3254 , 1509
+	[ 135 ]  3254 , 1509 resized to 3130 , 1600
+	[ 135 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 136 ]  3264 , 2448 cropped to 3246 , 1483
+	[ 136 ]  3246 , 1483 resized to 3130 , 1600
+	[ 136 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 137 ]  3264 , 2448 cropped to 3207 , 1588
+	[ 137 ]  3207 , 1588 resized to 3130 , 1600
+	[ 137 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 138 ]  3264 , 2448 cropped to 3261 , 1467
+	[ 138 ]  3261 , 1467 resized to 3130 , 1600
+	[ 138 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 139 ]  3264 , 2448 cropped to 3198 , 1606
+	[ 139 ]  3198 , 1606 resized to 3130 , 1600
+	[ 139 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 140 ]  3264 , 2448 cropped to 3233 , 1501
+	[ 140 ]  3233 , 1501 resized to 3130 , 1600
+	[ 140 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 141 ]  3264 , 2448 cropped to 3229 , 1475
+	[ 141 ]  3229 , 1475 resized to 3130 , 1600
+	[ 141 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 142 ]  3264 , 2448 cropped to 3260 , 1490
+	[ 142 ]  3260 , 1490 resized to 3130 , 1600
+	[ 142 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 143 ]  3264 , 2448 cropped to 3240 , 1503
+	[ 143 ]  3240 , 1503 resized to 3130 , 1600
+	[ 143 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 144 ]  3264 , 2448 cropped to 3247 , 1484
+	[ 144 ]  3247 , 1484 resized to 3130 , 1600
+	[ 144 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 145 ]  3264 , 2448 cropped to 3209 , 1591
+	[ 145 ]  3209 , 1591 resized to 3130 , 1600
+	[ 145 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 146 ]  3264 , 2448 cropped to 3217 , 1544
+	[ 146 ]  3217 , 1544 resized to 3130 , 1600
+	[ 146 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+	[ 147 ]  3264 , 2448 cropped to 3243 , 1460
+	[ 147 ]  3243 , 1460 resized to 3130 , 1600
+	[ 147 ]  Performing 'variance_of_laplacian' method on resized image... Done.
+[x] Creating 3D Model of Size (l x w x h):  160 x 313 x 147
+	[ 1 ] Percentage of Pixel Clusters Updated:  50080 / 50080 = 1.0
+	[ 2 ] Percentage of Pixel Clusters Updated:  50080 / 50080 = 1.0
+	[ 3 ] Percentage of Pixel Clusters Updated:  42688 / 50080 = 0.852396166134
+	[ 4 ] Percentage of Pixel Clusters Updated:  22722 / 50080 = 0.453714057508
+	[ 5 ] Percentage of Pixel Clusters Updated:  39527 / 50080 = 0.78927715655
+	[ 6 ] Percentage of Pixel Clusters Updated:  18345 / 50080 = 0.366313897764
+	[ 7 ] Percentage of Pixel Clusters Updated:  20289 / 50080 = 0.405131789137
+	[ 8 ] Percentage of Pixel Clusters Updated:  17411 / 50080 = 0.347663738019
+	[ 9 ] Percentage of Pixel Clusters Updated:  17111 / 50080 = 0.341673322684
+	[ 10 ] Percentage of Pixel Clusters Updated:  15872 / 50080 = 0.316932907348
+	[ 11 ] Percentage of Pixel Clusters Updated:  16784 / 50080 = 0.335143769968
+	[ 12 ] Percentage of Pixel Clusters Updated:  17772 / 50080 = 0.354872204473
+	[ 13 ] Percentage of Pixel Clusters Updated:  14731 / 50080 = 0.294149361022
+	[ 14 ] Percentage of Pixel Clusters Updated:  12830 / 50080 = 0.256190095847
+	[ 15 ] Percentage of Pixel Clusters Updated:  13525 / 50080 = 0.270067891374
+	[ 16 ] Percentage of Pixel Clusters Updated:  12956 / 50080 = 0.258706070288
+	[ 17 ] Percentage of Pixel Clusters Updated:  12219 / 50080 = 0.243989616613
+	[ 18 ] Percentage of Pixel Clusters Updated:  11670 / 50080 = 0.23302715655
+	[ 19 ] Percentage of Pixel Clusters Updated:  10740 / 50080 = 0.21445686901
+	[ 20 ] Percentage of Pixel Clusters Updated:  12984 / 50080 = 0.259265175719
+	[ 21 ] Percentage of Pixel Clusters Updated:  10953 / 50080 = 0.218710063898
+	[ 22 ] Percentage of Pixel Clusters Updated:  10689 / 50080 = 0.213438498403
+	[ 23 ] Percentage of Pixel Clusters Updated:  9481 / 50080 = 0.189317092652
+	[ 24 ] Percentage of Pixel Clusters Updated:  10822 / 50080 = 0.216094249201
+	[ 25 ] Percentage of Pixel Clusters Updated:  8430 / 50080 = 0.168330670927
+	[ 26 ] Percentage of Pixel Clusters Updated:  9485 / 50080 = 0.189396964856
+	[ 27 ] Percentage of Pixel Clusters Updated:  5846 / 50080 = 0.116733226837
+	[ 28 ] Percentage of Pixel Clusters Updated:  7880 / 50080 = 0.157348242812
+	[ 29 ] Percentage of Pixel Clusters Updated:  10615 / 50080 = 0.21196086262
+	[ 30 ] Percentage of Pixel Clusters Updated:  5611 / 50080 = 0.112040734824
+	[ 31 ] Percentage of Pixel Clusters Updated:  5857 / 50080 = 0.116952875399
+	[ 32 ] Percentage of Pixel Clusters Updated:  4623 / 50080 = 0.0923123003195
+	[ 33 ] Percentage of Pixel Clusters Updated:  3074 / 50080 = 0.0613817891374
+	[ 34 ] Percentage of Pixel Clusters Updated:  1417 / 50080 = 0.0282947284345
+	[ 35 ] Percentage of Pixel Clusters Updated:  10102 / 50080 = 0.201717252396
+	[ 36 ] Percentage of Pixel Clusters Updated:  1212 / 50080 = 0.0242012779553
+	[ 37 ] Percentage of Pixel Clusters Updated:  730 / 50080 = 0.0145766773163
+	[ 38 ] Percentage of Pixel Clusters Updated:  429 / 50080 = 0.00856629392971
+	[ 39 ] Percentage of Pixel Clusters Updated:  437 / 50080 = 0.00872603833866
+	[ 40 ] Percentage of Pixel Clusters Updated:  839 / 50080 = 0.0167531948882
+	[ 41 ] Percentage of Pixel Clusters Updated:  149 / 50080 = 0.00297523961661
+	[ 42 ] Percentage of Pixel Clusters Updated:  171 / 50080 = 0.00341453674121
+	[ 43 ] Percentage of Pixel Clusters Updated:  95 / 50080 = 0.00189696485623
+	[ 44 ] Percentage of Pixel Clusters Updated:  67 / 50080 = 0.00133785942492
+	[ 45 ] Percentage of Pixel Clusters Updated:  44 / 50080 = 0.000878594249201
+	[ 46 ] Percentage of Pixel Clusters Updated:  503 / 50080 = 0.0100439297125
+	[ 47 ] Percentage of Pixel Clusters Updated:  89 / 50080 = 0.00177715654952
+	[ 48 ] Percentage of Pixel Clusters Updated:  316 / 50080 = 0.00630990415335
+	[ 49 ] Percentage of Pixel Clusters Updated:  68 / 50080 = 0.00135782747604
+	[ 50 ] Percentage of Pixel Clusters Updated:  12 / 50080 = 0.000239616613419
+	[ 51 ] Percentage of Pixel Clusters Updated:  21 / 50080 = 0.000419329073482
+	[ 52 ] Percentage of Pixel Clusters Updated:  184 / 50080 = 0.00367412140575
+	[ 53 ] Percentage of Pixel Clusters Updated:  120 / 50080 = 0.00239616613419
+	[ 54 ] Percentage of Pixel Clusters Updated:  191 / 50080 = 0.00381389776358
+	[ 55 ] Percentage of Pixel Clusters Updated:  147 / 50080 = 0.00293530351438
+	[ 56 ] Percentage of Pixel Clusters Updated:  30 / 50080 = 0.000599041533546
+	[ 57 ] Percentage of Pixel Clusters Updated:  402 / 50080 = 0.00802715654952
+	[ 58 ] Percentage of Pixel Clusters Updated:  12 / 50080 = 0.000239616613419
+	[ 59 ] Percentage of Pixel Clusters Updated:  89 / 50080 = 0.00177715654952
+	[ 60 ] Percentage of Pixel Clusters Updated:  599 / 50080 = 0.0119608626198
+	[ 61 ] Percentage of Pixel Clusters Updated:  129 / 50080 = 0.00257587859425
+	[ 62 ] Percentage of Pixel Clusters Updated:  94 / 50080 = 0.00187699680511
+	[ 63 ] Percentage of Pixel Clusters Updated:  35 / 50080 = 0.000698881789137
+	[ 64 ] Percentage of Pixel Clusters Updated:  21 / 50080 = 0.000419329073482
+	[ 65 ] Percentage of Pixel Clusters Updated:  64 / 50080 = 0.00127795527157
+	[ 66 ] Percentage of Pixel Clusters Updated:  4 / 50080 = 7.98722044728e-05
+	[ 67 ] Percentage of Pixel Clusters Updated:  14 / 50080 = 0.000279552715655
+	[ 68 ] Percentage of Pixel Clusters Updated:  6 / 50080 = 0.000119808306709
+	[ 69 ] Percentage of Pixel Clusters Updated:  177 / 50080 = 0.00353434504792
+	[ 70 ] Percentage of Pixel Clusters Updated:  60 / 50080 = 0.00119808306709
+	[ 71 ] Percentage of Pixel Clusters Updated:  213 / 50080 = 0.00425319488818
+	[ 72 ] Percentage of Pixel Clusters Updated:  17 / 50080 = 0.00033945686901
+	[ 73 ] Percentage of Pixel Clusters Updated:  26 / 50080 = 0.000519169329073
+	[ 74 ] Percentage of Pixel Clusters Updated:  41 / 50080 = 0.000818690095847
+	[ 75 ] Percentage of Pixel Clusters Updated:  40 / 50080 = 0.000798722044728
+	[ 76 ] Percentage of Pixel Clusters Updated:  34 / 50080 = 0.000678913738019
+	[ 77 ] Percentage of Pixel Clusters Updated:  22 / 50080 = 0.000439297124601
+	[ 78 ] Percentage of Pixel Clusters Updated:  92 / 50080 = 0.00183706070288
+	[ 79 ] Percentage of Pixel Clusters Updated:  172 / 50080 = 0.00343450479233
+	[ 80 ] Percentage of Pixel Clusters Updated:  6 / 50080 = 0.000119808306709
+	[ 81 ] Percentage of Pixel Clusters Updated:  28 / 50080 = 0.00055910543131
+	[ 82 ] Percentage of Pixel Clusters Updated:  5 / 50080 = 9.98402555911e-05
+	[ 83 ] Percentage of Pixel Clusters Updated:  12 / 50080 = 0.000239616613419
+	[ 84 ] Percentage of Pixel Clusters Updated:  24 / 50080 = 0.000479233226837
+	[ 85 ] Percentage of Pixel Clusters Updated:  6 / 50080 = 0.000119808306709
+	[ 86 ] Percentage of Pixel Clusters Updated:  19 / 50080 = 0.000379392971246
+	[ 87 ] Percentage of Pixel Clusters Updated:  12 / 50080 = 0.000239616613419
+	[ 88 ] Percentage of Pixel Clusters Updated:  9 / 50080 = 0.000179712460064
+	[ 89 ] Percentage of Pixel Clusters Updated:  19 / 50080 = 0.000379392971246
+	[ 90 ] Percentage of Pixel Clusters Updated:  14 / 50080 = 0.000279552715655
+	[ 91 ] Percentage of Pixel Clusters Updated:  12 / 50080 = 0.000239616613419
+	[ 92 ] Percentage of Pixel Clusters Updated:  3 / 50080 = 5.99041533546e-05
+	[ 93 ] Percentage of Pixel Clusters Updated:  6 / 50080 = 0.000119808306709
+	[ 94 ] Percentage of Pixel Clusters Updated:  74 / 50080 = 0.00147763578275
+	[ 95 ] Percentage of Pixel Clusters Updated:  14 / 50080 = 0.000279552715655
+	[ 96 ] Percentage of Pixel Clusters Updated:  1 / 50080 = 1.99680511182e-05
+	[ 97 ] Percentage of Pixel Clusters Updated:  52 / 50080 = 0.00103833865815
+	[ 98 ] Percentage of Pixel Clusters Updated:  6 / 50080 = 0.000119808306709
+	[ 99 ] Percentage of Pixel Clusters Updated:  375 / 50080 = 0.00748801916933
+	[ 100 ] Percentage of Pixel Clusters Updated:  5 / 50080 = 9.98402555911e-05
+	[ 101 ] Percentage of Pixel Clusters Updated:  3 / 50080 = 5.99041533546e-05
+	[ 102 ] Percentage of Pixel Clusters Updated:  21 / 50080 = 0.000419329073482
+	[ 103 ] Percentage of Pixel Clusters Updated:  5 / 50080 = 9.98402555911e-05
+	[ 104 ] Percentage of Pixel Clusters Updated:  4 / 50080 = 7.98722044728e-05
+	[ 105 ] Percentage of Pixel Clusters Updated:  19 / 50080 = 0.000379392971246
+	[ 106 ] Percentage of Pixel Clusters Updated:  26 / 50080 = 0.000519169329073
+	[ 107 ] Percentage of Pixel Clusters Updated:  4 / 50080 = 7.98722044728e-05
+	[ 108 ] Percentage of Pixel Clusters Updated:  2 / 50080 = 3.99361022364e-05
+	[ 109 ] Percentage of Pixel Clusters Updated:  18 / 50080 = 0.000359424920128
+	[ 110 ] Percentage of Pixel Clusters Updated:  4 / 50080 = 7.98722044728e-05
+	[ 111 ] Percentage of Pixel Clusters Updated:  23 / 50080 = 0.000459265175719
+	[ 112 ] Percentage of Pixel Clusters Updated:  3 / 50080 = 5.99041533546e-05
+	[ 113 ] Percentage of Pixel Clusters Updated:  2 / 50080 = 3.99361022364e-05
+	[ 114 ] Percentage of Pixel Clusters Updated:  7 / 50080 = 0.000139776357827
+	[ 115 ] Percentage of Pixel Clusters Updated:  16 / 50080 = 0.000319488817891
+	[ 116 ] Percentage of Pixel Clusters Updated:  398 / 50080 = 0.00794728434505
+	[ 117 ] Percentage of Pixel Clusters Updated:  1 / 50080 = 1.99680511182e-05
+	[ 118 ] Percentage of Pixel Clusters Updated:  30 / 50080 = 0.000599041533546
+	[ 119 ] Percentage of Pixel Clusters Updated:  6 / 50080 = 0.000119808306709
+	[ 120 ] Percentage of Pixel Clusters Updated:  95 / 50080 = 0.00189696485623
+	[ 121 ] Percentage of Pixel Clusters Updated:  5 / 50080 = 9.98402555911e-05
+	[ 122 ] Percentage of Pixel Clusters Updated:  266 / 50080 = 0.00531150159744
+	[ 123 ] Percentage of Pixel Clusters Updated:  10 / 50080 = 0.000199680511182
+	[ 124 ] Percentage of Pixel Clusters Updated:  2 / 50080 = 3.99361022364e-05
+	[ 125 ] Percentage of Pixel Clusters Updated:  12 / 50080 = 0.000239616613419
+	[ 126 ] Percentage of Pixel Clusters Updated:  15 / 50080 = 0.000299520766773
+	[ 127 ] Percentage of Pixel Clusters Updated:  4 / 50080 = 7.98722044728e-05
+	[ 128 ] Percentage of Pixel Clusters Updated:  4 / 50080 = 7.98722044728e-05
+	[ 129 ] Percentage of Pixel Clusters Updated:  7 / 50080 = 0.000139776357827
+	[ 130 ] Percentage of Pixel Clusters Updated:  17 / 50080 = 0.00033945686901
+	[ 131 ] Percentage of Pixel Clusters Updated:  321 / 50080 = 0.00640974440895
+	[ 132 ] Percentage of Pixel Clusters Updated:  1 / 50080 = 1.99680511182e-05
+	[ 133 ] Percentage of Pixel Clusters Updated:  13 / 50080 = 0.000259584664537
+	[ 134 ] Percentage of Pixel Clusters Updated:  5 / 50080 = 9.98402555911e-05
+	[ 135 ] Percentage of Pixel Clusters Updated:  0 / 50080 = 0.0
+	[ 136 ] Percentage of Pixel Clusters Updated:  5 / 50080 = 9.98402555911e-05
+	[ 137 ] Percentage of Pixel Clusters Updated:  1 / 50080 = 1.99680511182e-05
+	[ 138 ] Percentage of Pixel Clusters Updated:  15 / 50080 = 0.000299520766773
+	[ 139 ] Percentage of Pixel Clusters Updated:  509 / 50080 = 0.0101637380192
+	[ 140 ] Percentage of Pixel Clusters Updated:  1 / 50080 = 1.99680511182e-05
+	[ 141 ] Percentage of Pixel Clusters Updated:  6 / 50080 = 0.000119808306709
+	[ 142 ] Percentage of Pixel Clusters Updated:  4 / 50080 = 7.98722044728e-05
+	[ 143 ] Percentage of Pixel Clusters Updated:  1 / 50080 = 1.99680511182e-05
+	[ 144 ] Percentage of Pixel Clusters Updated:  14 / 50080 = 0.000279552715655
+	[ 145 ] Percentage of Pixel Clusters Updated:  1 / 50080 = 1.99680511182e-05
+	[ 146 ] Percentage of Pixel Clusters Updated:  2 / 50080 = 3.99361022364e-05
+	[ 147 ] Percentage of Pixel Clusters Updated:  12 / 50080 = 0.000239616613419
+[x] Graphing 3D Model
