@@ -20,11 +20,11 @@ clean:
 crop:
 	python2.7 driver.py crop
 
-# Resize all photos to minimum image file size in 'croppedImages/'
+# Resize all photos to minimum image file size in 'cropped-images/'
 resize:
 	python2.7 driver.py resize
 
-# For each image in 'resizedImages/', calculate variance of laplacian on
+# For each image in 'resized-images/', calculate variance of laplacian on
 # subdivisions of the image; gives the regions in focus a high variance
 # and blurry regions a very low variance
 lpc:
@@ -44,10 +44,10 @@ graph:
 	python2.7 driver.py graph
 
 # Allows the user to start the program from the top. Delete all
-# processed images (i.e. images in croppedImages/ & resizedImages/)
+# processed images (i.e. images in cropped-images/ & resized-images/)
 reset:
-	rm -I cropped_images/*
-	rm -I resized_images/*
+	rm -I cropped-images/*
+	rm -I resized-images/*
 
 # Help commands
 help:
@@ -59,9 +59,9 @@ help:
 	@echo "crop"
 	@echo "		Crop all photos in 'raw_images/' with given threshold lvl"
 	@echo "resize"
-	@echo "		Resize all images in 'cropped_images/' to smallest image in dir"
+	@echo "		Resize all images in 'cropped-images/' to smallest image in dir"
 	@echo "lpc"
-	@echo "		Forms variance of laplacian matrix of each image in 'resized_images/'"
+	@echo "		Forms variance of laplacian matrix of each image in 'resized-images/'"
 	@echo "		For more explanation: type 'make help_lpc'"
 	@echo "3D"
 	@echo "		Produce the 3D model of the object."
@@ -70,7 +70,7 @@ help:
 	@echo "graph"
 	@echo "		Graph the topographical map of the object."
 	@echo "reset"
-	@echo "		Remove all files from 'cropped_images/' & 'resized_images/'"
+	@echo "		Remove all files from 'cropped-images/' & 'resized-images/'"
 
 help_lpc:
 	@echo "LPC help:"

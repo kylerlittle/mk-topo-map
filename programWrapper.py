@@ -12,9 +12,9 @@ gi.require_version('Vips', '8.0')       # Ensure the right version is imported
 from gi.repository import Vips
 
 # Directories
-rawImagesDir = "raw_images/"   #"../raw-images-test-1/"   
-croppedImagesDir = "cropped_images/"
-resizedImagesDir = "resized_images/"
+rawImagesDir = "raw-images/"   #"../raw-images-test-1/"   
+croppedImagesDir = "cropped-images/"
+resizedImagesDir = "resized-images/"
 internalFilesDir = "wrap-internal-files/"
 figuresDir = "topo-maps/"
 # Internal Files
