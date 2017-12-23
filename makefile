@@ -6,6 +6,15 @@
 all:
 	python2.7 test-driver.py all
 
+vary whd:
+	python2.7 vary-parameters.py vary whd
+
+vary mps:
+	python2.7 vary-parameters.py vary mps
+
+vary both:
+	python2.7 vary-parameters.py vary both
+
 # Remove any files beginning in ~ or ending with pyc/pyo
 clean:
 	find . -name '*.pyc' -exec rm --force {} +
