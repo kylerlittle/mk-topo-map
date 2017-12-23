@@ -12,10 +12,11 @@ gi.require_version('Vips', '8.0')       # Ensure the right version is imported
 from gi.repository import Vips
 
 # Directories
-rawImagesDir = "../rawImagesTest1/"    #"rawImages/"
-croppedImagesDir = "croppedImages/"
-resizedImagesDir = "resizedImages/"
-
+rawImagesDir = "raw_images/"   #"../raw-images-test-1/"   
+croppedImagesDir = "cropped_images/"
+resizedImagesDir = "resized_images/"
+internalFilesDir = "wrap-internal-files/"
+figuresDir = "topo-maps/"
 # Internal Files
 internalList = "varLpcMatrixList.pickle"
 internalThreeDModel = "threeDmodel.npy"
@@ -128,7 +129,7 @@ class programWrapper:
                 varianceMatrix = variance_of_laplacian(resizedImagesDir + imStr, heightDivisor, widthDivisor, counter)
                 counter += 1  
                 self.laplacianImageStack.append(varianceMatrix) # For each matrix produced from a single image, append to internal list
-            with open(internalList, 'wb') as f:
+            with open(internalFilesDir + internalList, 'wb') as f:
                 pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
                 
     """
@@ -192,7 +193,7 @@ class programWrapper:
                         # Lastly, update counter
                         counter += 1                        
         # After all of that, finally just dump it to a file
-        with open(internalList, 'wb') as f:
+        with open(internalFilesDir + internalList, 'wb') as f:
             pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
                 
     """
@@ -214,7 +215,7 @@ class programWrapper:
             print "\t[", index + 1, "] Percentage of Pixel Clusters Updated: ", pointsInFocus, "/", laplacianOfImMatrix.size, "=",
             print float(pointsInFocus) / laplacianOfImMatrix.size
         # This time, store results using numpy since we're dealing with an array object
-        with open(internalThreeDModel, 'wb') as f:
+        with open(internalFilesDir + internalThreeDModel, 'wb') as f:
             pl.save(f, self.threeDmodel)
             
     """
@@ -231,8 +232,8 @@ class programWrapper:
             print "One or more of 'startHeight' and 'endHeight' are not floating point values."
 
         try:
-            if os.stat(internalList).st_size > 0:  # checks for empty file; if so, OSError thrown
-                with open(internalList, 'rb') as f:
+            if os.stat(internalFilesDir + internalList).st_size > 0:  # checks for empty file; if so, OSError thrown
+                with open(internalFilesDir + internalList, 'rb') as f:
                     try:
                         self.laplacianImageStack = pickle.load(f)
                         self.smallestImageSize = smallestImage(croppedImagesDir)   # If not running 'execute', this needs to be updated
@@ -254,8 +255,8 @@ class programWrapper:
     """
     def graphModel(self, dimension_units):
         try:
-            if os.stat(internalThreeDModel).st_size > 0:  # checks for empty file; if so, OSError thrown
-                with open(internalThreeDModel, 'rb') as f:    # handles open, close, and errors with opening
+            if os.stat(internalFilesDir + internalThreeDModel).st_size > 0:  # checks for empty file; if so, OSError thrown
+                with open(internalFilesDir + internalThreeDModel, 'rb') as f:    # handles open, close, and errors with opening
                     try:   # If file doesn't load correctly, IOError is thrown.
                         self.threeDmodel = pl.load(f)
                         plot_threeDmodel(self.threeDmodel, dimension_units)

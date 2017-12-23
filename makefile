@@ -46,8 +46,8 @@ graph:
 # Allows the user to start the program from the top. Delete all
 # processed images (i.e. images in croppedImages/ & resizedImages/)
 reset:
-	rm -I croppedImages/*
-	rm -I resizedImages/*
+	rm -I cropped_images/*
+	rm -I resized_images/*
 
 # Help commands
 help:
@@ -57,11 +57,11 @@ help:
 	@echo "		Run driver.py in python2.7 on your machine"
 	@echo "		Warning: it's best to run each command separately."
 	@echo "crop"
-	@echo "		Crop all photos in 'rawImages/' with given threshold lvl"
+	@echo "		Crop all photos in 'raw_images/' with given threshold lvl"
 	@echo "resize"
-	@echo "		Resize all images in 'croppedImages/' to smallest image in dir"
+	@echo "		Resize all images in 'cropped_images/' to smallest image in dir"
 	@echo "lpc"
-	@echo "		Forms variance of laplacian matrix of each image in 'resizedImages/'"
+	@echo "		Forms variance of laplacian matrix of each image in 'resized_images/'"
 	@echo "		For more explanation: type 'make help_lpc'"
 	@echo "3D"
 	@echo "		Produce the 3D model of the object."
@@ -70,7 +70,7 @@ help:
 	@echo "graph"
 	@echo "		Graph the topographical map of the object."
 	@echo "reset"
-	@echo "		Remove all files from 'croppedImages/' & 'resizedImages/'"
+	@echo "		Remove all files from 'cropped_images/' & 'resized_images/'"
 
 help_lpc:
 	@echo "LPC help:"
