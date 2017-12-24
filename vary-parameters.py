@@ -58,19 +58,18 @@ vp = vary_parameters(whd_range, whd_step, mps_range, mps_step)
 # Grab the command.
 try:
     command = sys.argv[1]
-    parameter_type = sys.argv[2]
-    print "command entered: ", command + parameter_type
+    print "command entered: ", command
 except IndexError:
-    print "Command or parameter type not provided."
+    print "Command/parameter type not provided."
     command = 'null'
 
 # Function to execute command.
 def executeCommand(parameter_type):
-    if parameter_type == 'whd':
+    if parameter_type == 'vary_whd':
         vp.width_height_divisors()
-    elif parameter_type == 'mps':
+    elif parameter_type == 'vary_mps':
         vp.mid_perecent_save()
-    elif parameter_type == 'both':
+    elif parameter_type == 'vary_both':
         vp.vary_both()
 
 # Execute the command.

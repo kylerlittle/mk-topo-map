@@ -6,13 +6,13 @@
 all:
 	python2.7 test-driver.py all
 
-vary whd:
+vary_whd:
 	python2.7 vary-parameters.py vary whd
 
-vary mps:
+vary_mps:
 	python2.7 vary-parameters.py vary mps
 
-vary both:
+vary_both:
 	python2.7 vary-parameters.py vary both
 
 # Remove any files beginning in ~ or ending with pyc/pyo

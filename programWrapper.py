@@ -262,7 +262,7 @@ class programWrapper:
                 with open(internalFilesDir + internalThreeDModel, 'rb') as f:    # handles open, close, and errors with opening
                     try:   # If file doesn't load correctly, IOError is thrown.
                         self.threeDmodel = pl.load(f)
-                        plot_threeDmodel(self.threeDmodel, self.parameters.du)
+                        plot_threeDmodel(self.threeDmodel, self.parameters.du, figuresDir, self.parameters)
                     except IOError:
                         print "Error reading", internalThreeDModel
         except OSError:

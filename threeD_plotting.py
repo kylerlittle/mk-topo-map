@@ -12,8 +12,9 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
+from parameters import parameters
 
-def plot_threeDmodel(model, dimension_units):
+def plot_threeDmodel(model, dimension_units, modelDir, p):
     print "[x] Graphing 3D Model"
     # Set up plot.    
     fig = plt.figure()
@@ -28,7 +29,7 @@ def plot_threeDmodel(model, dimension_units):
     # 'meshgrid' converts coordinates to two separate 2D arrays
     
     Z = model.reshape((Width,Height))  #flip plot upside down
-    surf = ax.plot_surface(X, Y, Z, cmap=cm.YlOrRd, linewidth=0, antialiased=False)
+    surf = ax.plot_surface(X, Y, Z, cmap=cm.summer, linewidth=0, antialiased=False)
     
     # Customize the z axis.
     ax.zaxis.set_major_locator(LinearLocator(10))    #evenly spaced ticks from min to max
@@ -47,3 +48,5 @@ def plot_threeDmodel(model, dimension_units):
     ax.view_init(elev=40, azim=-114)
     
     plt.show()
+    # Make str(p.mps) into a rounded percentage (i.e. .5 ---> 50per)
+    plt.savefig(modelDir+"fig_"+str(p.wd)+'_'+str(p.hd)+'_'+str(p.mps)+".png", bbox_inches='tight')
