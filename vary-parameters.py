@@ -74,4 +74,4 @@ def executeCommand(parameter_type):
 
 # Execute the command.
 if command != 'null':
-        executeCommand(command)
+    executeCommand(command)

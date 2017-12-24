@@ -6,14 +6,17 @@
 all:
 	python2.7 test-driver.py all
 
+# Vary width & heighth divisors & runAll each time
 vary_whd:
-	python2.7 vary-parameters.py vary whd
+	python2.7 vary-parameters.py vary_whd
 
+# Vary middle percent savings & runAll each time
 vary_mps:
-	python2.7 vary-parameters.py vary mps
+	python2.7 vary-parameters.py vary_mps
 
+# Vary width/heighth divisors & middle percent savings in nested loops & runAll each time
 vary_both:
-	python2.7 vary-parameters.py vary both
+	python2.7 vary-parameters.py vary_both
 
 # Remove any files beginning in ~ or ending with pyc/pyo
 clean:
@@ -61,6 +64,12 @@ help:
 	@echo "all"
 	@echo "		Run test-driver.py in python2.7 on your machine"
 	@echo "		Warning: it's best to run each command separately."
+	@echo "vary_whd"
+	@echo "		Vary width & heighth divisors & runAll each time."
+	@echo "vary_mps"
+	@echo "		Vary middle percent savings & runAll each time."
+	@echo "vary_both"
+	@echo "		Vary width/heighth divisors & middle percent savings in nested loops & runAll each time."
 	@echo "crop"
 	@echo "		Crop all photos in 'raw_images/' with given threshold lvl"
 	@echo "resize"
