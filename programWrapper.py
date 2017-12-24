@@ -14,7 +14,7 @@ from threeD_plotting import plot_threeDmodel
 from parameters import parameters
 
 # Directories
-rawImagesDir = "raw-images/"   #"../raw-images-test-1/"   
+rawImagesDir = "../raw-images-test-1/"   # "raw-images/" 
 croppedImagesDir = "cropped-images/"
 resizedImagesDir = "resized-images/"
 internalFilesDir = "wrap-internal-files/"

@@ -47,6 +47,5 @@ def plot_threeDmodel(model, dimension_units, modelDir, p):
     # Set default viewing angle
     ax.view_init(elev=40, azim=-114)
     
-    plt.show()
-    # Make str(p.mps) into a rounded percentage (i.e. .5 ---> 50per)
-    plt.savefig(modelDir+"fig_"+str(p.wd)+'_'+str(p.hd)+'_'+str(p.mps)+".png", bbox_inches='tight')
+    # Save fig with parameters in name & without surround whitespace
+    fig.savefig(modelDir+"fig_"+str(p.wd)+'_'+str(p.hd)+'_'+"{0:.0f}per".format(p.mps*100)+".png", bbox_inches='tight')
