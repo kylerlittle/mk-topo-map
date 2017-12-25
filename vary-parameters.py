@@ -11,7 +11,7 @@ import numpy as np
 """
 HOW TO VARY PARAMETERS (you can change these as you see fit)
 """
-whd_range = (26, 40)     # vary the width & height divisors from 4 to 20 in increments of 2 (i.e. 4, 6, 8, ..., 20)
+whd_range = (26, 50)     # vary the width & height divisors from 26 to 48 in increments of 2
 whd_step = 2
 mps_range = (0.25, 0.75)   # vary the middle percent savings from 0.25 to 0.75 in increments of 0.10 (i.e. 0.25, 0.35, ...)
 mps_step = .10
