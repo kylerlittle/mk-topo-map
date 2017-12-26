@@ -32,20 +32,20 @@ class vary_parameters:
     def width_height_divisors(self):
         for val in np.arange(self.whd_range[0], self.whd_range[1], self.whd_step):
             params = parameters(0.5, 125, Image.NEAREST, val, val, 110.7, 149.6, 5, 'mm')
-            program = pw.programWrapper(params)
+            program = pw.programWrapper(params, False)
             program.runAll()
         
     def mid_perecent_save(self):
         for val in np.arange(self.mps_range[0], self.mps_range[1], self.mps_step):
             params = parameters(val, 125, Image.NEAREST, 10, 10, 110.7, 149.6, 5, 'mm')
-            program = pw.programWrapper(params)
+            program = pw.programWrapper(params, False)
             program.runAll()
 
     def vary_both(self):
         for whd_val in np.arange(self.whd_range[0], self.whd_range[1], self.whd_step):
             for mps_val in np.arange(self.mps_range[0], self.mps_range[1], self.mps_step):
                 params = parameters(mps_val, 125, Image.NEAREST, whd_val, whd_val, 110.7, 149.6, 5, 'mm')
-                program = pw.programWrapper(params)
+                program = pw.programWrapper(params, False)
                 program.runAll()
 
     def vary_resize(self):

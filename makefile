@@ -2,8 +2,8 @@
 #Currently running unoptimized (i.e. not python2.7 -O), so that assertions are checked.
 #######
 
-# Run all. (i.e. all options as a single function)
-all:
+# Run the whole program in test_mode. 'raw-images' dir is src of images, show rather than save fig, fewer images so much faster
+test_mode:
 	python2.7 test-driver.py all
 
 # Vary width & heighth divisors & runAll each time
@@ -59,17 +59,24 @@ reset:
 
 # Help commands
 help:
+	@echo "___CLEAN UP___"
 	@echo "clean"
 	@echo "		Removes *.pyc, *.pyo, and ~* files"
-	@echo "all"
+	@echo "reset"
+	@echo "		Remove all files from 'cropped-images/' & 'resized-images/'"
+	@echo ""
+	@echo "___PROGRAM EXECUTION___"
+	@echo "test_mode"
 	@echo "		Run test-driver.py in python2.7 on your machine"
-	@echo "		Warning: it's best to run each command separately."
+	@echo "		'raw-images' dir is src of images, it shows rather than saves fig, and fewer images so much faster."
 	@echo "vary_whd"
 	@echo "		Vary width & heighth divisors & runAll each time."
 	@echo "vary_mps"
 	@echo "		Vary middle percent savings & runAll each time."
 	@echo "vary_both"
 	@echo "		Vary width/heighth divisors & middle percent savings in nested loops & runAll each time."
+	@echo ""
+	@echo "___LEARN PROGRAM'S BEHAVIOR___"
 	@echo "crop"
 	@echo "		Crop all photos in 'raw_images/' with given threshold lvl"
 	@echo "resize"
@@ -83,8 +90,6 @@ help:
 	@echo "		Slightly more optimized version of 3D. Could fail with too much image noise."
 	@echo "graph"
 	@echo "		Graph the topographical map of the object."
-	@echo "reset"
-	@echo "		Remove all files from 'cropped-images/' & 'resized-images/'"
 
 help_lpc:
 	@echo "LPC help:"

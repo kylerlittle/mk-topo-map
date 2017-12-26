@@ -27,7 +27,7 @@ test_parameters = parameters(0.5, 125, Image.NEAREST, 11, 11, 110.7, 149.6, 5, '
 PROGRAM EXECUTION
 """
 # Create an instance of the program driver.
-driver = id.programWrapper(test_parameters)
+driver = id.programWrapper(test_parameters, True)  # Test Mode, so pass in 'True'
 
 # Grab the command.
 try:

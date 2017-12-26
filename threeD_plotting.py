@@ -14,7 +14,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from parameters import parameters
 
-def plot_threeDmodel(model, dimension_units, modelDir, p):
+def plot_threeDmodel(model, dimension_units, modelDir, p, testModeOn):
     print "[x] Graphing 3D Model"
     # Set up plot.    
     fig = plt.figure()
@@ -46,6 +46,8 @@ def plot_threeDmodel(model, dimension_units, modelDir, p):
     
     # Set default viewing angle
     ax.view_init(elev=40, azim=-114)
-    
-    # Save fig with parameters in name & without surround whitespace
-    fig.savefig(modelDir+"fig_"+str(p.wd)+'_'+str(p.hd)+'_'+"{0:.0f}per".format(p.mps*100)+".png", bbox_inches='tight')
+
+    if testModeOn:   # Display figure rather than saving it.
+        plt.show()
+    else:          # Save fig with parameters in name & without surround whitespace
+        fig.savefig(modelDir+"fig_"+str(p.wd)+'_'+str(p.hd)+'_'+"{0:.0f}per".format(p.mps*100)+".png", bbox_inches='tight')

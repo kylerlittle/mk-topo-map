@@ -14,7 +14,8 @@ from threeD_plotting import plot_threeDmodel
 from parameters import parameters
 
 # Directories
-rawImagesDir = "raw-images/"  #"../raw-images-test-1/"   
+rawImagesTestDir = "raw-images-test/"
+rawImagesRealDir = "../raw-images-real-1/"
 croppedImagesDir = "cropped-images/"
 resizedImagesDir = "resized-images/"
 internalFilesDir = "wrap-internal-files/"
@@ -49,13 +50,14 @@ class programWrapper:
     """
     __init__: constructor
     """
-    def __init__(self, parameters):
+    def __init__(self, parameters, testMode):
         self.smallestImageSize = 'invalid'
         self.resizeImagesTo = 'invalid'
         self.laplacianImageStack = []
-        self.numImages = len(os.listdir(rawImagesDir))
+        self.numImages = len(os.listdir(rawImagesTestDir))
         self.threeDmodel = 'invalid'
         self.parameters = parameters
+        self.testModeOn = testMode
 
     """
     runAll: same as 'execute' but with 'cropPhotos', 'resizePhotos', & 'createLaplacianStack' methods combined
@@ -84,14 +86,19 @@ class programWrapper:
     cropPhotos: crops 'raw' photos to be approximately inline with the outline of the object
     """
     def cropPhotos(self):
-        imageList = os.listdir(rawImagesDir)
+        if self.testModeOn:
+            imageList = os.listdir(rawImagesTestDir)
+        else:
+            imageList = os.listdir(rawImagesRealDir)
+
+        # Instead of print, raise an error... FIX
         if not imageList:
             print "Please populate 'rawImages/' with images."
         else:
 #           print "[x] Initiating image cropping"
             counter = 1;
             for imStr in imageList:
-                trm.trim(rawImagesDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", self.parameters.mps, self.parameters.ctl, counter)
+                trm.trim(rawImagesTestDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", self.parameters.mps, self.parameters.ctl, counter)
                 counter += 1
 
     """
@@ -141,13 +148,17 @@ class programWrapper:
     def crop_resize_lpc(self):
         Laplacian_Kernel = (pl.array([[0.,-1.,0.],[-1.,4.,-1.],[0.,-1.,0.]])) * (1./60)
         self.resizeImagesTo = (self.smallestImageSize[0] - (self.smallestImageSize[0] % self.parameters.wd), self.smallestImageSize[1] - (self.smallestImageSize[1] % self.parameters.wd))
-        imageList = os.listdir(rawImagesDir)
+        imageList = os.listdir(rawImagesTestDir)
         if not imageList:
             print "Please populate 'rawImages/' with images."
         else:
             counter = 1;
             for imStr in imageList:
-                im = Vips.Image.new_from_file(rawImagesDir + imStr)
+                if self.testModeOn:
+                    im = Vips.Image.new_from_file(rawImagesTestDir + imStr)
+                else:
+                    im = Vips.Image.new_from_file(rawImagesRealDir + imStr)
+                
                 if im is None:
                     print "Image to process not opened successfully."
                 else:       # Image provided & opened successfully.
@@ -267,7 +278,7 @@ class programWrapper:
                 with open(internalFilesDir + internalThreeDModel, 'rb') as f:    # handles open, close, and errors with opening
                     try:   # If file doesn't load correctly, IOError is thrown.
                         self.threeDmodel = pl.load(f)
-                        plot_threeDmodel(self.threeDmodel, self.parameters.du, figuresDir, self.parameters)
+                        plot_threeDmodel(self.threeDmodel, self.parameters.du, figuresDir, self.parameters, self.testModeOn)
                     except IOError:
                         print "Error reading", internalThreeDModel
         except OSError:
