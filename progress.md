@@ -6,6 +6,7 @@
 # Next Up
 1. Ran a long test yesterday. The [figures](https://github.com/kylerlittle/mk-topo-map/tree/master/topo-maps) are quite noisy. To fix this, I have an idea. Based on the output to the std out stream, it's clear that some of the pixel clusters are updated later on when they shouldn't be. This makes the models look really crappy because it's not true to the physics of the situation. I actually knew this would happen early on, which is why I created an 'optimized version' of the program even though I never implemented it. Essentially, after a few iterations of the pixel clusters no longer being updated, they should be off limits to being updated in further iterations. Add this feature.
 1. Update my current figure naming system to include ALL parameters in the name. This way, I'll be able to distinguish them later.
+1. Run the test-driver in a different way than `vary-parameters.py`. For example, pass in a flag to `programWrapper` so that the program shows the figure rather than saving it. This way, the user can play around with how it works without having it take hours to compute. I'll eventually give the program some better test images.
 1. Vary PIL's resizing filters since these clearly have a large impact on the outcome of this program.
 1. It appears that my *pre_crop* method is faulty in `crop_resize_lpc`. I had forgotten that I'm using the VIPS crop rather than PIL's. This needs to be fixed.
 1. Run more long tests where parameters are varied (namely, `heightDivisor`, `widthDivisor`, `middlePercentSavings`, and PIL's resizing filters).

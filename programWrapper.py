@@ -14,7 +14,7 @@ from threeD_plotting import plot_threeDmodel
 from parameters import parameters
 
 # Directories
-rawImagesDir = "../raw-images-test-1/"   # "raw-images/" 
+rawImagesDir = "raw-images/"  #"../raw-images-test-1/"   
 croppedImagesDir = "cropped-images/"
 resizedImagesDir = "resized-images/"
 internalFilesDir = "wrap-internal-files/"
@@ -110,7 +110,7 @@ class programWrapper:
             for imStr in imageList:
                 im = Image.open(croppedImagesDir + imStr)
                 #print "\t[", counter, "] ", im.size[0], ",", im.size[1], "resized to",
-                resizedIm = im.resize(self.smallestImageSize, resample=Image.LANCZOS)    # resize using LANCZOS filtering
+                resizedIm = im.resize(self.smallestImageSize, resample=self.parameters.rf)
                 #print resizedIm.size[0], ",", resizedIm.size[1]
                 resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
                 im.close()
@@ -172,7 +172,7 @@ class programWrapper:
                         pil_img = Image.fromarray(pl.fromstring(mem_img, dtype=pl.uint8).reshape(im.height, im.width, im.bands), mode='RGB')
                         # Resize PIL image
                         print "\t[", counter, "] ", pil_img.size[0], ",", pil_img.size[1], "resized to",
-                        resizedIm = pil_img.resize(self.resizeImagesTo, resample=Image.NEAREST)
+                        resizedIm = pil_img.resize(self.resizeImagesTo, resample=self.parameters.rf)
                         resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
                         print resizedIm.size[0], ",", resizedIm.size[1]
                         # Create Laplacian Stack; modularize
