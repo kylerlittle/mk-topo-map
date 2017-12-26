@@ -19,7 +19,7 @@ sh=110.7    # Height of first image taken in 'rawImages/'
 eh=149.6    # Height of last image taken in 'rawImages/'
 du='mm'     # Currently supports: in, mm, and cm
 """
-test_parameters = parameters(0.5, 125, Image.NEAREST, 11, 11, 110.7, 149.6, 'mm')
+test_parameters = parameters(0.5, 125, Image.NEAREST, 11, 11, 110.7, 149.6, 5, 'mm')
 
 
 

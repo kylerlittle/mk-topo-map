@@ -182,7 +182,7 @@ class programWrapper:
                         imageMatrix = pl.asarray(resizedIm.convert('L')) # convert image to greyscale; return matrix
                         for subset_of_rows in pl.arange(resizedIm.size[1] / self.parameters.hd):  # TOTAL Image Matrix
                             for subset_of_columns in pl.arange(resizedIm.size[0] / self.parameters.wd):
-                                image_row = subset_of_rows * self.parameters.hd # keeps track of larger matrix's row index to copy from      
+                                image_row = subset_of_rows * self.parameters.hd # keeps track of larger matrix's row index to copy from  
                                 image_col = subset_of_columns * self.parameters.wd # keeps track of larger matrix's dolumn index to copy from
                                 for row in pl.arange(self.parameters.hd):
                                     for col in pl.arange(self.parameters.wd):
@@ -203,18 +203,24 @@ class programWrapper:
     __createThreeDmodel__: helper function for createThreeDmodel
     """
     def __createThreeDmodel__(self):
-        heightLevels = pl.linspace(0.0, abs(self.parameters.eh - self.parameters.sh), self.numImages) # by default, linspace includes endpoint
+        heightLevels = pl.linspace(0.0, abs(self.parameters.eh - self.parameters.sh), self.numImages)
         # Now, simply find max variance at each pixel 'cluster' in the stack.
         self.threeDmodel = pl.zeros(self.laplacianImageStack[0].shape)
+        iterationsSinceUpdate = pl.zeros(self.laplacianImageStack[0].shape, dtype=pl.uint8) # track num iterations since updated
         print "[x] Creating 3D Model of Size",
         print "(l x w x h): ", self.threeDmodel.shape[0], "x", self.threeDmodel.shape[1], "x", self.numImages
         for index, laplacianOfImMatrix in enumerate(self.laplacianImageStack):
             pointsInFocus = 0
             for row in pl.arange(laplacianOfImMatrix.shape[0]):
                 for col in pl.arange(laplacianOfImMatrix.shape[1]):
-                    if laplacianOfImMatrix[row][col] > self.threeDmodel[row][col]:
+                    if laplacianOfImMatrix[row][col] > self.threeDmodel[row][col] and iterationsSinceUpdate[row][col] < self.parameters.mai + 1:   # add one so that self.parameters.mai iterations actually pass before cell is blocked
                         pointsInFocus += 1
                         self.threeDmodel[row][col] = heightLevels[index]
+                        if index > 0:
+                            iterationsSinceUpdate[row][col] = 1
+                    else:
+                        if iterationsSinceUpdate[row][col] != 0:      # make sure cell has stopped being updated BEYOND first iteration
+                            iterationsSinceUpdate[row][col] += 1
             print "\t[", index + 1, "] Percentage of Pixel Clusters Updated: ", pointsInFocus, "/", laplacianOfImMatrix.size, "=",
             print float(pointsInFocus) / laplacianOfImMatrix.size
         # This time, store results using numpy since we're dealing with an array object
@@ -239,10 +245,9 @@ class programWrapper:
                 with open(internalFilesDir + internalList, 'rb') as f:
                     try:
                         self.laplacianImageStack = pickle.load(f)
-                        self.smallestImageSize = smallestImage(croppedImagesDir)   # If not running 'execute', this needs to be updated
                         self.__createThreeDmodel__()
                     except IOError:
-                        print "Error reading", internalList
+                        print "Error reading ", internalList
         except OSError:
             print "Try running 'make lpc' first."
             
