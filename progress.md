@@ -1,11 +1,11 @@
 # Updates
 * Fixed issue 1 by working on each image one at a time and resizing using `PIL.Image.NEAREST` filter. Check out this [link](https://github.com/kylerlittle/mk-topo-map/issues/1) for more details.
-* At this point, I'm just trying to vary parameters to create the best model. I have an idea of how I'm going to 'smooth' the figures.
-* I hope that the models will converge to the object's shape at some point in the variation of parameters (as it theoretically should). If so, my research will be complete.
+* Fixed issue 2 by making it so maximum number of iterations may elapse before a pixel cluster is "off limits." Check out this [link](https://github.com/kylerlittle/mk-topo-map/issues/2) for more details.
+* Also, GREAT NEWS finally! Achieved my [first promising result](https://github.com/kylerlittle/mk-topo-map/tree/master/topo-maps). Compare *best_fig_1.png* to *best_fig_1_actual.jpg* and compare *best_fig_2.png* to *best_fig_2_actual.jpg* and you should find a lot of similarities. My program remarkable catchs some subtleties in the conformational changes of the fiber I didn't notice upon first glance. The figures are still quity noisy, but I think I'll be able to smooth them.
+* Secondly, it appears that the models are converging to the object's shape in the variation of parameters (as it theoretically should). I still need to alter more parameters and attempt to smooth the figures, but I'm making excellent progress.
 
 # Next Up
 1. Vary PIL's resizing filters since these clearly have a large impact on the outcome of this program.
-1. Run more `vary` tests.
 1. Finish graph function. Accept parameters: tuple: (len, width), so that xy dimensions are actually real and accurate. Also, instead of displaying the graph, save it as a figure in the appropriate directory.
 1. Clean up error handling in `cropPhotos`, `resizePhotos`, `createLaplacianStack`, and `crop_resize_lpc`.
 1. Clean up easy if/else statements (specifically with testMode) with ternary operator. Looks like:
@@ -20,4 +20,4 @@
 1. Make as user-friendly as possible.
 1. Update README.txt with explicit instructions.
 
-*Last Updated: 12/26/2017 17:15 PST*
+*Last Updated: 12/27/2017 11:26 PST*

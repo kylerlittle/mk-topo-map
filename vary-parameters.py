@@ -12,12 +12,12 @@ from PIL import Image
 """
 HOW TO VARY PARAMETERS (you can change these as you see fit)
 """
-whd_range = (4, 50)     # vary the width & height divisors from whd_range[0] to whd_range[1] in increments of whd_step
-whd_step = 2
+whd_range = (12, 13)     # vary the width & height divisors from whd_range[0] to whd_range[1] in increments of whd_step
+whd_step = 1
 mps_range = (0.25, 0.75)   # vary the middle percent savings from mps_range[0] to mps_range[1] in increments of mps_step
 mps_step = .10
-mai_range = (5, 100)    # vary the maximum allowable iterations from mai_range[0] to mai_range[1] in increments of mai_step
-mai_step = 5
+mai_range = (4, 5)    # vary the maximum allowable iterations from mai_range[0] to mai_range[1] in increments of mai_step
+mai_step = 1
 
 
 

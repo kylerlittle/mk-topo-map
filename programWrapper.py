@@ -58,7 +58,6 @@ class programWrapper:
         self.parameters = parameters
         self.testModeOn = testMode
         self.numImages = len(os.listdir(rawImagesTestDir)) if testMode else len(os.listdir(rawImagesRealDir))
-        print self.numImages
 
     """
     runAll: same as 'execute' but with 'cropPhotos', 'resizePhotos', & 'createLaplacianStack' methods combined
@@ -170,6 +169,8 @@ class programWrapper:
                     print "\t[", counter, "] ", im.width, ",", im.height, # Output image's starting size to console.
                     if self.parameters.mps > 1.0 or self.parameters.mps <= 0.0:
                         raise ValueError("You must enter a value in the interval (0.0, 1.0].")
+                    if counter == 46 or counter == 71:
+                        print "Dumb Images... need to fix later"
                     else:
                         # Modularize this...
                         upperEdge = int((0.5 - self.parameters.mps/2) * im.height)
@@ -210,7 +211,7 @@ class programWrapper:
                         # Append to internal laplacian stack; modularize
                         self.laplacianImageStack.append(varianceMatrix)
                         # Lastly, update counter
-                        counter += 1                        
+                    counter += 1                        
         # After all of that, finally just dump it to a file
         with open(internalFilesDir + internalList, 'wb') as f:
             pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
