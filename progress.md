@@ -10,7 +10,7 @@
 1. Clean up error handling in `cropPhotos`, `resizePhotos`, `createLaplacianStack`, and `crop_resize_lpc`.
 1. Clean up easy if/else statements (specifically with testMode) with ternary operator. Looks like:
    ``` python
-   a if b else c`
+   a if b else c
    ```
 1. Modularize code in `crop_resize_lpc`. This function is way too damn messy.
 
