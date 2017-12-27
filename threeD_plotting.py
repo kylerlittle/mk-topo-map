@@ -50,4 +50,9 @@ def plot_threeDmodel(model, dimension_units, modelDir, p, testModeOn):
     if testModeOn:   # Display figure rather than saving it.
         plt.show()
     else:          # Save fig with parameters in name & without surround whitespace
-        fig.savefig(modelDir+"fig_"+str(p.wd)+'_'+str(p.hd)+'_'+"{0:.0f}per".format(p.mps*100)+".png", bbox_inches='tight')
+        """
+        Naming standard: fig_middlePercentSavings(%)_cropThresholdLevel_resizingFilter_widthDivisor_heightDivisor_
+                         startHeight_endHeight_maxAllowableIterations.png
+        """
+        nameOfFig = modelDir + "fig_" + "{0:.0f}mps".format(p.mps*100) + '_' + str(p.ctl) + "ctl" + '_' + str(p.rf) + "rf" + '_' + str(p.wd) + "wd" + '_' + str(p.hd) + "hd" + '_' + str(int(round(p.sh, 0))) + "sh" + '_' + str(int(round(p.eh, 0))) + "eh" + '_' + str(p.mai) + "mai" + ".png"
+        fig.savefig(nameOfFig, bbox_inches='tight')

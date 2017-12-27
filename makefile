@@ -15,8 +15,20 @@ vary_mps:
 	python2.7 vary-parameters.py vary_mps
 
 # Vary width/heighth divisors & middle percent savings in nested loops & runAll each time
-vary_both:
-	python2.7 vary-parameters.py vary_both
+vary_whd_mps:
+	python2.7 vary-parameters.py vary_whd_mps
+
+# Vary max allowable iterations & runAll each time
+vary_mai:
+	python2.7 vary-parameters.py vary_mai
+
+# Vary width/heighth divisors & max allowable iterations in nested loops & runAll each time
+vary_whd_mai:
+	python2.7 vary-parameters.py vary_whd_mai
+
+# Vary the resizing filters & runAll each time
+vary_rf:
+	python2.7 vary-parameters.py vary_rf
 
 # Remove any files beginning in ~ or ending with pyc/pyo
 clean:
@@ -61,29 +73,35 @@ reset:
 help:
 	@echo "___CLEAN UP___"
 	@echo "clean"
-	@echo "		Removes *.pyc, *.pyo, and ~* files"
+	@echo "		Removes *.pyc, *.pyo, and ~* files."
 	@echo "reset"
-	@echo "		Remove all files from 'cropped-images/' & 'resized-images/'"
+	@echo "		Remove all files from 'cropped-images/' & 'resized-images/'."
 	@echo ""
 	@echo "___PROGRAM EXECUTION___"
 	@echo "test_mode"
-	@echo "		Run test-driver.py in python2.7 on your machine"
+	@echo "		Run test-driver.py in python2.7 on your machine."
 	@echo "		'raw-images' dir is src of images, it shows rather than saves fig, and fewer images so much faster."
 	@echo "vary_whd"
 	@echo "		Vary width & heighth divisors & runAll each time."
 	@echo "vary_mps"
 	@echo "		Vary middle percent savings & runAll each time."
-	@echo "vary_both"
+	@echo "vary_whd_mps"
 	@echo "		Vary width/heighth divisors & middle percent savings in nested loops & runAll each time."
+	@echo "vary_mai"
+	@echo "		Vary max allowable iterations & runAll each time."
+	@echo "vary_whd_mai"
+	@echo "		Vary width/heighth divisors & max allowable iterations in nested loops & runAll each time."
+	@echo "vary_rf"
+	@echo "		Vary the resizing filters & runAll each time."
 	@echo ""
 	@echo "___LEARN PROGRAM'S BEHAVIOR___"
 	@echo "crop"
-	@echo "		Crop all photos in 'raw_images/' with given threshold lvl"
+	@echo "		Crop all photos in 'raw_images/' with given threshold lvl."
 	@echo "resize"
-	@echo "		Resize all images in 'cropped-images/' to smallest image in dir"
+	@echo "		Resize all images in 'cropped-images/' to smallest image in dir."
 	@echo "lpc"
-	@echo "		Forms variance of laplacian matrix of each image in 'resized-images/'"
-	@echo "		For more explanation: type 'make help_lpc'"
+	@echo "		Forms variance of laplacian matrix of each image in 'resized-images/'."
+	@echo "		For more explanation: type 'make help_lpc'."
 	@echo "3D"
 	@echo "		Produce the 3D model of the object."
 	@echo "o_3D"

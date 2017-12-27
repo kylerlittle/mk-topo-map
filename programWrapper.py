@@ -87,10 +87,11 @@ class programWrapper:
     """
     def cropPhotos(self):
         if self.testModeOn:
-            imageList = os.listdir(rawImagesTestDir)
+            correctDir = rawImagesTestDir
         else:
-            imageList = os.listdir(rawImagesRealDir)
-
+            correctDir = rawImagesRealDir
+        imageList = os.listdir(correctDir)
+        
         # Instead of print, raise an error... FIX
         if not imageList:
             print "Please populate 'rawImages/' with images."
@@ -98,7 +99,7 @@ class programWrapper:
 #           print "[x] Initiating image cropping"
             counter = 1;
             for imStr in imageList:
-                trm.trim(rawImagesTestDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", self.parameters.mps, self.parameters.ctl, counter)
+                trm.trim(correctDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", self.parameters.mps, self.parameters.ctl, counter)
                 counter += 1
 
     """
@@ -148,17 +149,20 @@ class programWrapper:
     def crop_resize_lpc(self):
         Laplacian_Kernel = (pl.array([[0.,-1.,0.],[-1.,4.,-1.],[0.,-1.,0.]])) * (1./60)
         self.resizeImagesTo = (self.smallestImageSize[0] - (self.smallestImageSize[0] % self.parameters.wd), self.smallestImageSize[1] - (self.smallestImageSize[1] % self.parameters.wd))
-        imageList = os.listdir(rawImagesTestDir)
+
+        # Determine correct raw image directory
+        if self.testModeOn:
+            correctDir = rawImagesTestDir
+        else:
+            correctDir = rawImagesRealDir
+        
+        imageList = os.listdir(correctDir)
         if not imageList:
             print "Please populate 'rawImages/' with images."
         else:
             counter = 1;
             for imStr in imageList:
-                if self.testModeOn:
-                    im = Vips.Image.new_from_file(rawImagesTestDir + imStr)
-                else:
-                    im = Vips.Image.new_from_file(rawImagesRealDir + imStr)
-                
+                im = Vips.Image.new_from_file(correctDir + imStr)
                 if im is None:
                     print "Image to process not opened successfully."
                 else:       # Image provided & opened successfully.
@@ -167,8 +171,8 @@ class programWrapper:
                         raise ValueError("You must enter a value in the interval (0.0, 1.0].")
                     else:
                         # Modularize this...
-                        upper = int((0.5 - self.parameters.mps/2) * im.height); lower = int((0.5 + self.parameters.mps/2) * im.height)
-                        im = im.crop(0, upper, im.width, lower) # "Pre" cropping the image to ignore a few dumb things in the lab.
+                        upperEdge = int((0.5 - self.parameters.mps/2) * im.height)
+                        im = im.crop(0, upperEdge, im.width, im.height * self.parameters.mps)   # "Pre" cropping
                         background = im.getpoint(0, 0)
                         mask = (im.median(3) - background).abs() > self.parameters.ctl
                         columns, rows = mask.project()

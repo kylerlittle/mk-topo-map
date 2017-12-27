@@ -34,8 +34,8 @@ def trim(inputIm, outputIm, middlePercentSaving, acceptableThreshold, imNum):
         if middlePercentSaving > 1.0 or middlePercentSaving <= 0.0:
             raise ValueError("You must enter a value in the interval (0.0, 1.0].")
         else:
-            upper = int((0.5 - middlePercentSaving/2) * im.height); lower = int((0.5 + middlePercentSaving/2) * im.height)
-            im = im.crop(0, upper, im.width, lower)
+            upperEdge = int((0.5 - middlePercentSaving/2) * im.height)
+            im = im.crop(0, upperEdge, im.width, im.height * middlePercentSaving)
             
             # Find the value of the pixel at (0, 0) ... we will search for all pixels 
             # significantly different from this

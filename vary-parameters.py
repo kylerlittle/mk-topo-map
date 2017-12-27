@@ -12,10 +12,12 @@ from PIL import Image
 """
 HOW TO VARY PARAMETERS (you can change these as you see fit)
 """
-whd_range = (26, 50)     # vary the width & height divisors from 26 to 48 in increments of 2
+whd_range = (4, 50)     # vary the width & height divisors from whd_range[0] to whd_range[1] in increments of whd_step
 whd_step = 2
-mps_range = (0.25, 0.75)   # vary the middle percent savings from 0.25 to 0.75 in increments of 0.10 (i.e. 0.25, 0.35, ...)
+mps_range = (0.25, 0.75)   # vary the middle percent savings from mps_range[0] to mps_range[1] in increments of mps_step
 mps_step = .10
+mai_range = (5, 100)    # vary the maximum allowable iterations from mai_range[0] to mai_range[1] in increments of mai_step
+mai_step = 5
 
 
 
@@ -23,11 +25,13 @@ mps_step = .10
 CLASS WRAPPER
 """
 class vary_parameters:
-    def __init__(self, whd_range, whd_step, mps_range, mps_step):
+    def __init__(self, whd_range, whd_step, mps_range, mps_step, mai_range, mai_step):
         self.whd_range = whd_range
         self.whd_step = whd_step
         self.mps_range = mps_range
         self.mps_step = mps_step
+        self.mai_range = mai_range
+        self.mai_step = mai_step
         
     def width_height_divisors(self):
         for val in np.arange(self.whd_range[0], self.whd_range[1], self.whd_step):
@@ -41,14 +45,27 @@ class vary_parameters:
             program = pw.programWrapper(params, False)
             program.runAll()
 
-    def vary_both(self):
+    def vary_whd_mps(self):
         for whd_val in np.arange(self.whd_range[0], self.whd_range[1], self.whd_step):
             for mps_val in np.arange(self.mps_range[0], self.mps_range[1], self.mps_step):
                 params = parameters(mps_val, 125, Image.NEAREST, whd_val, whd_val, 110.7, 149.6, 5, 'mm')
                 program = pw.programWrapper(params, False)
                 program.runAll()
 
-    def vary_resize(self):
+    def vary_mai(self):
+        for val in np.arange(self.mai_range[0], self.mai_range[1], self.mai_step):
+            params = parameters(0.5, 125, Image.NEAREST, 10, 10, 110.7, 149.6, val, 'mm')
+            program = pw.programWrapper(params, False)
+            program.runAll()
+            
+    def vary_whd_mai(self):
+        for whd_val in np.arange(self.whd_range[0], self.whd_range[1], self.whd_step):
+            for mai_val in np.arange(self.mai_range[0], self.mai_range[1], self.mai_step):
+                params = parameters(0.5, 125, Image.NEAREST, whd_val, whd_val, 110.7, 149.6, mai_val, 'mm')
+                program = pw.programWrapper(params, False)
+                program.runAll()
+
+    def vary_rf(self):
         print 'Unimplemented.'
 
                 
@@ -73,8 +90,16 @@ def executeCommand(parameter_type):
         vp.width_height_divisors()
     elif parameter_type == 'vary_mps':
         vp.mid_perecent_save()
-    elif parameter_type == 'vary_both':
-        vp.vary_both()
+    elif parameter_type == 'vary_whd_mps':
+        vp.vary_whd_mps()
+    elif parameter_type == 'vary_mai':
+        vp.vary_mai()
+    elif parameter_type == 'vary_whd_mai':
+        vp.vary_whd_mai()
+    elif parameter_type == 'vary_resize':
+        vp.vary_rf()
+    else:
+        print "Invalid vary command."
 
 # Execute the command.
 if command != 'null':
