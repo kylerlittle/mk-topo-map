@@ -74,7 +74,7 @@ class vary_parameters:
 EXECUTION
 """        
 # Create vary_parameters instance.
-vp = vary_parameters(whd_range, whd_step, mps_range, mps_step)
+vp = vary_parameters(whd_range, whd_step, mps_range, mps_step, mai_range, mai_step)
         
 # Grab the command.
 try:
