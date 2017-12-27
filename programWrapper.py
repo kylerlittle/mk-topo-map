@@ -54,10 +54,11 @@ class programWrapper:
         self.smallestImageSize = 'invalid'
         self.resizeImagesTo = 'invalid'
         self.laplacianImageStack = []
-        self.numImages = len(os.listdir(rawImagesTestDir))
         self.threeDmodel = 'invalid'
         self.parameters = parameters
         self.testModeOn = testMode
+        self.numImages = len(os.listdir(rawImagesTestDir)) if testMode else len(os.listdir(rawImagesRealDir))
+        print self.numImages
 
     """
     runAll: same as 'execute' but with 'cropPhotos', 'resizePhotos', & 'createLaplacianStack' methods combined
