@@ -6,12 +6,13 @@
 * One really awesome thing I just noticed is that the xy dimensions in *best_fig_3.png* are legitimately accurate. When the model converges to the object in the z direction, it also converges in the xy direction. This is so cool.
 
 # Next Up
+1. Edit matplotlib's graph files so that it autoscales my graph to a rectangular plot if matrix is rectangular. Check out this [link](https://stackoverflow.com/questions/10326371/setting-aspect-ratio-of-3d-plot) for more information. FYI, on my computer, `get_proj` function is inside `/usr/lib/python2.7/dist-packages/mpl_toolkits/mplot3d/axes3d.py`.
 1. Vary PIL's resizing filters since these clearly have a large impact on the outcome of this program.
 1. Finish graph function. Accept parameters: tuple: (len, width), so that xy dimensions are actually real and accurate. Also, instead of displaying the graph, save it as a figure in the appropriate directory.
 1. Clean up error handling in `cropPhotos`, `resizePhotos`, `createLaplacianStack`, and `crop_resize_lpc`.
 1. Clean up easy if/else statements (specifically with testMode) with ternary operator. Looks like:
    ``` python
-   a if b else c
+   a if condition else b
    ```
 1. Modularize code in `crop_resize_lpc`. This function is way too damn messy.
 
@@ -21,4 +22,4 @@
 1. Make as user-friendly as possible.
 1. Update README.txt with explicit instructions.
 
-*Last Updated: 12/27/2017 16:09 PST*
+*Last Updated: 12/28/2017 13:22 PST*
