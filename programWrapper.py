@@ -1,6 +1,5 @@
 # Installed Libraries/Modules
 import os as os
-import trim as trm
 from PIL import Image
 from scipy import signal    # convolving operation, optimized for large matrices
 import cPickle as pickle
@@ -8,10 +7,16 @@ import pylab as pl     # numpy and pyplot packaged together
 import gi
 gi.require_version('Vips', '8.0')       # Ensure the right version is imported
 from gi.repository import Vips
+
+
+
 # Written Libraries/Modules
+import trim as trm
 from Laplacian_Variance import variance_of_laplacian
 from threeD_plotting import plot_threeDmodel
 from parameters import parameters
+
+
 
 # Directories
 rawImagesTestDir = "raw-images-test/"
@@ -24,34 +29,14 @@ figuresDir = "topo-maps/"
 internalList = "varLpcMatrixList.pickle"
 internalThreeDModel = "threeDmodel.npy"
 
-"""
-smallestImage: accepts string which refers to a particular directory
-               returns 'null' if empty or the size() attribute of the smallest image in the directory
-"""
-def smallestImage(directory):
-    lst = os.listdir(directory)
-    try:
-        firstImName = lst[0]
-    except IndexError:
-        print "Empty directory. Cannot find smallest image."
-        firstImName = 'null'
-
-    if (firstImName != 'null'):
-        currentMin = (100000,100000)        # Any image should be smaller than this... otherwise, I don't want to deal with it
-        for imName in lst:
-            im = Image.open(directory + imName)
-            if (im.size < currentMin):
-                currentMin = im.size
-            im.close()
-    return currentMin
 
 
+# Program Wrapper Class
 class programWrapper:
     """
     __init__: constructor
     """
     def __init__(self, parameters, testMode):
-        self.smallestImageSize = 'invalid'
         self.resizeImagesTo = 'invalid'
         self.laplacianImageStack = []
         self.threeDmodel = 'invalid'
@@ -60,25 +45,16 @@ class programWrapper:
         self.numImages = len(os.listdir(rawImagesTestDir)) if testMode else len(os.listdir(rawImagesRealDir))
 
     """
-    runAll: same as 'execute' but with 'cropPhotos', 'resizePhotos', & 'createLaplacianStack' methods combined
+    runAll: 'cropPhotos', 'resizePhotos' are run initially to determine self.resizeImagesTo; then, 'cropPhotos', 
+            'resizePhotos', & 'createLaplacianStack' methods are combined to eliminate noise-reducing resampling
+            and interpolating methods; lastly, model is created and graphed
     """
     def runAll(self):
-        # run through the initial parts of the program in order to find resize size (i.e. self.smallestImageSize)
+        # run through the initial parts of the program in order to find resize size and check out to see if images look good enough
         self.cropPhotos()
         self.resizePhotos()
         # now process the images in place and one-by-one
         self.crop_resize_lpc()
-        self.createThreeDmodel()
-        self.graphModel()
-    
-    """
-    execute: main function to execute all tasks in one (CAREFUL WITH THIS)
-             by default, createThreeDmodel is used rather than optimized version
-    """
-    def execute(self):
-        self.cropPhotos()
-        self.resizePhotos()
-        self.createLaplacianStack()
         self.createThreeDmodel()
         self.graphModel()
 
@@ -86,43 +62,48 @@ class programWrapper:
     cropPhotos: crops 'raw' photos to be approximately inline with the outline of the object
     """
     def cropPhotos(self):
-        if self.testModeOn:
-            correctDir = rawImagesTestDir
-        else:
-            correctDir = rawImagesRealDir
-        imageList = os.listdir(correctDir)
-        
-        # Instead of print, raise an error... FIX
+        workingDir = rawImagesTestDir if self.testModeOn else rawImagesRealDir
+        imageList = os.listdir(workingDir)
         if not imageList:
-            print "Please populate 'rawImages/' with images."
-        else:
-#           print "[x] Initiating image cropping"
-            counter = 1;
-            for imStr in imageList:
-                trm.trim(correctDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", self.parameters.mps, self.parameters.ctl, counter)
-                counter += 1
+            raise SystemExit("Please populate " + workingDir + " with images. It's currently empty.")
+        print "[x] Initiating image cropping"
+        counter = 1;
+        for imStr in imageList:
+            trm.trim(workingDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", self.parameters.mps, self.parameters.ctl, counter)
+            counter += 1
+                
+    """
+    determineResizeImagesTo: determines the smallest image in 'croppedImagesDir' & sets self.resizeImagesTo to this value
+    """
+    def determineResizeImagesTo(self):
+        lst = os.listdir(croppedImagesDir)
+        if not lst:
+            raise SystemExit(croppedImagesDir + " is empty. Try running 'make crop' or 'make test_mode' first.")
+        currentMin = (10000000,10000000)        # Any image should be smaller than this... otherwise, I don't want to deal with it
+        for imName in lst:
+            im = Image.open(croppedImagesDir + imName)
+            if (im.size < currentMin):
+                currentMin = im.size
+            im.close()
+        self.resizeImagesTo = (currentMin[0] - (currentMin[0] % self.parameters.wd), currentMin[1] - (currentMin[1] % self.parameters.wd))
 
     """
     resizePhotos: resizes all cropped images to the size of the smallest photo in croppedImagesDir
-                  LANCZOS filtering was chosen so as to retain highest downscaling quality
-                  performance is least important in this case, so we sacrifice it
+                  determineResizeImagesTo already checks to see if croppedImagesDir is empty
     """
     def resizePhotos(self):
-        self.smallestImageSize = smallestImage(croppedImagesDir)
+        self.determineResizeImagesTo()
         imageList = os.listdir(croppedImagesDir)
-        if not imageList:
-            print "Try running 'make crop' first."
-        else:
-            counter = 1   # utilize counter for appropriate file naming
-#           print "[x] Resizing all images to: ", self.smallestImageSize
-            for imStr in imageList:
-                im = Image.open(croppedImagesDir + imStr)
-                #print "\t[", counter, "] ", im.size[0], ",", im.size[1], "resized to",
-                resizedIm = im.resize(self.smallestImageSize, resample=self.parameters.rf)
-                #print resizedIm.size[0], ",", resizedIm.size[1]
-                resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
-                im.close()
-                counter += 1
+        counter = 1   # utilize counter for appropriate file naming
+        print "[x] Resizing all images to: ", self.resizeImagesTo
+        for imStr in imageList:
+            im = Image.open(croppedImagesDir + imStr)
+            print "\t[", counter, "] ", im.size[0], ",", im.size[1], "resized to",
+            resizedIm = im.resize(self.resizeImagesTo, resample=self.parameters.rf)
+            print resizedIm.size[0], ",", resizedIm.size[1]
+            resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
+            im.close()
+            counter += 1
 
     """
     createLaplacianStack: for each image in 'resizedImagesDir/', calculate its variance
@@ -132,86 +113,78 @@ class programWrapper:
     def createLaplacianStack(self):
         imageList = os.listdir(resizedImagesDir)
         if not imageList:
-            print "Try running 'make resize' first."
-        else:
-            print "[x] Initiating 'variance_of_laplacian' method on resized images"
-            counter = 1   # Counter included for console output
-            for imStr in imageList:
-                varianceMatrix = variance_of_laplacian(resizedImagesDir + imStr, self.parameters.hd, self.parameters.wd, counter)
-                counter += 1  
-                self.laplacianImageStack.append(varianceMatrix) # For each matrix produced from a single image, append to internal list
-            with open(internalFilesDir + internalList, 'wb') as f:
-                pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
+            raise SystemExit("Try running 'make resize' or 'make test_mode' first.")
+        print "[x] Initiating 'variance_of_laplacian' method on resized images"
+        counter = 1   # Counter included for console output
+        for imStr in imageList:
+            varianceMatrix = variance_of_laplacian(resizedImagesDir + imStr, self.parameters.hd, self.parameters.wd, counter)
+            counter += 1  
+            self.laplacianImageStack.append(varianceMatrix) # For each matrix produced from a single image, append to internal list
+        with open(internalFilesDir + internalList, 'wb') as f:
+            pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
                 
     """
-    crop_resize_lpc: crop, resize, and create Laplacian Stack without a single image write
+    crop_resize_lpc: crop, resize, and create Laplacian Stack without noise-removing resampling and interpolation methods
     """
     def crop_resize_lpc(self):
-        Laplacian_Kernel = (pl.array([[0.,-1.,0.],[-1.,4.,-1.],[0.,-1.,0.]])) * (1./60)
-        self.resizeImagesTo = (self.smallestImageSize[0] - (self.smallestImageSize[0] % self.parameters.wd), self.smallestImageSize[1] - (self.smallestImageSize[1] % self.parameters.wd))
-
-        # Determine correct raw image directory
-        if self.testModeOn:
-            correctDir = rawImagesTestDir
-        else:
-            correctDir = rawImagesRealDir
-        
-        imageList = os.listdir(correctDir)
+        workingDir = rawImagesTestDir if self.testModeOn else rawImagesRealDir
+        imageList = os.listdir(workingDir)
         if not imageList:
-            print "Please populate 'rawImages/' with images."
-        else:
-            counter = 1;
-            for imStr in imageList:
-                im = Vips.Image.new_from_file(correctDir + imStr)
-                if im is None:
-                    print "Image to process not opened successfully."
-                else:       # Image provided & opened successfully.
-                    print "\t[", counter, "] ", im.width, ",", im.height, # Output image's starting size to console.
-                    if self.parameters.mps > 1.0 or self.parameters.mps <= 0.0:
-                        raise ValueError("You must enter a value in the interval (0.0, 1.0].")
-                    if counter == 46 or counter == 71:
-                        print "Dumb Images... need to fix later"
-                    else:
-                        # Modularize this...
-                        upperEdge = int((0.5 - self.parameters.mps/2) * im.height)
-                        im = im.crop(0, upperEdge, im.width, im.height * self.parameters.mps)   # "Pre" cropping
-                        background = im.getpoint(0, 0)
-                        mask = (im.median(3) - background).abs() > self.parameters.ctl
-                        columns, rows = mask.project()
-                        left = columns.profile()[1].min()
-                        right = columns.width - columns.flip("horizontal").profile()[1].min()
-                        top = rows.profile()[0].min()
-                        bottom = rows.height - rows.flip("vertical").profile()[0].min()
-                        im = im.crop(left, top, right - left, bottom - top)
-                        print "cropped to", im.width, ",", im.height     # Output ending size to the console
-                        # Convert to PIL image; modularize...
-                        mem_img = im.write_to_memory()
-                        pil_img = Image.fromarray(pl.fromstring(mem_img, dtype=pl.uint8).reshape(im.height, im.width, im.bands), mode='RGB')
-                        # Resize PIL image
-                        print "\t[", counter, "] ", pil_img.size[0], ",", pil_img.size[1], "resized to",
-                        resizedIm = pil_img.resize(self.resizeImagesTo, resample=self.parameters.rf)
-                        resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
-                        print resizedIm.size[0], ",", resizedIm.size[1]
-                        # Create Laplacian Stack; modularize
-                        print "\t[", counter, "]  Performing 'variance_of_laplacian' method on resized image...",
-                        miniMatrix = pl.zeros((self.parameters.hd,self.parameters.wd)) # heightDivisor x widthDivisor Matrix to copy elements to
-                        varianceMatrix = pl.zeros((resizedIm.size[1] / self.parameters.hd, resizedIm.size[0] / self.parameters.wd))
-                        imageMatrix = pl.asarray(resizedIm.convert('L')) # convert image to greyscale; return matrix
-                        for subset_of_rows in pl.arange(resizedIm.size[1] / self.parameters.hd):  # TOTAL Image Matrix
-                            for subset_of_columns in pl.arange(resizedIm.size[0] / self.parameters.wd):
-                                image_row = subset_of_rows * self.parameters.hd # keeps track of larger matrix's row index to copy from  
-                                image_col = subset_of_columns * self.parameters.wd # keeps track of larger matrix's dolumn index to copy from
-                                for row in pl.arange(self.parameters.hd):
-                                    for col in pl.arange(self.parameters.wd):
-                                        miniMatrix[row][col] = imageMatrix[image_row + row][image_col + col]
-                                Convolve = signal.fftconvolve(miniMatrix, Laplacian_Kernel, mode='full')
-                                Variance = pl.var(Convolve)
-                                varianceMatrix[subset_of_rows][subset_of_columns] = Variance
-                        print "Done."
-                        # Append to internal laplacian stack; modularize
-                        self.laplacianImageStack.append(varianceMatrix)
-                        # Lastly, update counter
-                    counter += 1                        
+            raise SystemExit("Please populate 'rawImages/' with images. It's currently empty.")
+        print "[x] Initiating the bulk of the program's execution (i.e. crop_resize_lpc)"
+        counter = 1;
+        for imStr in imageList:
+            im = Vips.Image.new_from_file(workingDir + imStr)
+            if im is None:
+                raise SystemExit("Image to process not opened successfully.")
+            if self.parameters.mps > 1.0 or self.parameters.mps <= 0.0:
+                raise ValueError("You must enter a value in the interval (0.0, 1.0].")
+            else:
+                # Modularize crop method
+                print "\t[", counter, "] ", im.width, ",", im.height, # Output image's starting size to console.
+                upperEdge = int((0.5 - self.parameters.mps/2) * im.height)
+                im = im.crop(0, upperEdge, im.width, im.height * self.parameters.mps)   # "Pre" cropping
+                background = im.getpoint(0, 0)
+                mask = (im.median(3) - background).abs() > self.parameters.ctl
+                columns, rows = mask.project()
+                left = columns.profile()[1].min()
+                right = columns.width - columns.flip("horizontal").profile()[1].min()
+                top = rows.profile()[0].min()
+                bottom = rows.height - rows.flip("vertical").profile()[0].min()
+                im = im.crop(left, top, right - left, bottom - top)
+                print "cropped to", im.width, ",", im.height     # Output ending size to the console
+                
+                # Convert to PIL image; modularize...
+                mem_img = im.write_to_memory()
+                pil_img = Image.fromarray(pl.fromstring(mem_img, dtype=pl.uint8).reshape(im.height, im.width, im.bands), mode='RGB')
+                
+                # Resize PIL image
+                print "\t[", counter, "] ", pil_img.size[0], ",", pil_img.size[1], "resized to",
+                resizedIm = pil_img.resize(self.resizeImagesTo, resample=self.parameters.rf)
+                resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
+                print resizedIm.size[0], ",", resizedIm.size[1]
+                
+                # Create Laplacian Stack; modularize
+                print "\t[", counter, "]  Performing 'variance_of_laplacian' method on resized image...",
+                Laplacian_Kernel = (pl.array([[0.,-1.,0.],[-1.,4.,-1.],[0.,-1.,0.]])) * (1./60)
+                miniMatrix = pl.zeros((self.parameters.hd,self.parameters.wd)) # heightDivisor x widthDivisor Matrix to copy elements to
+                varianceMatrix = pl.zeros((resizedIm.size[1] / self.parameters.hd, resizedIm.size[0] / self.parameters.wd))
+                imageMatrix = pl.asarray(resizedIm.convert('L')) # convert image to greyscale; return matrix
+                for subset_of_rows in pl.arange(resizedIm.size[1] / self.parameters.hd):  # TOTAL Image Matrix
+                    for subset_of_columns in pl.arange(resizedIm.size[0] / self.parameters.wd):
+                        image_row = subset_of_rows * self.parameters.hd # keeps track of larger matrix's row index to copy from  
+                        image_col = subset_of_columns * self.parameters.wd # keeps track of larger matrix's dolumn index to copy from
+                        for row in pl.arange(self.parameters.hd):
+                            for col in pl.arange(self.parameters.wd):
+                                miniMatrix[row][col] = imageMatrix[image_row + row][image_col + col]
+                        Convolve = signal.fftconvolve(miniMatrix, Laplacian_Kernel, mode='full')
+                        varianceMatrix[subset_of_rows][subset_of_columns] = pl.var(Convolve)
+                print "Done."
+                
+                # Append to internal laplacian stack; modularize
+                self.laplacianImageStack.append(varianceMatrix)
+            # Lastly, update counter
+            counter += 1                        
         # After all of that, finally just dump it to a file
         with open(internalFilesDir + internalList, 'wb') as f:
             pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
