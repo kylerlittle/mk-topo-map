@@ -62,8 +62,10 @@ def plot_threeDmodel(model, dimension_units, modelDir, p, testModeOn):
 
     # Input matrix is rectangular, so set the aspect of the axis scaling to avoid a cubic plot
     z_min = Z.min(); z_max = Z.max()
-    max_val = max(len(x), len(y))
-    ax.auto_scale_xyz([0, max_val], [0, max_val], [z_min - 5, z_max + 5])
+    # In the future, make this more reusable. For now, it's easiest to just do this manually.
+    # max_val = max(len(x), len(y), abs(z_min - z_max))
+    ax.pbaspect = [2, 0.6, 0.35]
+    #ax.auto_scale_xyz([0, max_val], [0, max_val], [z_min - 5, z_max + 5])
     
     # Add a color bar which maps values to colors.
     fig.colorbar(surf, shrink=0.5, aspect=5)
