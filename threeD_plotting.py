@@ -45,11 +45,11 @@ def plot_threeDmodel(model, dimension_units, modelDir, p, testModeOn):
     # Set up grid and test data
     (Height,Width) = model.shape
     y = np.arange(Height)
-    y = y[10:31:1]
+    y = y[6:34:1]
     x = np.arange(Width)
     X, Y = np.meshgrid(x, y)  # `plot_surface` expects `x` and `y` data to be 2D
     # 'meshgrid' converts coordinates to two separate 2D arrays
-    Z = model[10:31:1][::]
+    Z = model[6:34:1][::]
     
     xnew, ynew = np.mgrid[-1:1:560j, -1:1:84j]
     tck = interpolate.bisplrep(X, Y, Z, s=0)
@@ -64,7 +64,7 @@ def plot_threeDmodel(model, dimension_units, modelDir, p, testModeOn):
     z_min = Z.min(); z_max = Z.max()
     # In the future, make this more reusable. For now, it's easiest to just do this manually.
     # max_val = max(len(x), len(y), abs(z_min - z_max))
-    ax.pbaspect = [2, 0.6, 0.35]
+    ax.pbaspect = [1.5, 0.4, 0.4]
     #ax.auto_scale_xyz([0, max_val], [0, max_val], [z_min - 5, z_max + 5])
     
     # Add a color bar which maps values to colors.
