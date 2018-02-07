@@ -19,7 +19,8 @@
 # Eventually
 1. Create virtualenv so that others in the research group can easily use this software, or make shell scripts so necessary software is installed on the user's computer.
 1. Get better images for the `raw-images-test/` directory to make it easier for the user to understand the program's behavior.
+1. Make `VoL` (variance of laplacian method) in C/C++. This phase in the program is the bottleneck; it needs to be sped up. The method is composed of basic matrix convulation and variance calculations. There are plenty of C++ libraries that can do this. For instance, consider CUTLASS.
 1. Make as user-friendly as possible.
 1. Update README.txt with explicit instructions.
 
-*Last Updated: 12/28/2017 13:22 PST*
+*Last Updated: 2/06/2018 20:19 PST*
