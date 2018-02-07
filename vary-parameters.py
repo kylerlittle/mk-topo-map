@@ -12,12 +12,13 @@ from PIL import Image
 """
 HOW TO VARY PARAMETERS (you can change these as you see fit)
 """
-whd_range = (12, 13)     # vary the width & height divisors from whd_range[0] to whd_range[1] in increments of whd_step
+whd_range = (8, 14)     # vary the width & height divisors from whd_range[0] to whd_range[1] in increments of whd_step
 whd_step = 1
 mps_range = (0.25, 0.75)   # vary the middle percent savings from mps_range[0] to mps_range[1] in increments of mps_step
 mps_step = .10
-mai_range = (4, 5)    # vary the maximum allowable iterations from mai_range[0] to mai_range[1] in increments of mai_step
+mai_range = (3, 6)    # vary the maximum allowable iterations from mai_range[0] to mai_range[1] in increments of mai_step
 mai_step = 1
+rf_num = 4      # Number of resizing filters... NEAREST = 0, BILINEAR = 1, BICUBIC = 2, LANCZOS = 3
 
 
 
@@ -25,13 +26,14 @@ mai_step = 1
 CLASS WRAPPER
 """
 class vary_parameters:
-    def __init__(self, whd_range, whd_step, mps_range, mps_step, mai_range, mai_step):
+    def __init__(self, whd_range, whd_step, mps_range, mps_step, mai_range, mai_step, rf_num):
         self.whd_range = whd_range
         self.whd_step = whd_step
         self.mps_range = mps_range
         self.mps_step = mps_step
         self.mai_range = mai_range
         self.mai_step = mai_step
+        self.rf_num = rf_num
         
     def width_height_divisors(self):
         for val in np.arange(self.whd_range[0], self.whd_range[1], self.whd_step):
@@ -65,8 +67,12 @@ class vary_parameters:
                 program = pw.programWrapper(params, False)
                 program.runAll()
 
-    def vary_rf(self):
-        print 'Unimplemented.'
+    def vary_whd_rf(self):
+        for whd_val in np.arange(self.whd_range[0], self.whd_range[1], self.whd_step):
+            for r_filter in np.arange(self.rf_num):
+                params = parameters(0.5, 125, r_filter, whd_val, whd_val, 110.7, 149.6, 5, 'mm')
+                program = pw.programWrapper(params, False)
+                program.runAll()
 
                 
 
@@ -74,7 +80,7 @@ class vary_parameters:
 EXECUTION
 """        
 # Create vary_parameters instance.
-vp = vary_parameters(whd_range, whd_step, mps_range, mps_step, mai_range, mai_step)
+vp = vary_parameters(whd_range, whd_step, mps_range, mps_step, mai_range, mai_step, rf_num)
         
 # Grab the command.
 try:
@@ -96,8 +102,8 @@ def executeCommand(parameter_type):
         vp.vary_mai()
     elif parameter_type == 'vary_whd_mai':
         vp.vary_whd_mai()
-    elif parameter_type == 'vary_resize':
-        vp.vary_rf()
+    elif parameter_type == 'vary_whd_rf':
+        vp.vary_whd_rf()
     else:
         print "Invalid vary command."
 

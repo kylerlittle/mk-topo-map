@@ -26,9 +26,9 @@ vary_mai:
 vary_whd_mai:
 	python2.7 vary-parameters.py vary_whd_mai
 
-# Vary the resizing filters & runAll each time
-vary_rf:
-	python2.7 vary-parameters.py vary_rf
+# Vary the width/heighth divisors & resizing filters in nested loops & runAll each time
+vary_whd_rf:
+	python2.7 vary-parameters.py vary_whd_rf
 
 # Remove any files beginning in ~ or ending with pyc/pyo
 clean:
@@ -91,8 +91,8 @@ help:
 	@echo "		Vary max allowable iterations & runAll each time."
 	@echo "vary_whd_mai"
 	@echo "		Vary width/heighth divisors & max allowable iterations in nested loops & runAll each time."
-	@echo "vary_rf"
-	@echo "		Vary the resizing filters & runAll each time."
+	@echo "vary_whd_rf"
+	@echo "		Vary the width/heighth divisors & resizing filters in nested loops & runAll each time."
 	@echo ""
 	@echo "___LEARN PROGRAM'S BEHAVIOR___"
 	@echo "crop"
