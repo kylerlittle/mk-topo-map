@@ -14,7 +14,7 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from scipy import interpolate
 from parameters import parameters
 
-def plot_threeDmodel(model, dimension_units, modelDir, p, testModeOn):
+def plot_three_d_model(model, dimension_units, modelDir, p, testModeOn):
     print "[x] Graphing 3D Model"
 
     """

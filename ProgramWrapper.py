@@ -11,10 +11,10 @@ from gi.repository import Vips
 
 
 # Written Libraries/Modules
-import trim as trm
-from Laplacian_Variance import variance_of_laplacian
-from threeD_plotting import plot_threeDmodel
-from parameters import parameters
+import trim
+import variance_of_laplacian
+from three_d_plotting import plot_three_d_model
+import parameters
 
 
 
@@ -32,50 +32,50 @@ internalThreeDModel = "threeDmodel.npy"
 
 
 # Program Wrapper Class
-class programWrapper:
-    def __init__(self, parameters, testMode):
+class ProgramWrapper:
+    def __init__(self, parameters, testmode=True):
         """
         __init__: constructor
         """
-        self.resizeImagesTo = 'invalid'
-        self.laplacianImageStack = []
-        self.threeDmodel = 'invalid'
-        self.parameters = parameters
-        self.testModeOn = testMode
-        self.numImages = len(os.listdir(rawImagesTestDir)) if testMode else len(os.listdir(rawImagesRealDir))
+        self.ResizeImagesSize = 'invalid'
+        self.VoLImageStack = []
+        self.ThreeDModel = 'invalid'
+        self.Parameters = parameters
+        self.TestModeOn = testmode
+        self.NumImages = len(os.listdir(rawImagesTestDir)) if testmode else len(os.listdir(rawImagesRealDir))
 
-    def runAll(self):
+    def run_program(self):
         """
-        runAll: 'cropPhotos', 'resizePhotos' are run initially to determine self.resizeImagesTo; then, 'cropPhotos', 
-                'resizePhotos', & 'createLaplacianStack' methods are combined to eliminate noise-reducing resampling
+        run_program: 'crop_photos', 'resize_photos' are run initially to determine self.ResizeImagesSize; then, 'crop_photos', 
+                'resize_photos', & 'createLaplacianStack' methods are combined to eliminate noise-reducing resampling
                 and interpolating methods; lastly, model is created and graphed
         """
         # run through the initial parts of the program in order to find resize size and check out to see if images look good enough
-        self.cropPhotos()
-        self.resizePhotos()
+        self.crop_photos()
+        self.resize_photos()
         # now process the images in place and one-by-one
-        self.crop_resize_lpc()
-        self.createThreeDmodel()
-        self.graphModel()
+        self.crop_resize_vol()
+        self.create_three_d_model()
+        self.graph_model()
 
 
-    def cropPhotos(self):
+    def crop_photos(self):
         """
-        cropPhotos: crops 'raw' photos to be approximately inline with the outline of the object
+        crop_photos: crops 'raw' photos to be approximately inline with the outline of the object
         """
-        workingDir = rawImagesTestDir if self.testModeOn else rawImagesRealDir
+        workingDir = rawImagesTestDir if self.TestModeOn else rawImagesRealDir
         imageList = os.listdir(workingDir)
         if not imageList:
             raise SystemExit("Please populate " + workingDir + " with images. It's currently empty.")
         print "[x] Initiating image cropping"
         counter = 1;
         for imStr in imageList:
-            trm.trim(workingDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", self.parameters.mps, self.parameters.ctl, counter)
+            trim.trim(workingDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", self.Parameters.mps, self.Parameters.ctl, counter)
             counter += 1
                 
     def determineResizeImagesTo(self):
         """
-        determineResizeImagesTo: determines the smallest image in 'croppedImagesDir' & sets self.resizeImagesTo to this value
+        determineResizeImagesTo: determines the smallest image in 'croppedImagesDir' & sets self.ResizeImagesSize to this value
         """
         lst = os.listdir(croppedImagesDir)
         if not lst:
@@ -86,64 +86,64 @@ class programWrapper:
             if (im.size < currentMin):
                 currentMin = im.size
             im.close()
-        self.resizeImagesTo = (currentMin[0] - (currentMin[0] % self.parameters.wd), currentMin[1] - (currentMin[1] % self.parameters.wd))
+        self.ResizeImagesSize = (currentMin[0] - (currentMin[0] % self.Parameters.wd), currentMin[1] - (currentMin[1] % self.Parameters.wd))
 
-    def resizePhotos(self):
+    def resize_photos(self):
         """Resize all images to the size of the smallest photo in croppedImagesDir."""
         self.determineResizeImagesTo()
         imageList = os.listdir(croppedImagesDir)
         counter = 1   # utilize counter for appropriate file naming
-        print "[x] Resizing all images to: ", self.resizeImagesTo
+        print "[x] Resizing all images to: ", self.ResizeImagesSize
         for imStr in imageList:
             im = Image.open(croppedImagesDir + imStr)
             print "\t[", counter, "] ", im.size[0], ",", im.size[1], "resized to",
-            resizedIm = im.resize(self.resizeImagesTo, resample=self.parameters.rf)
+            resizedIm = im.resize(self.ResizeImagesSize, resample=self.Parameters.rf)
             print resizedIm.size[0], ",", resizedIm.size[1]
             resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
             im.close()
             counter += 1
 
-    """
-    createLaplacianStack: for each image in 'resizedImagesDir/', calculate its variance
-                          of laplacian matrix; append to internal list; write list to
-                          file for further use
-    """
     def createLaplacianStack(self):
+        """
+        createLaplacianStack: for each image in 'resizedImagesDir/', calculate its variance
+        of laplacian matrix; append to internal list; write list to
+        file for further use
+        """
         imageList = os.listdir(resizedImagesDir)
         if not imageList:
             raise SystemExit("Try running 'make resize' or 'make test_mode' first.")
         print "[x] Initiating 'variance_of_laplacian' method on resized images"
         counter = 1   # Counter included for console output
         for imStr in imageList:
-            varianceMatrix = variance_of_laplacian(resizedImagesDir + imStr, self.parameters.hd, self.parameters.wd, counter)
+            varianceMatrix = variance_of_laplacian(resizedImagesDir + imStr, self.Parameters.hd, self.Parameters.wd, counter)
             counter += 1  
-            self.laplacianImageStack.append(varianceMatrix) # For each matrix produced from a single image, append to internal list
+            self.VoLImageStack.append(varianceMatrix) # For each matrix produced from a single image, append to internal list
         with open(internalFilesDir + internalList, 'wb') as f:
-            pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(self.VoLImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
                 
-    """
-    crop_resize_lpc: crop, resize, and create Laplacian Stack without noise-removing resampling and interpolation methods
-    """
-    def crop_resize_lpc(self):
-        workingDir = rawImagesTestDir if self.testModeOn else rawImagesRealDir
+    def crop_resize_vol(self):
+        """
+        crop_resize_vol: crop, resize, and create Laplacian Stack without noise-removing resampling and interpolation methods
+        """
+        workingDir = rawImagesTestDir if self.TestModeOn else rawImagesRealDir
         imageList = os.listdir(workingDir)
         if not imageList:
             raise SystemExit("Please populate 'rawImages/' with images. It's currently empty.")
-        print "[x] Initiating the bulk of the program's execution (i.e. crop_resize_lpc)"
+        print "[x] Initiating the bulk of the program's execution (i.e. crop_resize_vol)"
         counter = 1;
         for imStr in imageList:
             im = Vips.Image.new_from_file(workingDir + imStr)
             if im is None:
                 raise SystemExit("Image to process not opened successfully.")
-            elif self.parameters.mps > 1.0 or self.parameters.mps <= 0.0:
+            elif self.Parameters.mps > 1.0 or self.Parameters.mps <= 0.0:
                 raise ValueError("You must enter a value in the interval (0.0, 1.0].")
             else:
                 # Modularize crop method
                 print "\t[", counter, "] ", im.width, ",", im.height, # Output image's starting size to console.
-                upperEdge = int((0.5 - self.parameters.mps/2) * im.height)
-                im = im.crop(0, upperEdge, im.width, im.height * self.parameters.mps)   # "Pre" cropping
+                upperEdge = int((0.5 - self.Parameters.mps/2) * im.height)
+                im = im.crop(0, upperEdge, im.width, im.height * self.Parameters.mps)   # "Pre" cropping
                 background = im.getpoint(0, 0)
-                mask = (im.median(3) - background).abs() > self.parameters.ctl
+                mask = (im.median(3) - background).abs() > self.Parameters.ctl
                 columns, rows = mask.project()
                 left = columns.profile()[1].min()
                 right = columns.width - columns.flip("horizontal").profile()[1].min()
@@ -158,52 +158,52 @@ class programWrapper:
                 
                 # Resize PIL image
                 print "\t[", counter, "] ", pil_img.size[0], ",", pil_img.size[1], "resized to",
-                resizedIm = pil_img.resize(self.resizeImagesTo, resample=self.parameters.rf)
+                resizedIm = pil_img.resize(self.ResizeImagesSize, resample=self.Parameters.rf)
                 resizedIm.save(resizedImagesDir + "readyToAnalyze" + str(counter) + ".jpg")   # save resized im to correct dir
                 print resizedIm.size[0], ",", resizedIm.size[1]
                 
                 # Create Laplacian Stack; modularize
                 print "\t[", counter, "]  Performing 'variance_of_laplacian' method on resized image...",
                 Laplacian_Kernel = (pl.array([[0.,-1.,0.],[-1.,4.,-1.],[0.,-1.,0.]])) * (1./60)
-                miniMatrix = pl.zeros((self.parameters.hd,self.parameters.wd)) # heightDivisor x widthDivisor Matrix to copy elements to
-                varianceMatrix = pl.zeros((resizedIm.size[1] / self.parameters.hd, resizedIm.size[0] / self.parameters.wd))
+                miniMatrix = pl.zeros((self.Parameters.hd,self.Parameters.wd)) # heightDivisor x widthDivisor Matrix to copy elements to
+                varianceMatrix = pl.zeros((resizedIm.size[1] / self.Parameters.hd, resizedIm.size[0] / self.Parameters.wd))
                 imageMatrix = pl.asarray(resizedIm.convert('L')) # convert image to greyscale; return matrix
-                for subset_of_rows in pl.arange(resizedIm.size[1] / self.parameters.hd):  # TOTAL Image Matrix
-                    for subset_of_columns in pl.arange(resizedIm.size[0] / self.parameters.wd):
-                        image_row = subset_of_rows * self.parameters.hd # keeps track of larger matrix's row index to copy from  
-                        image_col = subset_of_columns * self.parameters.wd # keeps track of larger matrix's dolumn index to copy from
-                        for row in pl.arange(self.parameters.hd):
-                            for col in pl.arange(self.parameters.wd):
+                for subset_of_rows in pl.arange(resizedIm.size[1] / self.Parameters.hd):  # TOTAL Image Matrix
+                    for subset_of_columns in pl.arange(resizedIm.size[0] / self.Parameters.wd):
+                        image_row = subset_of_rows * self.Parameters.hd # keeps track of larger matrix's row index to copy from  
+                        image_col = subset_of_columns * self.Parameters.wd # keeps track of larger matrix's dolumn index to copy from
+                        for row in pl.arange(self.Parameters.hd):
+                            for col in pl.arange(self.Parameters.wd):
                                 miniMatrix[row][col] = imageMatrix[image_row + row][image_col + col]
                         Convolve = signal.fftconvolve(miniMatrix, Laplacian_Kernel, mode='full')
                         varianceMatrix[subset_of_rows][subset_of_columns] = pl.var(Convolve)
                 print "Done."
                 
                 # Append to internal laplacian stack; modularize
-                self.laplacianImageStack.append(varianceMatrix)
+                self.VoLImageStack.append(varianceMatrix)
             # Lastly, update counter
             counter += 1                        
         # After all of that, finally just dump it to a file
         with open(internalFilesDir + internalList, 'wb') as f:
-            pickle.dump(self.laplacianImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(self.VoLImageStack, f, protocol=pickle.HIGHEST_PROTOCOL)
                 
-    """
-    __createThreeDmodel__: helper function for createThreeDmodel
-    """
-    def __createThreeDmodel__(self):
-        heightLevels = pl.linspace(0.0, abs(self.parameters.eh - self.parameters.sh), self.numImages)
+    def __create_three_d_model__(self):
+        """
+        __create_three_d_model__: helper function for create_three_d_model
+        """
+        heightLevels = pl.linspace(0.0, abs(self.Parameters.eh - self.Parameters.sh), self.NumImages)
         # Now, simply find max variance at each pixel 'cluster' in the stack.
-        self.threeDmodel = pl.zeros(self.laplacianImageStack[0].shape)
-        iterationsSinceUpdate = pl.zeros(self.laplacianImageStack[0].shape, dtype=pl.uint8) # track num iterations since updated
+        self.ThreeDModel = pl.zeros(self.VoLImageStack[0].shape)
+        iterationsSinceUpdate = pl.zeros(self.VoLImageStack[0].shape, dtype=pl.uint8) # track num iterations since updated
         print "[x] Creating 3D Model of Size",
-        print "(l x w x h): ", self.threeDmodel.shape[0], "x", self.threeDmodel.shape[1], "x", self.numImages
-        for index, laplacianOfImMatrix in enumerate(self.laplacianImageStack):
+        print "(l x w x h): ", self.ThreeDModel.shape[0], "x", self.ThreeDModel.shape[1], "x", self.NumImages
+        for index, laplacianOfImMatrix in enumerate(self.VoLImageStack):
             pointsInFocus = 0
             for row in pl.arange(laplacianOfImMatrix.shape[0]):
                 for col in pl.arange(laplacianOfImMatrix.shape[1]):
-                    if laplacianOfImMatrix[row][col] > self.threeDmodel[row][col] and iterationsSinceUpdate[row][col] < self.parameters.mai + 1:   # add one so that self.parameters.mai iterations actually pass before cell is blocked
+                    if laplacianOfImMatrix[row][col] > self.ThreeDModel[row][col] and iterationsSinceUpdate[row][col] < self.Parameters.mai + 1:   # add one so that self.Parameters.mai iterations actually pass before cell is blocked
                         pointsInFocus += 1
-                        self.threeDmodel[row][col] = heightLevels[index]
+                        self.ThreeDModel[row][col] = heightLevels[index]
                         if index > 0:
                             iterationsSinceUpdate[row][col] = 1
                     else:
@@ -213,18 +213,18 @@ class programWrapper:
             print float(pointsInFocus) / laplacianOfImMatrix.size
         # This time, store results using numpy since we're dealing with an array object
         with open(internalFilesDir + internalThreeDModel, 'wb') as f:
-            pl.save(f, self.threeDmodel)
+            pl.save(f, self.ThreeDModel)
             
-    """
-    createThreeDmodel: endHeight & startHeight are assumed to be nonnegative
-                       otherwise, error checking is performed
-                       Finds maxVariance at a particular 'cluster' (heightDivisor x widthDivisor) of pixels &
-                       stores the height that this occurred at in self.threeDmodel
-    """
-    def createThreeDmodel(self):
+    def create_three_d_model(self):
+        """
+        create_three_d_model: endHeight & startHeight are assumed to be nonnegative
+        otherwise, error checking is performed
+        Finds maxVariance at a particular 'cluster' (heightDivisor x widthDivisor) of pixels &
+        stores the height that this occurred at in self.ThreeDModel
+        """
         try:
-            assert isinstance(self.parameters.sh, float) == True
-            assert isinstance(self.parameters.eh, float) == True
+            assert isinstance(self.Parameters.sh, float) == True
+            assert isinstance(self.Parameters.eh, float) == True
         except AssertionError:
             print "One or more of 'startHeight' and 'endHeight' are not floating point values."
 
@@ -232,30 +232,30 @@ class programWrapper:
             if os.stat(internalFilesDir + internalList).st_size > 0:  # checks for empty file; if so, OSError thrown
                 with open(internalFilesDir + internalList, 'rb') as f:
                     try:
-                        self.laplacianImageStack = pickle.load(f)
-                        self.__createThreeDmodel__()
+                        self.VoLImageStack = pickle.load(f)
+                        self.__create_three_d_model__()
                     except IOError:
                         print "Error reading ", internalList
         except OSError:
             print "Try running 'make lpc' first."
             
-    """
-    o_createThreeDmodel: same as createThreeDmodel, but breaks once values begin to descend
-                     'o' stands for optimized; works because of the physics of optics
-    """
-    def o_createThreeDmodel(self):
-        print "Unimplemented."
+    def o_create_three_d_model(self):
+        """
+        o_create_three_d_model: same as create_three_d_model, but breaks once values begin to descend
+        'o' stands for optimized; works because of the physics of optics
+        """
+        pass
 
-    """
-    graphModel: plots the graph produced & displays to screen
-    """
-    def graphModel(self):
+    def graph_model(self):
+        """
+        graph_model: plots the graph produced & displays to screen
+        """
         try:
             if os.stat(internalFilesDir + internalThreeDModel).st_size > 0:  # checks for empty file; if so, OSError thrown
                 with open(internalFilesDir + internalThreeDModel, 'rb') as f:    # handles open, close, and errors with opening
                     try:   # If file doesn't load correctly, IOError is thrown.
-                        self.threeDmodel = pl.load(f)
-                        plot_threeDmodel(self.threeDmodel, self.parameters.du, figuresDir, self.parameters, self.testModeOn)
+                        self.ThreeDModel = pl.load(f)
+                        plot_three_d_model(self.ThreeDModel, self.Parameters.du, figuresDir, self.Parameters, self.TestModeOn)
                     except IOError:
                         print "Error reading", internalThreeDModel
         except OSError:

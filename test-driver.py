@@ -1,7 +1,7 @@
 """
 LIBRARIES/MODULES
 """
-import programWrapper as id
+import ProgramWrapper as id
 import sys as sys
 from parameters import parameters
 from PIL import Image
@@ -27,7 +27,7 @@ test_parameters = parameters(0.5, 125, Image.NEAREST, 11, 11, 110.7, 149.6, 5, '
 PROGRAM EXECUTION
 """
 # Create an instance of the program driver.
-driver = id.programWrapper(test_parameters, True)  # Test Mode, so pass in 'True'
+driver = id.ProgramWrapper(test_parameters)
 
 # Grab the command.
 try:
@@ -40,7 +40,7 @@ except IndexError:
 # Execution Function:
 def executeCommand(command):
     if command == 'all':
-        driver.runAll()
+        driver.run_program()
     elif command == 'crop':
         driver.cropPhotos()
     elif command == 'resize':

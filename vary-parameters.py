@@ -1,7 +1,7 @@
 """
 LIBRARIES/MODULES
 """
-import programWrapper as pw
+import ProgramWrapper as pw
 import sys as sys
 from parameters import parameters
 import numpy as np
@@ -25,7 +25,7 @@ rf_num = 4      # Number of resizing filters... NEAREST = 0, BILINEAR = 1, BICUB
 """
 CLASS WRAPPER
 """
-class vary_parameters:
+class VaryParameters:
     def __init__(self, whd_range, whd_step, mps_range, mps_step, mai_range, mai_step, rf_num):
         self.whd_range = whd_range
         self.whd_step = whd_step
@@ -38,49 +38,49 @@ class vary_parameters:
     def width_height_divisors(self):
         for val in np.arange(self.whd_range[0], self.whd_range[1], self.whd_step):
             params = parameters(0.5, 125, Image.NEAREST, val, val, 110.7, 149.6, 5, 'mm')
-            program = pw.programWrapper(params, False)
-            program.runAll()
+            program = pw.ProgramWrapper(params, testmode=False)
+            program.run_program()
         
     def mid_perecent_save(self):
         for val in np.arange(self.mps_range[0], self.mps_range[1], self.mps_step):
             params = parameters(val, 125, Image.NEAREST, 10, 10, 110.7, 149.6, 5, 'mm')
-            program = pw.programWrapper(params, False)
-            program.runAll()
+            program = pw.ProgramWrapper(params, testmode=False)
+            program.run_program()
 
     def vary_whd_mps(self):
         for whd_val in np.arange(self.whd_range[0], self.whd_range[1], self.whd_step):
             for mps_val in np.arange(self.mps_range[0], self.mps_range[1], self.mps_step):
                 params = parameters(mps_val, 125, Image.NEAREST, whd_val, whd_val, 110.7, 149.6, 5, 'mm')
-                program = pw.programWrapper(params, False)
-                program.runAll()
+                program = pw.ProgramWrapper(params, testmode=False)
+                program.run_program()
 
     def vary_mai(self):
         for val in np.arange(self.mai_range[0], self.mai_range[1], self.mai_step):
             params = parameters(0.5, 125, Image.NEAREST, 10, 10, 110.7, 149.6, val, 'mm')
-            program = pw.programWrapper(params, False)
-            program.runAll()
+            program = pw.ProgramWrapper(params, testmode=False)
+            program.run_program()
             
     def vary_whd_mai(self):
         for whd_val in np.arange(self.whd_range[0], self.whd_range[1], self.whd_step):
             for mai_val in np.arange(self.mai_range[0], self.mai_range[1], self.mai_step):
                 params = parameters(0.5, 125, Image.NEAREST, whd_val, whd_val, 110.7, 149.6, mai_val, 'mm')
-                program = pw.programWrapper(params, False)
-                program.runAll()
+                program = pw.ProgramWrapper(params, testmode=False)
+                program.run_program()
 
     def vary_whd_rf(self):
         for whd_val in np.arange(self.whd_range[0], self.whd_range[1], self.whd_step):
             for r_filter in np.arange(self.rf_num):
                 params = parameters(0.5, 125, r_filter, whd_val, whd_val, 110.7, 149.6, 5, 'mm')
-                program = pw.programWrapper(params, False)
-                program.runAll()
+                program = pw.ProgramWrapper(params, testmode=False)
+                program.run_program()
 
                 
 
 """
 EXECUTION
 """        
-# Create vary_parameters instance.
-vp = vary_parameters(whd_range, whd_step, mps_range, mps_step, mai_range, mai_step, rf_num)
+# Create VaryParameters instance.
+vp = VaryParameters(whd_range, whd_step, mps_range, mps_step, mai_range, mai_step, rf_num)
         
 # Grab the command.
 try:
