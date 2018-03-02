@@ -33,10 +33,10 @@ internalThreeDModel = "threeDmodel.npy"
 
 # Program Wrapper Class
 class programWrapper:
-    """
-    __init__: constructor
-    """
     def __init__(self, parameters, testMode):
+        """
+        __init__: constructor
+        """
         self.resizeImagesTo = 'invalid'
         self.laplacianImageStack = []
         self.threeDmodel = 'invalid'
@@ -44,12 +44,12 @@ class programWrapper:
         self.testModeOn = testMode
         self.numImages = len(os.listdir(rawImagesTestDir)) if testMode else len(os.listdir(rawImagesRealDir))
 
-    """
-    runAll: 'cropPhotos', 'resizePhotos' are run initially to determine self.resizeImagesTo; then, 'cropPhotos', 
-            'resizePhotos', & 'createLaplacianStack' methods are combined to eliminate noise-reducing resampling
-            and interpolating methods; lastly, model is created and graphed
-    """
     def runAll(self):
+        """
+        runAll: 'cropPhotos', 'resizePhotos' are run initially to determine self.resizeImagesTo; then, 'cropPhotos', 
+                'resizePhotos', & 'createLaplacianStack' methods are combined to eliminate noise-reducing resampling
+                and interpolating methods; lastly, model is created and graphed
+        """
         # run through the initial parts of the program in order to find resize size and check out to see if images look good enough
         self.cropPhotos()
         self.resizePhotos()
@@ -58,10 +58,11 @@ class programWrapper:
         self.createThreeDmodel()
         self.graphModel()
 
-    """
-    cropPhotos: crops 'raw' photos to be approximately inline with the outline of the object
-    """
+
     def cropPhotos(self):
+        """
+        cropPhotos: crops 'raw' photos to be approximately inline with the outline of the object
+        """
         workingDir = rawImagesTestDir if self.testModeOn else rawImagesRealDir
         imageList = os.listdir(workingDir)
         if not imageList:
@@ -72,10 +73,10 @@ class programWrapper:
             trm.trim(workingDir + imStr, croppedImagesDir + "croppedIm" + str(counter) + ".jpg", self.parameters.mps, self.parameters.ctl, counter)
             counter += 1
                 
-    """
-    determineResizeImagesTo: determines the smallest image in 'croppedImagesDir' & sets self.resizeImagesTo to this value
-    """
     def determineResizeImagesTo(self):
+        """
+        determineResizeImagesTo: determines the smallest image in 'croppedImagesDir' & sets self.resizeImagesTo to this value
+        """
         lst = os.listdir(croppedImagesDir)
         if not lst:
             raise SystemExit(croppedImagesDir + " is empty. Try running 'make crop' or 'make test_mode' first.")
@@ -87,11 +88,8 @@ class programWrapper:
             im.close()
         self.resizeImagesTo = (currentMin[0] - (currentMin[0] % self.parameters.wd), currentMin[1] - (currentMin[1] % self.parameters.wd))
 
-    """
-    resizePhotos: resizes all cropped images to the size of the smallest photo in croppedImagesDir
-                  determineResizeImagesTo already checks to see if croppedImagesDir is empty
-    """
     def resizePhotos(self):
+        """Resize all images to the size of the smallest photo in croppedImagesDir."""
         self.determineResizeImagesTo()
         imageList = os.listdir(croppedImagesDir)
         counter = 1   # utilize counter for appropriate file naming
@@ -137,7 +135,7 @@ class programWrapper:
             im = Vips.Image.new_from_file(workingDir + imStr)
             if im is None:
                 raise SystemExit("Image to process not opened successfully.")
-            if self.parameters.mps > 1.0 or self.parameters.mps <= 0.0:
+            elif self.parameters.mps > 1.0 or self.parameters.mps <= 0.0:
                 raise ValueError("You must enter a value in the interval (0.0, 1.0].")
             else:
                 # Modularize crop method
